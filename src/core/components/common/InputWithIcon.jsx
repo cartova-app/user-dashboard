@@ -1,0 +1,47 @@
+// components/InputWithIcon.js
+import { Input } from "@core/components/ui/input";
+import { Label } from "@core/components/ui/label";
+import { cn } from "@core/lib/utils"; // We'll create this below
+
+export function InputWithIcon({
+  label,
+  id,
+  type = "text",
+  placeholder = "",
+  icon,
+  className = "",
+  required = false,
+  error = "",
+}) {
+  return (
+    <div className={cn("space-y-1", className)}>
+      {
+        label && (
+          <Label htmlFor={id} className='text-sm font-medium text-gray-700'>
+            {label} {required && <span className='text-red-500'>*</span>}
+          </Label>
+        )
+      }
+
+      <div className='relative'>
+        {icon && (
+          <div className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400'>
+            {icon}
+          </div>
+        )}
+        <Input
+          id={id}
+          type={type}
+          placeholder={placeholder}
+          className={cn(
+            "w-full pl-10 pr-3 py-2 h-12 border rounded-[12px] shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+            icon && "pl-10",
+            error && "border-red-500 focus:ring-red-500"
+          )}
+          required={required}
+        />
+      </div>
+      {error && <p className='text-sm text-red-500 mt-1'>{error}</p>}
+    </div>
+  );
+}
