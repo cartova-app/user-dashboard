@@ -1,81 +1,79 @@
-// components/SignUpForm.js
-'use client';
-
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { InputWithIcon } from '@core/components/common/InputWithIcon';
 import { SocialButton } from '@core/components/common/SocialButton';
 import { Button } from '@core/components/ui/button';
-import { MailIcon } from 'lucide-react';
-import { UserIcon } from 'lucide-react';
-import { PhoneIcon } from 'lucide-react';
-import { StoreIcon } from 'lucide-react';
-import { Facebook } from 'lucide-react';
+import { MailIcon, UserIcon, PhoneIcon, StoreIcon, Facebook } from 'lucide-react';
 import GoogleIcon from '@assets/icons/Google.svg?react';
-
+import { signUpSchema } from '../schemas/signUpSchema';
+import { useSignUpStore } from '../stores/useSignUpStore';
 
 export default function SignUpForm() {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        storeName: '',
+    const { submitSignUp, isLoading } = useSignUpStore();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: zodResolver(signUpSchema),
+        defaultValues: {
+            name: '',
+            email: '',
+            phone: '',
+            storeName: '',
+        },
     });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form submitted:', formData);
-        // TODO: submit to API
+    const onSubmit = async (data) => {
+        const result = await submitSignUp(data);
+        if (result.success) {
+            console.log('Sign up successful, switching to OTP tab');
+        }
     };
 
     return (
-        <div className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full">
+        <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
             <h1 className="text-2xl font-bold text-center mb-2">Create Your Account</h1>
             <p className="text-sm text-gray-500 text-center mb-6">
                 Create your store in under 10 minutes
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <InputWithIcon
                     id="name"
-                    name="name"
                     type="text"
                     placeholder="Enter your full name"
                     icon={<UserIcon />}
-                    required
-                    onChange={handleChange}
+                    error={errors.name?.message}
+                    {...register('name')}
                 />
 
                 <InputWithIcon
                     id="email"
-                    name="email"
                     type="email"
                     placeholder="you@example.com"
                     icon={<MailIcon />}
-                    required
-                    onChange={handleChange}
+                    error={errors.email?.message}
+                    {...register('email')}
                 />
 
                 <InputWithIcon
                     id="phone"
-                    name="phone"
                     type="tel"
                     placeholder="+1 (555) 123-4567"
                     icon={<PhoneIcon />}
-                    onChange={handleChange}
+                    error={errors.phone?.message}
+                    {...register('phone')}
                 />
 
                 <InputWithIcon
                     id="storeName"
-                    name="storeName"
                     type="text"
                     placeholder="My Awesome Store"
                     icon={<StoreIcon />}
-                    onChange={handleChange}
+                    error={errors.storeName?.message}
+                    {...register('storeName')}
                 />
 
                 <div className="flex items-center my-6">
@@ -93,10 +91,12 @@ export default function SignUpForm() {
                 </SocialButton>
 
                 <Button
+                    variant="primary"
+                    className="w-full"
                     type="submit"
-                    className="w-full mt-6 bg-lime-400 hover:bg-lime-500 text-black font-semibold py-2 rounded-md transition-colors"
+                    disabled={isLoading}
                 >
-                    Create Account
+                    {isLoading ? 'Creating Account...' : 'Create Account'}
                 </Button>
             </form>
 

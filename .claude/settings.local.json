@@ -4,7 +4,9 @@
       "Bash(dir:*)",
       "Bash(tree:*)",
       "Bash(mkdir:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(pnpm list:*)",
+      "Bash(pnpm add:*)"
     ],
     "deny": [],
     "ask": []

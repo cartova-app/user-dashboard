@@ -1,9 +1,10 @@
 // components/InputWithIcon.js
 import { Input } from "@core/components/ui/input";
 import { Label } from "@core/components/ui/label";
-import { cn } from "@core/lib/utils"; // We'll create this below
+import { cn } from "@core/lib/utils";
+import { forwardRef } from "react";
 
-export function InputWithIcon({
+export const InputWithIcon = forwardRef(function InputWithIcon({
   label,
   id,
   type = "text",
@@ -12,7 +13,8 @@ export function InputWithIcon({
   className = "",
   required = false,
   error = "",
-}) {
+  ...props
+}, ref) {
   return (
     <div className={cn("space-y-1", className)}>
       {
@@ -30,6 +32,7 @@ export function InputWithIcon({
           </div>
         )}
         <Input
+          ref={ref}
           id={id}
           type={type}
           placeholder={placeholder}
@@ -39,9 +42,10 @@ export function InputWithIcon({
             error && "border-red-500 focus:ring-red-500"
           )}
           required={required}
+          {...props}
         />
       </div>
       {error && <p className='text-sm text-red-500 mt-1'>{error}</p>}
     </div>
   );
-}
+});
