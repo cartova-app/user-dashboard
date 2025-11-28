@@ -37,7 +37,7 @@ export const InputWithIcon = forwardRef(function InputWithIcon({
           type={type}
           placeholder={placeholder}
           className={cn(
-            "w-full pl-10 pr-3 py-2 h-12 border rounded-[12px] shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+            "w-full pl-10 pr-3 py-2 h-12  rounded-[12px] border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
             icon && "pl-10",
             error && "border-red-500 focus:ring-red-500"
           )}

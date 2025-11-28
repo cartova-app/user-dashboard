@@ -46,6 +46,9 @@
 }
 
 @theme inline {
+  --font-family-anton: 'Anton', sans-serif;
+  --font-family-manrope: 'Manrope', sans-serif;
+  --font-family-satoshi: 'Satoshi', sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

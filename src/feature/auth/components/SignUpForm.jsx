@@ -7,6 +7,7 @@ import { MailIcon, UserIcon, PhoneIcon, StoreIcon, Facebook } from 'lucide-react
 import GoogleIcon from '@assets/icons/Google.svg?react';
 import { signUpSchema } from '../schemas/signUpSchema';
 import { useSignUpStore } from '../stores/useSignUpStore';
+import CompeleteProfileDialog from '@/feature/profile/components/CompeleteProfileDialog';
 
 export default function SignUpForm() {
     const { submitSignUp, isLoading } = useSignUpStore();
@@ -106,6 +107,7 @@ export default function SignUpForm() {
                     log in
                 </a>
             </p>
+            <CompeleteProfileDialog isOpen={true} />
         </div>
     );
 }
