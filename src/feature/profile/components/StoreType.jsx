@@ -1,8 +1,6 @@
 import { useForm } from "react-hook-form"
-import { Button } from "@core/components/ui/button"
 import { Card, CardContent } from "@core/components/ui/card"
 import {
-    ChevronRight,
     Shirt,
     Smartphone,
     Pizza,
@@ -11,13 +9,13 @@ import {
     Code,
     Palette,
     HelpCircle,
-    Check,
-    ArrowLeft
+    Check
 } from "lucide-react"
 import { useProfileStore } from '../store/profileStore'
+import { StepperButtons } from './StepperButtons'
 
 export function StoreTypeSelection() {
-    const { formData, updateFormData, nextStep, prevStep } = useProfileStore()
+    const { formData, updateFormData, nextStep } = useProfileStore()
     const { handleSubmit, setValue, watch, register } = useForm({
         defaultValues: {
             category: formData.category || null
@@ -195,33 +193,7 @@ export function StoreTypeSelection() {
                     {...register("category", { required: "Please select a category" })}
                 />
 
-                {/* Navigation Buttons */}
-                <div className="flex justify-between items-center mt-4">
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={prevStep}
-                        className="px-6"
-                        style={{ fontFamily: 'Satoshi, sans-serif' }}
-                    >
-                        <ArrowLeft className="mr-2 w-5 h-5" />
-                        Back
-                    </Button>
-
-                    <Button
-                        variant="primary"
-                        type="submit"
-                        disabled={!selectedCategoryValue}
-                        className="px-8 h-12 text-base font-semibold text-black transition-all duration-300 shadow-lg hover:shadow-xl"
-                        style={{
-                            fontFamily: 'Satoshi, sans-serif',
-                            backgroundColor: selectedCategoryValue ? 'var(--primary)' : undefined
-                        }}
-                    >
-                        Continue
-                        <ChevronRight className="ml-2 w-5 h-5" />
-                    </Button>
-                </div>
+                <StepperButtons disabled={!selectedCategoryValue} />
             </form>
 
         </div>

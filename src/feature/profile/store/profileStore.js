@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export const useProfileStore = create((set) => ({
   // Current step
-  currentStep: 1,
+  currentStep: 2,
 
   // Form data
   formData: {

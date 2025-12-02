@@ -3,9 +3,10 @@ import OrganizationForm from "./OrganizationForm"
 import GenericDialog from '@core/components/common/Modal'
 import Stepper from "@core/components/common/Stepper"
 import { StoreTypeSelection } from "./StoreType"
-import { ThemeSelection } from "./ThemeSelection"
+import { ThemeTypeSelection } from "./ThemeForm"
 import { Tabs, TabsContent } from "@core/components/ui/tabs"
 import { useProfileStore } from '../store/profileStore'
+import SuccessStep from "./SuccessStep"
 
 function CompeleteProfileDialog({ isOpen, setIsOpen }) {
     const { currentStep, resetForm } = useProfileStore()
@@ -13,7 +14,7 @@ function CompeleteProfileDialog({ isOpen, setIsOpen }) {
     const steps = [
         { id: 'details', label: 'Store Details', component: OrganizationForm },
         { id: 'category', label: 'Choose Category', component: StoreTypeSelection },
-        { id: 'theme', label: 'Choose Theme', component: ThemeSelection }
+        { id: 'theme', label: 'Choose Theme', component: ThemeTypeSelection },
     ]
 
     const stepLabels = steps.map(step => step.label)
@@ -31,23 +32,27 @@ function CompeleteProfileDialog({ isOpen, setIsOpen }) {
             onOpenChange={setIsOpen}
             width="60%"
             showHeader={false}
-            className="p-6 rounded-2xl max-h-[90vh] overflow-hidden flex flex-col"
+            className="p-6 rounded-2xl max-h-[90vh] flex flex-col overflow-y-auto"
         >
             {/* Stepper Navigation */}
-            <div className="flex-shrink-0 mb-6 px-2">
+            <div className="shrink-0 mb-6 px-2">
                 <Stepper
                     steps={stepLabels}
                     active={currentStep}
                 />
             </div>
 
-            {/* Tab Contents - controlled by Zustand step */}
-            <div className="border-t border-gray-100 flex-1 overflow-y-auto">
-                <Tabs value={steps[currentStep].id} className="w-full h-full">
+            {/* Scrollable content */}
+            <div className="border-t border-gray-100 flex-1">
+                <Tabs value={steps[currentStep].id} className="w-full">
                     {steps.map((step) => {
                         const StepComponent = step.component
                         return (
-                            <TabsContent key={step.id} value={step.id} className="mt-0 h-full">
+                            <TabsContent
+                                key={step.id}
+                                value={step.id}
+                                className="mt-0"
+                            >
                                 <StepComponent />
                             </TabsContent>
                         )
@@ -55,6 +60,7 @@ function CompeleteProfileDialog({ isOpen, setIsOpen }) {
                 </Tabs>
             </div>
         </GenericDialog>
+
     )
 }
 

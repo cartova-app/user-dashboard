@@ -9,9 +9,9 @@ function StepIcon({ active, completed, icon }) {
         flex h-[30px] w-[30px] items-center justify-center rounded-full
         transition-all duration-300 ease-in-out
         ${completed
-                    ? "bg-primary text-white"
+                    ? "bg-[#34DF6A] text-white"
                     : active
-                        ? "scale-110 border-2 border-[#9B4EF6] bg-white text-[#9B4EF6] shadow-md"
+                        ? "scale-110 border-2 border-[#34DF6A] bg-white text-[#34DF6A] shadow-md"
                         : "border-2 border-transparent bg-gray-100 text-gray-400"
                 }
       `}
@@ -19,7 +19,7 @@ function StepIcon({ active, completed, icon }) {
             {completed ? (
                 <Check className="text-lg text-white" />
             ) : (
-                <span className={`text-xs font-bold ${active ? "text-[#9B4EF6]" : "text-gray-400"}`}>
+                <span className={`text-xs font-bold ${active ? "text-[#34DF6A]" : "text-gray-400"}`}>
                     {icon}
                 </span>
             )}
@@ -53,7 +53,7 @@ const CustomStepper = ({ steps, active }) => {
                         {/* Step Label */}
                         <div className="mt-2 text-center">
                             <span
-                                className={`text-sm font-medium transition-all duration-300 ${index === active ? "text-base font-bold text-[#9B4EF6]" : "text-gray-400"
+                                className={`text-sm font-medium transition-all duration-300 ${index === active ? "text-base font-bold text-[#34DF6A]" : "text-gray-400"
                                     }`}
                                 style={{ fontFamily: 'Satoshi, sans-serif' }}
                             >
@@ -65,7 +65,7 @@ const CustomStepper = ({ steps, active }) => {
                     {/* Connector Line */}
                     {index < steps.length - 1 && (
                         <div
-                            className={`absolute top-[15px] h-[3px] rounded transition-colors duration-300 ease-in-out ${index < active ? "bg-primary" : "bg-gray-300"
+                            className={`absolute top-[15px] h-[3px] rounded transition-colors duration-300 ease-in-out ${index < active ? "bg-[#34DF6A]" : "bg-gray-300"
                                 }`}
                             style={{
                                 [isAr ? "right" : "left"]: "50%",

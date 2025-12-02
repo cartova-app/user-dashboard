@@ -1,8 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { InputWithIcon } from '@core/components/common/InputWithIcon';
-import { Button } from '@core/components/ui/button';
-import { ChevronRight } from 'lucide-react';
 import { useProfileStore } from '../store/profileStore';
+import { StepperButtons } from './StepperButtons';
 
 export default function OrganizationForm() {
     const { formData, updateFormData, nextStep } = useProfileStore();
@@ -68,18 +67,8 @@ export default function OrganizationForm() {
                     error={errors.storeDescription?.message}
                     {...register('storeDescription', { required: 'Store description is required' })}
                 />
-                {/* Continue Button */}
-                <div className="flex justify-center items-center mt-4">
-                    <Button
-                        variant="primary"
-                        type="submit"
-                        className={'w-[30%]'}
 
-                    >
-                        Continue
-                        <ChevronRight className="ml-2 w-5 h-5" />
-                    </Button>
-                </div>
+                <StepperButtons showBackButton={false} />
             </form>
         </div>
     );
