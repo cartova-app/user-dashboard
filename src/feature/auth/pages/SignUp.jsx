@@ -1,4 +1,4 @@
-import SignUpForm from '../components/SignUpForm';
+import SignUpForm from '../components/RegisterForm';
 import OtpForm from '../components/OtpForm';
 import SignUpBannar from "@assets/images/sign-up-bannar.png";
 import OtpBannar from "@assets/images/otp-bannar.png";

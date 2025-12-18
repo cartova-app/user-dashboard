@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { InputWithIcon } from '@core/components/common/InputWithIcon';
 import { SocialButton } from '@core/components/common/SocialButton';
@@ -8,12 +8,13 @@ import GoogleIcon from '@assets/icons/Google.svg?react';
 import { signUpSchema } from '../schemas/signUpSchema';
 import { useSignUpStore } from '../stores/useSignUpStore';
 import CompeleteProfileDialog from '@/feature/profile/components/CompeleteProfileDialog';
+import { UserCog } from 'lucide-react';
 
 export default function SignUpForm() {
     const { submitSignUp, isLoading } = useSignUpStore();
 
     const {
-        register,
+        control,
         handleSubmit,
         formState: { errors },
     } = useForm({
@@ -27,12 +28,13 @@ export default function SignUpForm() {
     });
 
     const onSubmit = async (data) => {
+        console.log(data)
         const result = await submitSignUp(data);
         if (result.success) {
             console.log('Sign up successful, switching to OTP tab');
         }
     };
-
+    console.log(errors)
     return (
         <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
             <h1 className="text-2xl font-bold text-center mb-2">Create Your Account</h1>
@@ -41,42 +43,73 @@ export default function SignUpForm() {
             </p>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <InputWithIcon
-                    id="name"
-                    type="text"
-                    placeholder="Enter your full name"
-                    icon={<UserIcon />}
-                    error={errors.name?.message}
-                    {...register('name')}
+                <Controller
+                    name="name"
+                    control={control}
+                    render={({ field }) => (
+                        <InputWithIcon
+                            id="name"
+                            type="text"
+                            placeholder="Enter your full name"
+                            icon={<UserCog />}
+                            error={errors.name?.message}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            value={field.value}
+                        />
+                    )}
+                />
+                <Controller
+                    name="email"
+                    control={control}
+                    render={({ field }) => (
+                        <InputWithIcon
+                            id="email"
+                            type="email"
+                            placeholder="you@example.com"
+                            icon={<MailIcon />}
+                            error={errors.email?.message}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            value={field.value}
+                        />
+                    )}
                 />
 
-                <InputWithIcon
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    icon={<MailIcon />}
-                    error={errors.email?.message}
-                    {...register('email')}
+                <Controller
+                    name="phone"
+                    control={control}
+                    render={({ field }) => (
+                        <InputWithIcon
+                            id="phone"
+                            type="tel"
+                            placeholder="+1 (555) 123-4567"
+                            icon={<PhoneIcon />}
+                            error={errors.phone?.message}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            value={field.value}
+                        />
+                    )}
                 />
 
-                <InputWithIcon
-                    id="phone"
-                    type="tel"
-                    placeholder="+1 (555) 123-4567"
-                    icon={<PhoneIcon />}
-                    error={errors.phone?.message}
-                    {...register('phone')}
-                />
+                <Controller
+                    name="storeName"
+                    control={control}
+                    render={({ field }) => (
+                        <InputWithIcon
+                            id="storeName"
+                            type="text"
+                            placeholder="My Awesome Store"
+                            icon={<StoreIcon />}
+                            error={errors.storeName?.message}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            value={field.value}
+                        />
 
-                <InputWithIcon
-                    id="storeName"
-                    type="text"
-                    placeholder="My Awesome Store"
-                    icon={<StoreIcon />}
-                    error={errors.storeName?.message}
-                    {...register('storeName')}
+                    )}
                 />
-
                 <div className="flex items-center my-6">
                     <div className="flex-grow border-t border-gray-300"></div>
                     <span className="mx-4 text-sm text-gray-500">or</span>
@@ -107,7 +140,7 @@ export default function SignUpForm() {
                     log in
                 </a>
             </p>
-            <CompeleteProfileDialog isOpen={true} />
+            <CompeleteProfileDialog isOpen={false} />
         </div>
     );
 }

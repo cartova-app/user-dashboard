@@ -41,7 +41,7 @@ export function ThemeTypeSelection() {
     }
 
     // 👉 If it's success step, return SuccessStep
-    if (currentStep === 3) {
+    if (true) {
         return <SuccessStep />
     }
 

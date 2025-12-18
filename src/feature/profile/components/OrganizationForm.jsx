@@ -1,13 +1,13 @@
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { InputWithIcon } from '@core/components/common/InputWithIcon';
 import { useProfileStore } from '../store/profileStore';
 import { StepperButtons } from './StepperButtons';
 
 export default function OrganizationForm() {
     const { formData, updateFormData, nextStep } = useProfileStore();
-
+    console.log(formData)
     const {
-        register,
+        control,
         handleSubmit,
         formState: { errors },
     } = useForm({
@@ -41,33 +41,62 @@ export default function OrganizationForm() {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                <InputWithIcon
-                    label={'Organization Name'}
-                    id="organizationName"
-                    type="text"
-                    placeholder="Your Company Inc."
-                    error={errors.organizationName?.message}
-                    {...register('organizationName', { required: 'Organization name is required' })}
+                <Controller
+                    name='name'
+                    control={control}
+                    render={({ field }) => (
+                        <InputWithIcon
+                            label={'Name'}
+                            id="name"
+                            type="text"
+                            placeholder="John Doe"
+                            error={errors.name?.message}
+                            {...field}
+                        />
+                    )}
                 />
-
-                <InputWithIcon
-                    label={'Store Name'}
-                    id="storeName"
-                    type="text"
-                    placeholder="Store Name"
-                    error={errors.storeName?.message}
-                    {...register('storeName', { required: 'Store name is required' })}
+                <Controller
+                    name='email'
+                    control={control}
+                    render={({ field }) => (
+                        <InputWithIcon
+                            label={'Name'}
+                            id="name"
+                            type="text"
+                            placeholder="John Doe"
+                            error={errors.email?.message}
+                            {...field}
+                        />
+                    )}
                 />
-
-                <InputWithIcon
-                    label={'Store Description'}
-                    id="storeDescription"
-                    type="text"
-                    placeholder="What do you sell? (e.g), Handcrafted jewelry, eco-friendly apparel, digital products."
-                    error={errors.storeDescription?.message}
-                    {...register('storeDescription', { required: 'Store description is required' })}
+                <Controller
+                    name='storeName'
+                    control={control}
+                    render={({ field }) => (
+                        <InputWithIcon
+                            label={'Store Name'}
+                            id="storeName"
+                            type="text"
+                            placeholder="Store Name"
+                            error={errors.storeName?.message}
+                            {...field}
+                        />
+                    )}
                 />
-
+                <Controller
+                    name='storeDescription'
+                    control={control}
+                    render={({ field }) => (
+                        <InputWithIcon
+                            label={'Store Description'}
+                            id="storeDescription"
+                            type="text"
+                            placeholder="What do you sell? (e.g), Handcrafted jewelry, eco-friendly apparel, digital products."
+                            error={errors.storeDescription?.message}
+                            {...field}
+                        />
+                    )}
+                />
                 <StepperButtons showBackButton={false} />
             </form>
         </div>
