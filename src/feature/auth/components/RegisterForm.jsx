@@ -6,13 +6,13 @@ import { Button } from '@core/components/ui/button';
 import { MailIcon, UserIcon, PhoneIcon, StoreIcon, Facebook } from 'lucide-react';
 import GoogleIcon from '@assets/icons/Google.svg?react';
 import { signUpSchema } from '../schemas/signUpSchema';
-import { useSignUpStore } from '../stores/useSignUpStore';
 import CompeleteProfileDialog from '@/feature/profile/components/CompeleteProfileDialog';
 import { UserCog } from 'lucide-react';
+import authClient from '@/core/config/auth-client';
+import { useState } from 'react';
 
 export default function SignUpForm() {
-    const { submitSignUp, isLoading } = useSignUpStore();
-
+    const [loading, setLoading] = useState(false);
     const {
         control,
         handleSubmit,
@@ -27,14 +27,19 @@ export default function SignUpForm() {
         },
     });
 
+
     const onSubmit = async (data) => {
-        console.log(data)
-        const result = await submitSignUp(data);
-        if (result.success) {
-            console.log('Sign up successful, switching to OTP tab');
+        try {
+            setLoading(true)
+            const res = await authClient.signUp.email(data)
+            console.log(res)
+        }
+        catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
         }
     };
-    console.log(errors)
     return (
         <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
             <h1 className="text-2xl font-bold text-center mb-2">Create Your Account</h1>
@@ -111,9 +116,9 @@ export default function SignUpForm() {
                     )}
                 />
                 <div className="flex items-center my-6">
-                    <div className="flex-grow border-t border-gray-300"></div>
+                    <div className="grow border-t border-gray-300"></div>
                     <span className="mx-4 text-sm text-gray-500">or</span>
-                    <div className="flex-grow border-t border-gray-300"></div>
+                    <div className="grow border-t border-gray-300"></div>
                 </div>
 
                 <SocialButton icon={<GoogleIcon />}>
@@ -128,9 +133,9 @@ export default function SignUpForm() {
                     variant="primary"
                     className="w-full"
                     type="submit"
-                    disabled={isLoading}
+                    disabled={loading}
                 >
-                    {isLoading ? 'Creating Account...' : 'Create Account'}
+                    {loading ? 'Creating Account...' : 'Create Account'}
                 </Button>
             </form>
 

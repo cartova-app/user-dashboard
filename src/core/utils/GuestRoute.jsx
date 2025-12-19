@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { authClient } from "@/core/config/auth-client";
 
-const ProtectedRoute = ({ children }) => {
+const GuestRoute = ({ children }) => {
     const location = useLocation();
     const { data: session, isPending } = authClient.useSession();
 
@@ -14,13 +14,15 @@ const ProtectedRoute = ({ children }) => {
         );
     }
 
-    // Redirect to login if not authenticated
-    if (!session) {
-        return <Navigate to="/login" state={{ from: location }} replace />;
+    // Redirect to dashboard if already authenticated
+    if (session) {
+        // Redirect to the page they were trying to access, or dashboard
+        const from = location.state?.from?.pathname || "/";
+        return <Navigate to={from} replace />;
     }
 
-    // User is authenticated, render the protected content
+    // User is not authenticated, render the auth content
     return children;
 };
 
-export default ProtectedRoute;
+export default GuestRoute;
