@@ -8,11 +8,11 @@ export const dashboardRoutes = [
     {
         path: "/dashboard",
         element: (
-            // <ProtectedRoute>
-            <SuspenseWrapper>
-                <DashboardLayout />
-            </SuspenseWrapper>
-            // </ProtectedRoute>
+            <ProtectedRoute>
+                <SuspenseWrapper>
+                    <DashboardLayout />
+                </SuspenseWrapper>
+            </ProtectedRoute>
         ),
         errorElement: <ErrorBoundary />,
         children: [

@@ -25,8 +25,12 @@ export default function SignUpForm() {
             await authClient.signIn.email({
                 email: data.email,
                 password: data.password
+            }, {
+                onSuccess: (ctx) => {
+                    localStorage.setItem('bearer_token', ctx?.data?.token)
+                    toast.success('Login successful')
+                }
             })
-            toast.success('Login successful')
         } catch (error) {
             toast.error(error.message)
             console.log(error)

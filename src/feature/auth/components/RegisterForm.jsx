@@ -10,6 +10,7 @@ import CompeleteProfileDialog from '@/feature/profile/components/CompeleteProfil
 import { UserCog } from 'lucide-react';
 import authClient from '@/core/config/auth-client';
 import { useState } from 'react';
+import { PasswordInputWithIcon } from '@/core/components/common/PasswordInputWithIcon';
 
 export default function SignUpForm() {
     const [loading, setLoading] = useState(false);
@@ -82,37 +83,17 @@ export default function SignUpForm() {
                 />
 
                 <Controller
-                    name="phone"
+                    name="password"
                     control={control}
                     render={({ field }) => (
-                        <InputWithIcon
-                            id="phone"
-                            type="tel"
-                            placeholder="+1 (555) 123-4567"
-                            icon={<PhoneIcon />}
-                            error={errors.phone?.message}
-                            onChange={field.onChange}
-                            onBlur={field.onBlur}
-                            value={field.value}
+                        <PasswordInputWithIcon
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                            error={errors.password?.message}
+                            {...field}
                         />
-                    )}
-                />
-
-                <Controller
-                    name="storeName"
-                    control={control}
-                    render={({ field }) => (
-                        <InputWithIcon
-                            id="storeName"
-                            type="text"
-                            placeholder="My Awesome Store"
-                            icon={<StoreIcon />}
-                            error={errors.storeName?.message}
-                            onChange={field.onChange}
-                            onBlur={field.onBlur}
-                            value={field.value}
-                        />
-
                     )}
                 />
                 <div className="flex items-center my-6">
