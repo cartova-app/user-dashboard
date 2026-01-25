@@ -49,7 +49,7 @@ function Modal({
 
                         {!title && <div />}
 
-                        {showCloseButton && (
+                        {/* {showCloseButton && (
                             <Button
                                 variant="ghost"
                                 size="icon"
@@ -58,7 +58,7 @@ function Modal({
                             >
                                 <X className="h-4 w-4" />
                             </Button>
-                        )}
+                        )} */}
                     </div>
                 )}
 

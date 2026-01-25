@@ -1,0 +1,110 @@
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+import Modal from '@/core/components/common/Modal';
+import { InputWithIcon } from '@/core/components/common/InputWithIcon';
+import { Button } from '@/core/components/ui/button';
+import { authClient } from '@/core/config/auth-client';
+import { createOrganizationSchema } from '../schemas/organizationSchema';
+import { Building2 } from 'lucide-react';
+import useGenerateSlug from '@/core/hooks/useGenerateSlug';
+
+export default function CreateOrganizationModal({ open, onOpenChange, onSuccess }) {
+    const [isLoading, setIsLoading] = useState(false);
+    const { generateSlug } = useGenerateSlug()
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({
+        resolver: zodResolver(createOrganizationSchema),
+        defaultValues: {
+            name: '',
+        },
+    });
+
+
+
+    const onSubmit = async (data) => {
+        setIsLoading(true);
+        try {
+            const slug = generateSlug(data.name);
+            const { data: orgData, error } = await authClient.organization.create({
+                name: data.name,
+                slug,
+            });
+
+            if (error) {
+                throw new Error(error.message || 'Failed to create organization');
+            }
+
+            toast.success('Organization created successfully');
+            reset();
+            onOpenChange(false);
+            onSuccess?.();
+        } catch (error) {
+            console.error('Error creating organization:', error);
+            toast.error(error?.message || 'Failed to create organization');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleClose = (open) => {
+        if (!isLoading) {
+            reset();
+            onOpenChange(open);
+        }
+    };
+
+    return (
+        <Modal
+            open={open}
+            onOpenChange={handleClose}
+            title="Create Organization"
+            description="Add a new organization to manage your stores"
+            width="450px"
+
+        >
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <Controller
+                    name="name"
+                    control={control}
+                    render={({ field }) => (
+                        <InputWithIcon
+                            label="Organization Name"
+                            id="name"
+                            type="text"
+                            placeholder="Enter organization name"
+                            icon={<Building2 className="w-5 h-5" />}
+                            error={errors.name?.message}
+                            disabled={isLoading}
+                            required
+                            {...field}
+                        />
+                    )}
+                />
+
+                <div className="flex gap-3 justify-end">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => handleClose(false)}
+                        disabled={isLoading}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        type="submit"
+                        disabled={isLoading}
+                        className="bg-lime-400 hover:bg-lime-500 text-black"
+                    >
+                        {isLoading ? 'Creating...' : 'Create'}
+                    </Button>
+                </div>
+            </form>
+        </Modal>
+    );
+}

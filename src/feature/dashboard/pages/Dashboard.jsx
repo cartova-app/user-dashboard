@@ -1,5 +1,6 @@
 
 
+import CompeleteProfileDialog from "@/feature/profile/components/CompeleteProfileDialog";
 import SalesChart from "../components/SalesChart";
 
 function StatCard({ title, value, change, positive = true }) {
@@ -126,7 +127,7 @@ export default function Dashboard() {
                 <h1 className="text-2xl font-extrabold">Welcome to your store !</h1>
                 <div className="text-sm text-gray-500">Here is what happening with your store today</div>
             </div>
-
+            <CompeleteProfileDialog isOpen={true} />
             <div className="flex gap-4 flex-wrap mb-6">
                 <StatCard title="Today's Sales" value={stats.sales.value} change={stats.sales.change} />
                 <StatCard title="Orders" value={stats.orders.value} change={stats.orders.change} />

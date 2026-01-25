@@ -1,13 +1,11 @@
-import { authStorageService } from "@/features/auth/services/storageService";
 import axios from "axios";
 import i18next from "i18next";
-import Cookies from "js-cookie";
 
 // Ensure that the environment variable is set and valid
 const URL = import.meta.env.VITE_API_URL;
 if (!URL) {
   console.error(
-    "API URL is not defined. Please check your environment variables."
+    "API URL is not defined. Please check your environment variables.",
   );
 }
 
@@ -26,8 +24,7 @@ const axiosInstance = axios.create(config);
 // Request interceptor to attach authorization token
 axiosInstance.interceptors.request.use(
   async (request) => {
-    const authData = await authStorageService.getAuthData();
-    const token = authData?.accessToken; // ✅ safe optional chaining
+    const token = localStorage?.getItem("bearer_token"); // ✅ safe optional chaining
     // Attach the authorization token if available
     request.headers["Accept-Language"] =
       i18next.language === "ar" ? "ar-EG" : "en-US";
@@ -41,7 +38,7 @@ axiosInstance.interceptors.request.use(
   (error) => {
     console.error("Request error:", error); // Log request error
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor to handle responses and errors
@@ -77,7 +74,7 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

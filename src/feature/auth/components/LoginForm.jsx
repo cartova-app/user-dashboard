@@ -11,8 +11,16 @@ import { loginScehma } from '../schemas/loginScehma';
 import { PasswordInputWithIcon } from '@/core/components/common/PasswordInputWithIcon';
 import authClient from '@/core/config/auth-client';
 import { toast } from 'sonner';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 
-export default function SignUpForm() {
+export default function LoginForm() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const from = location.state?.from?.pathname || '/organizations';
+
     const { control, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(loginScehma),
         defaultValues: {
@@ -20,7 +28,9 @@ export default function SignUpForm() {
             password: '',
         },
     })
+
     const onSubmit = async (data) => {
+        setIsLoading(true);
         try {
             await authClient.signIn.email({
                 email: data.email,
@@ -29,11 +39,14 @@ export default function SignUpForm() {
                 onSuccess: (ctx) => {
                     localStorage.setItem('bearer_token', ctx?.data?.token)
                     toast.success('Login successful')
+                    navigate(from, { replace: true });
                 }
             })
         } catch (error) {
             toast.error(error.message)
             console.log(error)
+        } finally {
+            setIsLoading(false);
         }
     }
     return (
@@ -91,9 +104,10 @@ export default function SignUpForm() {
 
                 <Button
                     type="submit"
-                    className="w-full mt-6 bg-lime-400 hover:bg-lime-500 text-black font-semibold py-2 rounded-md transition-colors"
+                    disabled={isLoading}
+                    className="w-full mt-6 bg-lime-400 hover:bg-lime-500 text-black font-semibold py-2 rounded-md transition-colors disabled:opacity-50"
                 >
-                    Sign In
+                    {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
             </form>
 

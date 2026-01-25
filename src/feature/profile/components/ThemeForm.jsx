@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form"
-import { Card, CardContent } from "@core/components/ui/card"
 import { Check } from "lucide-react"
 import { useProfileStore } from '../store/profileStore'
 import { StepperButtons } from './StepperButtons'
@@ -10,14 +9,20 @@ import ThemeImage4 from "@assets/images/theme-4.png"
 import ThemeImage5 from "@assets/images/theme-5.png"
 import ThemeImage6 from "@assets/images/theme-6.png"
 import SuccessStep from "./SuccessStep"
+import { useCreateStore } from "../api/mutations/useCreateStore"
+import { useState } from "react"
+import { toast } from "sonner"
 
 export function ThemeTypeSelection() {
-    const { formData, updateFormData, nextStep, currentStep } = useProfileStore()
+    const { formData, updateFormData, nextStep } = useProfileStore()
+    const [showSuccessStep, setShowSuccessStep] = useState(false);
     const { handleSubmit, setValue, watch, register } = useForm({
         defaultValues: {
             category: formData.category || null
         }
     })
+    const { mutateAsync: createStore, isPending } = useCreateStore();
+
 
     const selectedCategoryValue = watch("category")
 
@@ -35,16 +40,23 @@ export function ThemeTypeSelection() {
         updateFormData({ category: category.id })
     }
 
-    const onSubmit = (data) => {
-        updateFormData({ category: data.category })
-        nextStep()
+    const onSubmit = async (data) => {
+        try {
+            await createStore({ ...formData, theme: data.category })
+            toast.success('Store created successfully')
+            setShowSuccessStep(true)
+        } catch (err) {
+            console.error('Error creating store:', err)
+            toast.error(err?.response?.data?.message || err.message || 'Failed to create store')
+        }
     }
 
     // 👉 If it's success step, return SuccessStep
-    if (true) {
+    if (showSuccessStep) {
         return <SuccessStep />
     }
 
+    console.log(showSuccessStep)
     // 👉 Otherwise return theme selection UI
     return (
         <div className="w-full py-4">
@@ -111,7 +123,10 @@ export function ThemeTypeSelection() {
                     {...register("category", { required: "Please select a category" })}
                 />
 
-                <StepperButtons disabled={!selectedCategoryValue} />
+                <StepperButtons
+                    disabled={!selectedCategoryValue || isPending}
+                    continueText={isPending ? 'Creating Store...' : 'Create Store'}
+                />
             </form>
         </div>
     )

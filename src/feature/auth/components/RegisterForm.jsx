@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { InputWithIcon } from '@core/components/common/InputWithIcon';
 import { SocialButton } from '@core/components/common/SocialButton';
 import { Button } from '@core/components/ui/button';
-import { MailIcon, UserIcon, PhoneIcon, StoreIcon, Facebook } from 'lucide-react';
+import { MailIcon, Facebook } from 'lucide-react';
 import GoogleIcon from '@assets/icons/Google.svg?react';
 import { signUpSchema } from '../schemas/signUpSchema';
 import CompeleteProfileDialog from '@/feature/profile/components/CompeleteProfileDialog';
@@ -11,8 +11,11 @@ import { UserCog } from 'lucide-react';
 import authClient from '@/core/config/auth-client';
 import { useState } from 'react';
 import { PasswordInputWithIcon } from '@/core/components/common/PasswordInputWithIcon';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 export default function SignUpForm() {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const {
         control,
@@ -32,11 +35,22 @@ export default function SignUpForm() {
     const onSubmit = async (data) => {
         try {
             setLoading(true)
-            const res = await authClient.signUp.email(data)
-            console.log(res)
+            const { data: resData, error } = await authClient.signUp.email(data)
+
+            if (error) {
+                throw new Error(error.message || 'Failed to create account');
+            }
+
+            if (resData?.token) {
+                localStorage.setItem('bearer_token', resData.token);
+            }
+
+            toast.success('Account created successfully');
+            navigate('/organizations', { replace: true });
         }
         catch (error) {
             console.log(error)
+            toast.error(error.message || 'Failed to create account');
         } finally {
             setLoading(false)
         }

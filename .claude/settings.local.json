@@ -8,7 +8,9 @@
       "Bash(pnpm list:*)",
       "Bash(pnpm add:*)",
       "Bash(ls:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "WebFetch(domain:www.better-auth.com)",
+      "WebFetch(domain:api.cartova.dev)"
     ],
     "deny": [],
     "ask": []

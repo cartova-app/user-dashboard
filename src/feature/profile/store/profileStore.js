@@ -8,9 +8,9 @@ export const useProfileStore = create((set) => {
     // Form data
     formData: {
       // Step 1: Store Details
-      organizationName: "ttettsttt",
-      storeName: "tetsttt",
-      storeDescription: "testt",
+      organizationName: "",
+      storeName: "",
+      storeDescription: "",
 
       // Step 2: Category
       category: null,

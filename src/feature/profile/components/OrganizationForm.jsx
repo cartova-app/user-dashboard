@@ -1,11 +1,17 @@
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { InputWithIcon } from '@core/components/common/InputWithIcon';
 import { useProfileStore } from '../store/profileStore';
 import { StepperButtons } from './StepperButtons';
+import authClient from '@/core/config/auth-client';
+import { toast } from 'sonner';
+import useGenerateSlug from '@/core/hooks/useGenerateSlug';
 
 export default function OrganizationForm() {
     const { formData, updateFormData, nextStep } = useProfileStore();
-    console.log(formData)
+    const [isLoading, setIsLoading] = useState(false);
+    const { generateSlug } = useGenerateSlug()
+
     const {
         control,
         handleSubmit,
@@ -18,9 +24,38 @@ export default function OrganizationForm() {
         },
     });
 
-    const onSubmit = (data) => {
-        updateFormData(data);
-        nextStep();
+
+    const onSubmit = async (data) => {
+        setIsLoading(true);
+        try {
+            // Create organization using Better Auth
+            const orgSlug = generateSlug(data.organizationName);
+            const { data: orgData, error: orgError } = await authClient.organization.create({
+                name: data.organizationName,
+                slug: orgSlug,
+            });
+
+            if (orgError) {
+                throw new Error(orgError.message || 'Failed to create organization');
+            }
+
+            // Set the organization as active
+            await authClient.organization.setActive({
+                organizationId: orgData?.id,
+            });
+
+            toast.success('Organization created successfully');
+            updateFormData({
+                ...data,
+                organizationId: orgData?.id,
+            });
+            nextStep();
+        } catch (error) {
+            console.error('Error creating organization:', error);
+            toast.error(error?.response?.data?.message || error.message || 'Failed to create organization');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -42,29 +77,23 @@ export default function OrganizationForm() {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                 <Controller
-                    name='name'
+                    name='organizationName'
                     control={control}
+                    rules={{
+                        required: 'Organization name is required',
+                        minLength: {
+                            value: 2,
+                            message: 'Organization name must be at least 2 characters'
+                        }
+                    }}
                     render={({ field }) => (
                         <InputWithIcon
-                            label={'Name'}
-                            id="name"
+                            label={'Organization Name'}
+                            id="organizationName"
                             type="text"
-                            placeholder="John Doe"
-                            error={errors.name?.message}
-                            {...field}
-                        />
-                    )}
-                />
-                <Controller
-                    name='email'
-                    control={control}
-                    render={({ field }) => (
-                        <InputWithIcon
-                            label={'Name'}
-                            id="name"
-                            type="text"
-                            placeholder="John Doe"
-                            error={errors.email?.message}
+                            placeholder="Organization Name"
+                            error={errors.organizationName?.message}
+                            disabled={isLoading}
                             {...field}
                         />
                     )}
@@ -72,6 +101,13 @@ export default function OrganizationForm() {
                 <Controller
                     name='storeName'
                     control={control}
+                    rules={{
+                        required: 'Store name is required',
+                        minLength: {
+                            value: 2,
+                            message: 'Store name must be at least 2 characters'
+                        }
+                    }}
                     render={({ field }) => (
                         <InputWithIcon
                             label={'Store Name'}
@@ -79,6 +115,7 @@ export default function OrganizationForm() {
                             type="text"
                             placeholder="Store Name"
                             error={errors.storeName?.message}
+                            disabled={isLoading}
                             {...field}
                         />
                     )}
@@ -93,11 +130,16 @@ export default function OrganizationForm() {
                             type="text"
                             placeholder="What do you sell? (e.g), Handcrafted jewelry, eco-friendly apparel, digital products."
                             error={errors.storeDescription?.message}
+                            disabled={isLoading}
                             {...field}
                         />
                     )}
                 />
-                <StepperButtons showBackButton={false} />
+                <StepperButtons
+                    showBackButton={false}
+                    disabled={isLoading}
+                    continueText={isLoading ? 'Creating...' : 'Continue'}
+                />
             </form>
         </div>
     );
