@@ -12,7 +12,7 @@ export default function OrganizationCard({ organization }) {
         await authClient.organization.setActive({
             organizationId: organization.id,
         });
-        navigate('/');
+        navigate(`/organizations/${organization.id}/stores`);
     };
 
     return (

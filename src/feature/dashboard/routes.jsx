@@ -3,7 +3,7 @@ import SuspenseWrapper from "@/core/utils/SuspenseWrapper";
 import ErrorBoundary from "@/core/utils/ErrorBoundary";
 import { lazy } from "react";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
-const DashboardLayout = lazy(() => import("@core/layouts/Dashboard"));
+const DashboardLayout = lazy(() => import("@core/layouts/StoreLayout"));
 export const dashboardRoutes = [
     {
         path: "/dashboard",

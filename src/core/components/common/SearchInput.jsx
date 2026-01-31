@@ -94,7 +94,7 @@ const SearchInput = forwardRef(({
         }
     };
 
-    const isClearable = showClearButton && internalValue.length > 0 && !isLoading;
+    const isClearable = showClearButton && internalValue?.length > 0 && !isLoading;
 
     // Size classes
     const sizeClasses = {

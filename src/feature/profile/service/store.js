@@ -7,13 +7,16 @@ export const createStoreFn = async (formData) => {
     name: formData.storeName,
     logo: formData.logo || null,
     description: formData.storeDescription || null,
-    domain: formData.domain || null,
+    // domain: formData.domain || null,
     theme: formData.theme || "basic",
     type: formData.type || "ecommerce",
     defaultCurrency: formData.defaultCurrency || "EGP",
     allowedCurrencies: formData.allowedCurrencies || ["EGP"],
   };
 
-  const response = await axiosInstance.post(API_END_POINTS.STORE.CREATE, payload);
+  const response = await axiosInstance.post(
+    API_END_POINTS.STORE.CREATE,
+    payload,
+  );
   return response.data;
 };

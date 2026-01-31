@@ -4,16 +4,18 @@ import EmptyState from "@/core/components/common/EmptyState";
 import { useMemo, useState } from "react";
 import OrganizationCard from "../components/OrganizationCard";
 import CreateOrganizationModal from "../components/CreateOrganizationModal";
-import { authClient } from "@/core/config/auth-client";
 import { Button } from "@/core/components/ui/button";
 import { Building2, Loader2, Plus, SearchX } from "lucide-react";
+import CompeleteProfileDialog from "@/feature/profile/components/CompeleteProfileDialog";
+import { useEffect } from "react";
+import { useOrganizations } from "../api/quiries/useOrganizations";
 
 const List = () => {
     const [search, setSearch] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [openOnBoarding, setOpenOnBoarding] = useState(false);
 
-    const { data, isPending, error, refetch } = authClient.useListOrganizations();
-
+    const { data, isPending, error, refetch } = useOrganizations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const organizations = data?.data ?? [];
 
@@ -23,7 +25,9 @@ const List = () => {
             org.name.toLowerCase().includes(search.toLowerCase())
         );
     }, [organizations, search]);
-
+    useEffect(() => {
+        setOpenOnBoarding(organizations.length === 0)
+    }, [organizations])
     if (isPending) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
@@ -87,6 +91,10 @@ const List = () => {
                 open={isModalOpen}
                 onOpenChange={setIsModalOpen}
                 onSuccess={refetch}
+            />
+            <CompeleteProfileDialog
+                isOpen={openOnBoarding}
+                setIsOpen={setOpenOnBoarding}
             />
         </div>
     )

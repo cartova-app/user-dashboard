@@ -81,7 +81,6 @@ export default function LoginForm() {
                             label="Password"
                             id="password"
                             name="password"
-                            type="password"
                             placeholder="Password"
                             error={errors.password?.message}
                             {...field}

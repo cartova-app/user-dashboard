@@ -18,7 +18,6 @@ export const PasswordInputWithIcon = forwardRef(function PasswordInputWithIcon(
     ref
 ) {
     const [showPassword, setShowPassword] = useState(false);
-
     return (
         <div className={cn("space-y-1", className)}>
             {label && (
