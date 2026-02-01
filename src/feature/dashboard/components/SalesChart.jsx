@@ -1,134 +1,69 @@
-import { useState } from "react";
-import ReactApexChart from "react-apexcharts";
-const dataSet = [
-    // PRODUCT A
-    [
-        [new Date("2014-01-01").getTime(), 3400000],
-        [new Date("2014-01-03").getTime(), 4300000],
-        [new Date("2014-01-06").getTime(), 3100000],
-        [new Date("2014-01-10").getTime(), 5200000],
-        [new Date("2014-01-15").getTime(), 4100000],
-        [new Date("2014-01-20").getTime(), 4800000],
-    ],
+import { Card, CardContent } from "@/core/components/ui/card";
+import Chart from "react-apexcharts";
 
-    // PRODUCT B
-    [
-        [new Date("2014-01-01").getTime(), 2800000],
-        [new Date("2014-01-04").getTime(), 3600000],
-        [new Date("2014-01-08").getTime(), 2900000],
-        [new Date("2014-01-12").getTime(), 4500000],
-        [new Date("2014-01-18").getTime(), 3900000],
-        [new Date("2014-01-20").getTime(), 4200000],
-    ],
+const SalesChart = () => {
+    const options = {
+        chart: {
+            type: 'line',
+            toolbar: { show: false },
+        },
 
-    // PRODUCT C
-    [
-        [new Date("2014-01-02").getTime(), 1900000],
-        [new Date("2014-01-05").getTime(), 2600000],
-        [new Date("2014-01-09").getTime(), 2300000],
-        [new Date("2014-01-14").getTime(), 3200000],
-        [new Date("2014-01-17").getTime(), 2800000],
-        [new Date("2014-01-20").getTime(), 3500000],
-    ],
-];
+        colors: ['#3b82f6', '#8b5cf6'],
 
+        stroke: {
+            curve: 'smooth',
+            width: 2,
+        },
 
-const ApexChart = () => {
-    const [state,] = useState({
+        xaxis: {
+            categories: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon'],
+        },
 
-        series: [{
-            name: 'PRODUCT A',
-            data: dataSet[0]
-        }, {
-            name: 'PRODUCT B',
-            data: dataSet[1]
-        }, {
-            name: 'PRODUCT C',
-            data: dataSet[2]
-        }],
-        options: {
-            chart: {
-                type: 'area',
-                stacked: false,
-                height: 350,
-                zoom: {
-                    enabled: false
-                },
+        markers: {
+            size: 4,
+        },
+
+        legend: {
+            position: 'bottom',
+            horizontalAlign: 'left',
+        },
+
+        grid: {
+            show: true,
+            borderColor: '#E5E7EB', // Tailwind gray-200
+            strokeDashArray: 0,     // dashed grid
+            padding: {
+                top: 10,
+                right: 10,
+                bottom: 0,
+                left: 10,
             },
-            dataLabels: {
-                enabled: false
-            },
-            markers: {
-                size: 0,
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    inverseColors: false,
-                    opacityFrom: 0.45,
-                    opacityTo: 0.05,
-                    stops: [20, 100, 100, 100]
+            xaxis: {
+                lines: {
+                    show: true,
                 },
             },
             yaxis: {
-                labels: {
-                    style: {
-                        colors: '#8e8da4',
-                    },
-                    offsetX: 0,
-                    formatter: function (val) {
-                        return (val / 1000000).toFixed(2);
-                    },
+                lines: {
+                    show: true,
                 },
-                axisBorder: {
-                    show: false,
-                },
-                axisTicks: {
-                    show: false
-                }
             },
-            xaxis: {
-                type: 'datetime',
-                tickAmount: 8,
-                min: new Date("01/01/2014").getTime(),
-                max: new Date("01/20/2014").getTime(),
-                labels: {
-                    rotate: -15,
-                    rotateAlways: true,
-                    formatter: function (val, timestamp) {
-                        return new Date(timestamp).toUTCString().slice(0, 16);
-                    }
-                }
-            },
-            title: {
-                text: 'Irregular Data in Time Series',
-                align: 'left',
-                offsetX: 14
-            },
-            tooltip: {
-                shared: true
-            },
-            legend: {
-                position: 'top',
-                horizontalAlign: 'right',
-                offsetX: -10
-            }
         },
+    };
 
-
-    });
-
-
+    const series = [
+        { name: 'Orders', data: [5, 12, 10, 10, 13, 11, 8, 10, 6, 11] },
+        { name: 'Revenue', data: [10, 18, 14, 11, 9, 12, 16, 14, 20, 13] }
+    ];
 
     return (
-        <div>
-            <div id="chart">
-                <ReactApexChart options={state.options} series={state.series} type="area" height={350} />
-            </div>
-            <div id="html-dist"></div>
-        </div>
+        <Card className="py-0 col-span-2">
+            <CardContent className="p-6 ">
+                <h3 className="font-anton text-2xl font-normal leading-7 text-black text-start">Sales Overview</h3>
+                <Chart options={options} series={series} type="line" height={250} />
+            </CardContent>
+        </Card>
     );
-}
+};
 
-export default ApexChart
+export default SalesChart

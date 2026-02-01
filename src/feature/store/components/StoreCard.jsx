@@ -1,9 +1,15 @@
 import { ShoppingBag, Package, MoreHorizontal, ChevronRight } from 'lucide-react';
 import StatusCell from '@/core/components/common/StatusCell';
+import { useNavigate } from 'react-router';
 
 export default function StoreCard({ store }) {
+    const navigate = useNavigate()
     return (
-        <div className="w-full max-w-md bg-white rounded-xl border border-[#CACACA] cursor-pointer hover:border-black transition-colors overflow-hidden">
+        <div
+            onClick={() => {
+                navigate(`${store.id}`)
+            }}
+            className="w-full max-w-md bg-white rounded-xl border border-[#CACACA] cursor-pointer hover:border-black transition-colors overflow-hidden">
 
             {/* 1. Header Section */}
             <div className="p-6 flex justify-between items-center border-b border-[#CACACA]">

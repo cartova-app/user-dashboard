@@ -3,6 +3,7 @@ import { authRoutes } from "@/feature/auth/routes";
 import { dashboardRoutes } from "@/feature/dashboard/routes";
 import { profileRoutes } from "@/feature/profile/routes";
 import { organizationRoutes } from "@/feature/organization/routes";
+import { storeRoutes } from "@/feature/store/routes";
 import ProtectedRoute from "@/core/utils/ProtectRoute";
 
 // Combine all feature routes
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
     ...authRoutes,
     ...profileRoutes,
     ...organizationRoutes,
-    
+    ...storeRoutes,
 ]);
 
 export default router;
