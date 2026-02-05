@@ -40,7 +40,7 @@ export default function CreateStoreModal({
     resolver: zodResolver(createStoreSchema),
     defaultValues: {
       name: "",
-      domain: "",
+      domain: undefined,
       description: "",
       theme: "basic",
       type: "ecommerce",

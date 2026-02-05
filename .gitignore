@@ -27,3 +27,6 @@ dist-ssr
 tsconfig.tsbuildinfo
 tsconfig.app.tsbuildinfo
 tsconfig.node.tsbuildinfo
+
+# Agent Skills
+**/skills

@@ -66,7 +66,7 @@ export const organizationRoutes = [
         path: "settings",
         element: (
           <SuspenseWrapper>
-            <OrganizationPage />
+            <h1>Settings</h1>
           </SuspenseWrapper>
         ),
       },

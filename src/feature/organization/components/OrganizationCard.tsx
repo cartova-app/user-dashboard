@@ -1,18 +1,22 @@
 import { Badge } from "@/core/components/ui/badge";
-import HomeUserIcon from "@/assets/icons/home-user-icon.svg";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router";
 import { authClient } from "@/core/config/auth-client";
 import { InferOrganization } from "better-auth/client/plugins";
+import { cn } from "@/core/lib/utils";
+import HomeUserIcon from "@/assets/icons/home-user-icon.svg";
+
+interface OrganizationCardProps {
+  organization: InferOrganization<{}>;
+}
 
 export default function OrganizationCard({
   organization,
-}: {
-  organization: InferOrganization<{}>;
-}) {
+}: OrganizationCardProps) {
   const navigate = useNavigate();
   const { refetch: refetchSession } = authClient.useSession();
   const storeCount = organization?.metadata?.storeCount ?? 0;
+  const plan = organization?.metadata?.plan ?? "Free plan";
 
   const handleClick = async () => {
     await authClient.organization.setActive({
@@ -23,49 +27,58 @@ export default function OrganizationCard({
   };
 
   return (
-    <div
+    <button
       onClick={handleClick}
-      className="w-full max-w-2xl bg-white p-6 rounded-lg border border-[#CACACA] space-y-2 cursor-pointer hover:border-primary transition-colors"
+      className={cn(
+        "cursor-pointer group relative flex w-full max-w-2xl flex-col rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm transition-all duration-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+      )}
     >
-      {/* Organization Info */}
-      <div className="flex gap-8 border-b border-[#CACACA] pb-6 justify-between items-center">
-        <div className="flex gap-2">
-          {organization?.logo ? (
-            <img
-              src={organization.logo}
-              alt={organization.name}
-              className="w-[50px] h-[50px] rounded-full object-cover"
-            />
-          ) : (
-            <div className="w-[50px] h-[50px] rounded-full bg-[#EDFCF2] grid place-items-center">
-              <img src={HomeUserIcon} alt="Default Organization Icon" />
-            </div>
-          )}
+      {/* Top Section */}
+      <div className="flex w-full items-center justify-between gap-4 border-b border-gray-100 pb-6">
+        <div className="flex items-center gap-4">
+          {/* Icon */}
+          <div className="relative flex size-[50px] shrink-0 items-center justify-center rounded-full bg-[#EDFCF2]">
+            {organization?.logo ? (
+              <img
+                src={organization.logo}
+                alt={organization.name}
+                className="size-full rounded-full object-cover"
+              />
+            ) : (
+              <img src={HomeUserIcon} alt="Organization" className="size-6" />
+            )}
+          </div>
+
+          {/* Text Info */}
           <div className="flex flex-col">
-            <h3 className="font-['Anton'] font-normal not-italic text-base leading-6 tracking-normal">
+            <h3 className="font-['Anton'] text-xl font-normal tracking-wide text-black">
               {organization?.name}
             </h3>
-            <p className="font-['Satoshi_Variable'] font-normal text-sm leading-5 tracking-normal text-gray-500">
-              {storeCount} {storeCount === 1 ? "Store" : "Stores"}
+            <p className="font-['Satoshi'] text-sm text-gray-500">
+              {storeCount} {storeCount === 1 ? "store" : "stores"}
             </p>
           </div>
         </div>
-        <ChevronRightIcon />
+
+        {/* Action Icon */}
+        <ChevronRight className="size-5 text-black transition-transform duration-300 group-hover:translate-x-1" />
       </div>
-      <div className="flex justify-between items-center">
+
+      {/* Bottom Section */}
+      <div className="mt-6 flex w-full items-center justify-between">
         <Badge
           variant="outline"
-          className="h-7 text-[14px] font-normal leading-5 tracking-normal"
+          className="h-[34px] rounded-full border-gray-300 px-4 text-sm font-normal text-black hover:bg-gray-50 font-satoshi"
         >
-          {organization?.metadata?.plan ?? "Free plan"}
+          {plan}
         </Badge>
+
         <Badge
-          variant="outline"
-          className="h-7 text-[14px] leading-5 tracking-normal bg-[#C9F6D9]"
+          className="h-[34px] rounded-full border-0 bg-[#C9F6D9] px-4 text-sm font-normal text-black hover:bg-[#b0efc8] font-satoshi shadow-none"
         >
           Active
         </Badge>
       </div>
-    </div>
+    </button>
   );
 }

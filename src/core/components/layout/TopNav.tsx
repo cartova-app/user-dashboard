@@ -1,8 +1,9 @@
-import { Bell, ChevronDown, User, UserCircle } from "lucide-react";
+import { Bell, ChevronDown, LogOut, Settings, User, UserCircle } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/core/components/ui/dropdown-menu";
 import { Button } from "@/core/components/ui/button";
@@ -25,8 +26,13 @@ export function TopNav() {
     navigate(`/`);
   };
 
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    navigate("/login");
+  };
+
   return (
-    <header className="flex h-24 items-center justify-between border-b bg-white px-6">
+    <header className="sticky top-0 z-50 flex h-24 items-center justify-between border-b bg-white px-6">
       {/* Left Side: Organization Switcher */}
       <div className="flex items-center gap-3">
         <div className="flex size-9 items-center justify-center rounded-full bg-[#EFFFF4]">
@@ -48,9 +54,8 @@ export function TopNav() {
                 <DropdownMenuItem
                   key={org.id}
                   onClick={() => !isActive && setActiveOrganization(org.id)}
-                  className={`flex items-center justify-between gap-2 px-3 py-2 cursor-pointer ${
-                    isActive ? "" : "text-slate-600"
-                  }`}
+                  className={`flex items-center justify-between gap-2 px-3 py-2 cursor-pointer ${isActive ? "" : "text-slate-600"
+                    }`}
                 >
                   <span className="truncate">{org.name}</span>
                   {isActive && (
@@ -103,9 +108,28 @@ export function TopNav() {
           </span>
 
           {/* Profile */}
-          <Button variant="ghost" size="icon" className="text-slate-600">
-            <User className="size-5" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="text-slate-600">
+                <User className="size-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem>
+                <User className="mr-2 size-4" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Settings className="mr-2 size-4" />
+                <span>Settings</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleSignOut} className="text-red-600 focus:text-red-600">
+                <LogOut className="mr-2 size-4" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>
