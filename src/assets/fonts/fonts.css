@@ -1,128 +1,128 @@
 /* Anton Font */
 @font-face {
-  font-family: 'Anton';
-  src: url('./Anton_Complete/OTF/Anton-Regular.otf') format('opentype');
+  font-family: "Anton";
+  src: url("./Anton_Complete/OTF/Anton-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
 }
 
 /* Manrope Font */
 @font-face {
-  font-family: 'Manrope';
-  src: url('./Manrope_Complete/OTF/Manrope-ExtraLight.otf') format('opentype');
+  font-family: "Manrope";
+  src: url("./Manrope_Complete/OTF/Manrope-ExtraLight.otf") format("opentype");
   font-weight: 200;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Manrope';
-  src: url('./Manrope_Complete/OTF/Manrope-Light.otf') format('opentype');
+  font-family: "Manrope";
+  src: url("./Manrope_Complete/OTF/Manrope-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Manrope';
-  src: url('./Manrope_Complete/OTF/Manrope-Regular.otf') format('opentype');
+  font-family: "Manrope";
+  src: url("./Manrope_Complete/OTF/Manrope-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Manrope';
-  src: url('./Manrope_Complete/OTF/Manrope-Medium.otf') format('opentype');
+  font-family: "Manrope";
+  src: url("./Manrope_Complete/OTF/Manrope-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Manrope';
-  src: url('./Manrope_Complete/OTF/Manrope-SemiBold.otf') format('opentype');
+  font-family: "Manrope";
+  src: url("./Manrope_Complete/OTF/Manrope-SemiBold.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Manrope';
-  src: url('./Manrope_Complete/OTF/Manrope-Bold.otf') format('opentype');
+  font-family: "Manrope";
+  src: url("./Manrope_Complete/OTF/Manrope-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Manrope';
-  src: url('./Manrope_Complete/OTF/Manrope-ExtraBold.otf') format('opentype');
+  font-family: "Manrope";
+  src: url("./Manrope_Complete/OTF/Manrope-ExtraBold.otf") format("opentype");
   font-weight: 800;
   font-style: normal;
 }
 
 /* Satoshi Font */
 @font-face {
-  font-family: 'Satoshi';
-  src: url('./Satoshi_Complete/OTF/Satoshi-Light.otf') format('opentype');
+  font-family: "Satoshi";
+  src: url("./Satoshi_Complete/OTF/Satoshi-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('./Satoshi_Complete/OTF/Satoshi-LightItalic.otf') format('opentype');
+  font-family: "Satoshi";
+  src: url("./Satoshi_Complete/OTF/Satoshi-LightItalic.otf") format("opentype");
   font-weight: 300;
   font-style: italic;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('./Satoshi_Complete/OTF/Satoshi-Regular.otf') format('opentype');
+  font-family: "Satoshi";
+  src: url("./Satoshi_Complete/OTF/Satoshi-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('./Satoshi_Complete/OTF/Satoshi-Italic.otf') format('opentype');
+  font-family: "Satoshi";
+  src: url("./Satoshi_Complete/OTF/Satoshi-Italic.otf") format("opentype");
   font-weight: 400;
   font-style: italic;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('./Satoshi_Complete/OTF/Satoshi-Medium.otf') format('opentype');
+  font-family: "Satoshi";
+  src: url("./Satoshi_Complete/OTF/Satoshi-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('./Satoshi_Complete/OTF/Satoshi-MediumItalic.otf') format('opentype');
+  font-family: "Satoshi";
+  src: url("./Satoshi_Complete/OTF/Satoshi-MediumItalic.otf") format("opentype");
   font-weight: 500;
   font-style: italic;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('./Satoshi_Complete/OTF/Satoshi-Bold.otf') format('opentype');
+  font-family: "Satoshi";
+  src: url("./Satoshi_Complete/OTF/Satoshi-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('./Satoshi_Complete/OTF/Satoshi-BoldItalic.otf') format('opentype');
+  font-family: "Satoshi";
+  src: url("./Satoshi_Complete/OTF/Satoshi-BoldItalic.otf") format("opentype");
   font-weight: 700;
   font-style: italic;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('./Satoshi_Complete/OTF/Satoshi-Black.otf') format('opentype');
+  font-family: "Satoshi";
+  src: url("./Satoshi_Complete/OTF/Satoshi-Black.otf") format("opentype");
   font-weight: 900;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Satoshi';
-  src: url('./Satoshi_Complete/OTF/Satoshi-BlackItalic.otf') format('opentype');
+  font-family: "Satoshi";
+  src: url("./Satoshi_Complete/OTF/Satoshi-BlackItalic.otf") format("opentype");
   font-weight: 900;
   font-style: italic;
 }
