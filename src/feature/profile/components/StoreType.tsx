@@ -108,7 +108,7 @@ export function StoreTypeSelection() {
           What Type of Store Are You Building?
         </h1>
         <p
-          className="text-[14px] leading-5 text-gray-600"
+          className="text-[14px] leading-5 text-muted-foreground"
           style={{ fontFamily: "Satoshi, sans-serif" }}
         >
           Choose a category to get started with tailored templates
@@ -129,11 +129,10 @@ export function StoreTypeSelection() {
                 className={`
                                     relative cursor-pointer transition-all duration-300 ease-in-out
                                     hover:shadow-lg hover:-translate-y-1 group
-                                    ${
-                                      isSelected
-                                        ? "border-2 shadow-md bg-primary/10"
-                                        : "border border-gray-200 hover:border-primary/60"
-                                    }
+                                    ${isSelected
+                    ? "border-2 shadow-md bg-primary/10"
+                    : "border border-border hover:border-primary/60"
+                  }
                                 `}
                 style={{
                   fontFamily: "Satoshi, sans-serif",
@@ -147,11 +146,11 @@ export function StoreTypeSelection() {
                       className="w-6 h-6 rounded-full flex items-center justify-center shadow-md"
                       style={{ backgroundColor: "var(--primary)" }}
                     >
-                      <Check className="w-4 h-4 text-black" strokeWidth={3} />
+                      <Check className="w-4 h-4 text-primary-foreground" strokeWidth={3} />
                     </div>
                   ) : (
                     <div
-                      className="w-6 h-6 rounded-full border-2 border-gray-300 transition-colors"
+                      className="w-6 h-6 rounded-full border-2 border-border transition-colors"
                       style={{ borderColor: undefined }}
                       onMouseEnter={(e) =>
                         (e.currentTarget.style.borderColor = "var(--primary)")
@@ -170,11 +169,10 @@ export function StoreTypeSelection() {
                       className={`
                                                 flex items-center justify-center w-14 h-14 rounded-full
                                                 transition-all duration-300
-                                                ${
-                                                  isSelected
-                                                    ? "shadow-lg scale-105"
-                                                    : "bg-gray-100 group-hover:bg-gray-200"
-                                                }
+                                                ${isSelected
+                          ? "shadow-lg scale-105"
+                          : "bg-muted group-hover:bg-muted/80"
+                        }
                                             `}
                       style={{
                         backgroundColor: isSelected
@@ -183,9 +181,8 @@ export function StoreTypeSelection() {
                       }}
                     >
                       <IconComponent
-                        className={`w-7 h-7 transition-colors ${
-                          isSelected ? "text-black" : category.color
-                        }`}
+                        className={`w-7 h-7 transition-colors ${isSelected ? "text-primary-foreground" : category.color
+                          }`}
                         strokeWidth={2}
                       />
                     </div>
@@ -194,11 +191,10 @@ export function StoreTypeSelection() {
                     <p
                       className={`
                                                 text-center text-xs font-semibold transition-colors
-                                                ${
-                                                  isSelected
-                                                    ? "text-black"
-                                                    : "text-gray-700 group-hover:text-gray-900"
-                                                }
+                                                ${isSelected
+                          ? "text-foreground"
+                          : "text-muted-foreground group-hover:text-foreground"
+                        }
                                             `}
                     >
                       {category.name}

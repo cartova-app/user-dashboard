@@ -31,18 +31,18 @@ const OtpForm = () => {
   };
 
   return (
-    <div className="bg-white p-10 rounded-3xl shadow-xl max-w-md w-full border border-gray-100">
+    <div className="bg-card p-10 rounded-3xl shadow-xl max-w-md w-full border border-border">
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="space-y-8">
           {/* Header Section */}
           <div className="text-center space-y-4">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold text-gray-900 tracking-tight">
+              <h2 className="text-3xl font-bold text-foreground tracking-tight">
                 Enter verification code
               </h2>
-              <p className="text-base text-gray-600 leading-relaxed">
+              <p className="text-base text-muted-foreground leading-relaxed">
                 We've sent a 4-digit code to{" "}
-                <span className="font-semibold text-gray-900">
+                <span className="font-semibold text-foreground">
                   {signUpData?.email}
                 </span>
               </p>
@@ -69,7 +69,7 @@ const OtpForm = () => {
 
             {error && (
               <div className="text-center">
-                <p className="text-sm text-red-600 bg-red-50 py-2 px-3 rounded-lg border border-red-200 inline-flex items-center">
+                <p className="text-sm text-destructive bg-destructive/10 py-2 px-3 rounded-lg border border-destructive/20 inline-flex items-center">
                   <svg
                     className="w-4 h-4 mr-2"
                     fill="currentColor"
@@ -111,10 +111,10 @@ const OtpForm = () => {
               type="button"
               onClick={handleResend}
               disabled={isLoading}
-              className="text-sm text-gray-600 hover:text-gray-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
+              className="text-sm text-muted-foreground hover:text-foreground transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
             >
               Didn't receive the code?{" "}
-              <span className="font-semibold text-blue-600 group-hover:text-blue-700 group-hover:underline transition-all duration-200">
+              <span className="font-semibold text-primary group-hover:text-primary/80 group-hover:underline transition-all duration-200">
                 Resend
               </span>
             </button>
@@ -122,8 +122,8 @@ const OtpForm = () => {
         </div>
 
         {/* Security Footer */}
-        <div className="text-center pt-6 border-t border-gray-100">
-          <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
+        <div className="text-center pt-6 border-t border-border">
+          <div className="flex items-center justify-center space-x-2 text-xs text-muted-foreground">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path
                 fillRule="evenodd"

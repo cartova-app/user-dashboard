@@ -1,3 +1,5 @@
+import { cn } from "@/core/lib/utils";
+
 export type StatusValue =
   | "active"
   | "inactive"
@@ -13,8 +15,8 @@ interface StatusConfig {
   id: number;
   name: string;
   value: StatusValue;
-  color: string;
-  bgColor: string;
+  className: string;
+  dotClassName: string;
 }
 
 interface StatusCellProps {
@@ -27,64 +29,64 @@ const StatusCell = ({ status }: StatusCellProps) => {
       id: 1,
       name: "Active",
       value: "active",
-      color: "#27AE60",
-      bgColor: "#D1F3E0",
+      className: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+      dotClassName: "bg-green-600 dark:bg-green-500",
     },
     {
       id: 2,
       name: "Inactive",
       value: "inactive",
-      color: "#C0392B",
-      bgColor: "#F8D7DA",
+      className: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+      dotClassName: "bg-red-600 dark:bg-red-500",
     },
     {
       id: 3,
       name: "Pending",
       value: "pending",
-      color: "#D35400",
-      bgColor: "#FFEAC0",
+      className: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
+      dotClassName: "bg-orange-600 dark:bg-orange-500",
     },
     {
       id: 4,
       name: "Paused",
       value: "paused",
-      color: "#2980B9",
-      bgColor: "#D6E8FF",
+      className: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+      dotClassName: "bg-blue-600 dark:bg-blue-500",
     },
     {
       id: 5,
       name: "Completed",
       value: "completed",
-      color: "#2E7D32",
-      bgColor: "#C8E6C9",
+      className: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+      dotClassName: "bg-green-600 dark:bg-green-500",
     },
     {
       id: 6,
       name: "Failed",
       value: "failed",
-      color: "#E74C3C",
-      bgColor: "#FDECEA",
+      className: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+      dotClassName: "bg-red-600 dark:bg-red-500",
     },
     {
       id: 7,
       name: "Cancelled",
       value: "cancelled",
-      color: "#8E44AD",
-      bgColor: "#EADCF9",
+      className: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
+      dotClassName: "bg-purple-600 dark:bg-purple-500",
     },
     {
       id: 8,
       name: "In Stock",
       value: "in stock",
-      color: "#27AE60",
-      bgColor: "#D1F3E0",
+      className: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+      dotClassName: "bg-green-600 dark:bg-green-500",
     },
     {
       id: 9,
       name: "Out of Stock",
       value: "out of stock",
-      color: "#C0392B",
-      bgColor: "#F8D7DA",
+      className: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+      dotClassName: "bg-red-600 dark:bg-red-500",
     },
   ];
 
@@ -97,14 +99,12 @@ const StatusCell = ({ status }: StatusCellProps) => {
   if (!currentStatus) {
     return (
       <div
-        className="flex justify-center items-center px-2.5 py-1 gap-1.5 rounded-xl"
-        style={{ backgroundColor: "#E5E7EB" }}
+        className="flex justify-center items-center px-2.5 py-1 gap-1.5 rounded-xl bg-gray-200 dark:bg-gray-800"
       >
         <div
-          className="w-2 h-2 rounded-full"
-          style={{ backgroundColor: "#6B7280" }}
+          className="w-2 h-2 rounded-full bg-gray-500 dark:bg-gray-400"
         ></div>
-        <p className="text-[#494949] font-satoshi text-xs font-normal leading-4">
+        <p className="text-gray-700 dark:text-gray-300 font-satoshi text-xs font-normal leading-4">
           {status}
         </p>
       </div>
@@ -113,18 +113,18 @@ const StatusCell = ({ status }: StatusCellProps) => {
 
   return (
     <div
-      className="flex justify-center items-center px-2.5 py-1 gap-1.5 rounded-xl"
-      style={{
-        backgroundColor: currentStatus?.bgColor,
-      }}
+      className={cn(
+        "flex justify-center items-center px-2.5 py-1 gap-1.5 rounded-xl",
+        currentStatus.className
+      )}
     >
       <div
-        className="w-2 h-2 rounded-full animate-pulse"
-        style={{
-          backgroundColor: currentStatus?.color,
-        }}
+        className={cn(
+          "w-2 h-2 rounded-full animate-pulse",
+          currentStatus.dotClassName
+        )}
       ></div>
-      <p className="text-[#494949] font-satoshi text-xs font-normal leading-4">
+      <p className="font-satoshi text-xs font-normal leading-4 text-inherit">
         {currentStatus?.name}
       </p>
     </div>

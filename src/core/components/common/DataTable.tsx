@@ -8,10 +8,10 @@ interface EmptyStateProps {
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({ title, description }) => (
-  <div className="flex flex-col items-center justify-center py-16 text-gray-500">
-    <div className="mb-6 p-6 bg-slate-50 rounded-full">
+  <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
+    <div className="mb-6 p-6 bg-muted rounded-full">
       <svg
-        className="w-16 h-16 text-slate-300"
+        className="w-16 h-16 text-muted-foreground/50"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -24,10 +24,10 @@ const EmptyState: React.FC<EmptyStateProps> = ({ title, description }) => (
         />
       </svg>
     </div>
-    <h3 className="text-lg font-semibold text-slate-700 mb-2">
+    <h3 className="text-lg font-semibold text-foreground mb-2">
       {title || "No results found"}
     </h3>
-    <p className="text-sm text-slate-400">
+    <p className="text-sm text-muted-foreground">
       {description || "Try adjusting your filters or search criteria"}
     </p>
   </div>
@@ -50,7 +50,7 @@ export const DefaultCell: React.FC<DefaultCellProps> = ({
       style={maxWidth !== "none" ? { maxWidth } : undefined}
       title={String(value || "")}
     >
-      <span className="text-sm font-medium text-slate-900 wrap-break-word">
+      <span className="text-sm font-medium text-foreground wrap-break-word">
         {value}
       </span>
       {icon}
@@ -141,7 +141,7 @@ export default function DataTable<R extends Record<string, any>>({
   return (
     <div className="w-full">
       {/* Container matches the light gray rounded box in your screenshots */}
-      <div className="rounded-3xl bg-[#F4F4F5] p-4 border border-slate-100">
+      <div className="rounded-3xl bg-card p-4 border border-border">
         <div className="overflow-x-auto">
           <table className="w-full border-separate border-spacing-y-2">
             <thead>
@@ -166,13 +166,13 @@ export default function DataTable<R extends Record<string, any>>({
                       >
                         {/* Icons match the ones in your design (Home icon for Store Name, etc) */}
                         {column.headerIcon}
-                        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                           {column.headerName}
                         </span>
                         {column.sortable !== false && (
                           <button
                             onClick={() => handleSort(column.field)}
-                            className="text-slate-300 hover:text-slate-600"
+                            className="text-muted-foreground/50 hover:text-foreground"
                           >
                             {sortConfig.field === column.field
                               ? sortConfig.direction === "asc"
@@ -203,7 +203,7 @@ export default function DataTable<R extends Record<string, any>>({
                   <tr
                     key={(row as any).id || rowIndex}
                     onClick={() => onRowClick?.(row)}
-                    className="bg-white hover:bg-slate-50 transition-all cursor-pointer group shadow-sm first:rounded-t-xl last:rounded-b-xl"
+                    className="bg-card hover:bg-muted/50 transition-all cursor-pointer group shadow-sm first:rounded-t-xl last:rounded-b-xl"
                   >
                     {columns.map((column, colIndex) => {
                       const align = column.align || "left";

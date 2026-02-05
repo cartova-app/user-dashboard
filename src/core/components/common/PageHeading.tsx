@@ -10,7 +10,7 @@ const PageHeading = ({ heading, description }: PageHeadingProps) => {
         {heading}
       </h1>
       {description && (
-        <p className="text-[#494949] font-satoshi text-base font-normal leading-6">
+        <p className="text-muted-foreground font-satoshi text-base font-normal leading-6">
           {description}
         </p>
       )}

@@ -138,11 +138,11 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     // Variant classes
     const variantClasses: Record<SearchInputVariant, string> = {
       default:
-        "border border-gray-300 bg-white hover:border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20",
+        "border border-input bg-background hover:border-ring focus:border-ring focus:ring-2 focus:ring-ring/20",
       ghost:
-        "border border-transparent bg-transparent hover:bg-gray-100 focus:bg-white focus:border-gray-300",
+        "border border-transparent bg-transparent hover:bg-accent focus:bg-background focus:border-input",
       filled:
-        "border border-transparent bg-gray-100 hover:bg-gray-200 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20",
+        "border border-transparent bg-muted hover:bg-muted/80 focus:bg-background focus:border-ring focus:ring-2 focus:ring-ring/20",
     };
 
     return (
@@ -153,8 +153,8 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
             className={cn(
               "absolute left-3 top-1/2 -translate-y-1/2",
               "flex items-center justify-center",
-              "text-gray-400",
-              isLoading && "text-blue-500",
+              "text-muted-foreground",
+              isLoading && "text-primary",
             )}
           >
             {isLoading ? (
@@ -178,7 +178,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
             className={cn(
               "w-full rounded-lg",
               "outline-none transition-all duration-200",
-              "text-gray-900 placeholder:text-gray-400",
+              "text-foreground placeholder:text-muted-foreground",
               "disabled:cursor-not-allowed disabled:opacity-50",
               sizeClasses[size],
               variantClasses[variant],
@@ -200,10 +200,10 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
                 "absolute right-3 top-1/2 -translate-y-1/2",
                 "flex items-center justify-center",
                 "h-5 w-5 rounded-full",
-                "text-gray-400 hover:text-gray-600",
-                "hover:bg-gray-100",
+                "text-muted-foreground hover:text-foreground",
+                "hover:bg-accent",
                 "transition-colors",
-                "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
+                "focus:outline-none focus:ring-2 focus:ring-ring/20",
               )}
               aria-label="Clear search"
             >
@@ -220,10 +220,10 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
                 "absolute right-3 top-1/2 -translate-y-1/2",
                 "flex items-center justify-center",
                 "h-6 w-6 rounded",
-                "text-gray-400 hover:text-blue-500",
-                "hover:bg-gray-100",
+                "text-muted-foreground hover:text-primary",
+                "hover:bg-accent",
                 "transition-colors",
-                "focus:outline-none focus:ring-2 focus:ring-blue-500/20",
+                "focus:outline-none focus:ring-2 focus:ring-ring/20",
               )}
               aria-label="Search"
             >
@@ -234,14 +234,14 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           {/* Debouncing Indicator */}
           {isDebouncing && (
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
-              <div className="h-2 w-2 animate-pulse rounded-full bg-blue-400" />
+              <div className="h-2 w-2 animate-pulse rounded-full bg-primary" />
             </div>
           )}
         </div>
 
         {/* Optional character count */}
         {inputProps.maxLength && (
-          <div className="mt-1 text-right text-xs text-gray-500">
+          <div className="mt-1 text-right text-xs text-muted-foreground">
             {internalValue.length} / {inputProps.maxLength}
           </div>
         )}

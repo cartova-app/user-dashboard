@@ -4,6 +4,7 @@ import router from "./router";
 import { I18nextProvider } from "react-i18next";
 import i18n from "@/core/config/localization";
 import { Toaster } from "@/core/components/ui/sonner";
+import { ThemeProvider } from "@/core/providers/theme-provider";
 
 const queryClient = new QueryClient();
 
@@ -12,7 +13,9 @@ function App() {
     <I18nextProvider i18n={i18n}>
       <Toaster />
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <RouterProvider router={router} />
+        </ThemeProvider>
       </QueryClientProvider>
     </I18nextProvider>
   );

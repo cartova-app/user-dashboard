@@ -53,7 +53,7 @@ export default function CustomPagination({
               e.preventDefault();
               if (page > 1) handlePageChange(page - 1);
             }}
-            className={`rounded-xl border-none hover:bg-slate-100 ${page === 1 ? "pointer-events-none opacity-40" : ""}`}
+            className={`rounded-xl border-none hover:bg-accent ${page === 1 ? "pointer-events-none opacity-40" : ""}`}
           />
         </PaginationItem>
 
@@ -72,11 +72,10 @@ export default function CustomPagination({
                     handlePageChange(p);
                   }
                 }}
-                className={`rounded-xl border-none transition-all duration-200 ${
-                  page === p
-                    ? "bg-[#E5E5E5] text-black hover:bg-[#E5E5E5] font-bold"
-                    : "text-slate-500 hover:bg-slate-100"
-                }`}
+                className={`rounded-xl border-none transition-all duration-200 ${page === p
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 font-bold"
+                    : "text-muted-foreground hover:bg-accent"
+                  }`}
               >
                 {p}
               </PaginationLink>
@@ -92,7 +91,7 @@ export default function CustomPagination({
               e.preventDefault();
               if (page < pageCount) handlePageChange(page + 1);
             }}
-            className={`rounded-xl border-none hover:bg-slate-100 ${page === pageCount ? "pointer-events-none opacity-40" : ""}`}
+            className={`rounded-xl border-none hover:bg-accent ${page === pageCount ? "pointer-events-none opacity-40" : ""}`}
           />
         </PaginationItem>
       </PaginationContent>

@@ -9,7 +9,7 @@ import { UserPlus } from "lucide-react";
 
 export default function Dashboard() {
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-8 min-h-screen">
       <header className="mb-8 text-start">
         <h1 className="text-3xl font-bold">Welcome to your store!</h1>
         <p className="text-muted-foreground">

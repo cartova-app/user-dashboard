@@ -71,7 +71,7 @@ const SalesChart = () => {
   return (
     <Card className="py-0 col-span-2">
       <CardContent className="p-6 ">
-        <h3 className="font-anton text-2xl font-normal leading-7 text-black text-start">
+        <h3 className="font-anton text-2xl font-normal leading-7 text-card-foreground text-start">
           Sales Overview
         </h3>
         <Chart options={options} series={series} type="line" height={250} />

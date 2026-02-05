@@ -74,7 +74,7 @@ export default function OrganizationForm() {
           Let's Set Up Your Store
         </h1>
         <p
-          className="text-[16px] leading-6 text-gray-600 font-family-satoshi"
+          className="text-[16px] leading-6 text-muted-foreground font-family-satoshi"
           style={{ fontFamily: "Satoshi, sans-serif" }}
         >
           Tell us more about your business to get started.

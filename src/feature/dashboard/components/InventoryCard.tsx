@@ -19,12 +19,12 @@ const InventoryCard = () => {
 
       <CardContent className="space-y-4">
         {/* Total Products Section */}
-        <div className="flex items-center p-4 bg-slate-50 rounded-xl border border-slate-100">
-          <div className="p-2 bg-white rounded-lg shadow-sm mr-4">
-            <Box className="w-5 h-5 text-slate-600" />
+        <div className="flex items-center p-4 bg-muted/50 rounded-xl border border-border">
+          <div className="p-2 bg-card rounded-lg shadow-sm mr-4">
+            <Box className="w-5 h-5 text-muted-foreground" />
           </div>
           <div className="text-start">
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
               Total Products
             </p>
             <p className="text-xl font-bold">847</p>
@@ -32,22 +32,22 @@ const InventoryCard = () => {
         </div>
 
         {/* Low Stock Warning Section */}
-        <div className="flex items-center p-4 bg-yellow-50 rounded-xl border border-yellow-100">
-          <div className="p-2 bg-white rounded-lg shadow-sm mr-4">
-            <AlertTriangle className="w-5 h-5 text-yellow-500" />
+        <div className="flex items-center p-4 bg-yellow-500/10 rounded-xl border border-yellow-500/20">
+          <div className="p-2 bg-card rounded-lg shadow-sm mr-4">
+            <AlertTriangle className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
           </div>
           <div className="text-start">
-            <p className="text-xs font-medium text-yellow-600 uppercase tracking-wider">
+            <p className="text-xs font-medium text-yellow-600 dark:text-yellow-400 uppercase tracking-wider">
               Low Stock
             </p>
-            <p className="text-xl font-bold text-yellow-700">12</p>
+            <p className="text-xl font-bold text-yellow-700 dark:text-yellow-300">12</p>
           </div>
         </div>
 
         {/* Action Button */}
         <Button
           variant="outline"
-          className="w-full mt-4 border-slate-300 text-slate-700 hover:bg-slate-50 h-12 text-md font-semibold"
+          className="w-full mt-4 border-input text-foreground hover:bg-accent h-12 text-md font-semibold"
         >
           View Inventory
         </Button>

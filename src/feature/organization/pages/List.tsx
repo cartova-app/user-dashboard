@@ -39,7 +39,7 @@ const List = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-red-500">Failed to load organizations</p>
+        <p className="text-destructive">Failed to load organizations</p>
       </div>
     );
   }
@@ -59,12 +59,12 @@ const List = () => {
         placeholder="Filter organizations..."
         showClearButton
         size="md"
-        className="bg-[#F5F5F5] "
+        className="bg-muted/50"
         containerClassName="w-64"
       />
       {organizations.length === 0 ? (
         <EmptyState
-          icon={<Building2 className="w-8 h-8 text-gray-400" />}
+          icon={<Building2 className="w-8 h-8 text-muted-foreground" />}
           title="No organizations yet"
           description="Create your first organization to start managing your stores."
           actionLabel="Create Organization"
@@ -72,7 +72,7 @@ const List = () => {
         />
       ) : filteredOrganizations.length === 0 ? (
         <EmptyState
-          icon={<SearchX className="w-8 h-8 text-gray-400" />}
+          icon={<SearchX className="w-8 h-8 text-muted-foreground" />}
           title="No results found"
           description={`No organizations match "${search}". Try a different search term.`}
         />

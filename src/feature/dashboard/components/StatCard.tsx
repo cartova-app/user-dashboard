@@ -24,13 +24,13 @@ const StatCard = ({
         >
           <Icon className={`w-6 h-6 text-${colorClass}`} />
         </div>
-        <button className="text-gray-400">•••</button>
+        <button className="text-muted-foreground">•••</button>
       </div>
       <div className="mt-4">
-        <p className="text-base font-normal leading-6 text-neutral-700 uppercase">
+        <p className="text-base font-normal leading-6 text-muted-foreground uppercase">
           {title}
         </p>
-        <h3 className="font-anton text-2xl font-bold leading-7 text-black">
+        <h3 className="font-anton text-2xl font-bold leading-7 text-card-foreground">
           {value}
         </h3>
       </div>
@@ -39,7 +39,7 @@ const StatCard = ({
           <ArrowUpRight className="w-3 h-3 mr-1" />
           {percentage}
         </div>
-        <span className="text-xs font-normal leading-4 text-neutral-400">
+        <span className="text-xs font-normal leading-4 text-muted-foreground">
           Vs Last Month
         </span>
       </div>

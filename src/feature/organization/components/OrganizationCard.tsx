@@ -30,14 +30,14 @@ export default function OrganizationCard({
     <button
       onClick={handleClick}
       className={cn(
-        "cursor-pointer group relative flex w-full max-w-2xl flex-col rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm transition-all duration-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+        "cursor-pointer group relative flex w-full max-w-2xl flex-col rounded-2xl border border-border bg-card p-6 text-left shadow-sm transition-all duration-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
       )}
     >
       {/* Top Section */}
-      <div className="flex w-full items-center justify-between gap-4 border-b border-gray-100 pb-6">
+      <div className="flex w-full items-center justify-between gap-4 border-b border-border pb-6">
         <div className="flex items-center gap-4">
           {/* Icon */}
-          <div className="relative flex size-[50px] shrink-0 items-center justify-center rounded-full bg-[#EDFCF2]">
+          <div className="relative flex size-[50px] shrink-0 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/30">
             {organization?.logo ? (
               <img
                 src={organization.logo}
@@ -45,36 +45,36 @@ export default function OrganizationCard({
                 className="size-full rounded-full object-cover"
               />
             ) : (
-              <img src={HomeUserIcon} alt="Organization" className="size-6" />
+              <img src={HomeUserIcon} alt="Organization" className="size-6 dark:brightness-0 dark:invert" />
             )}
           </div>
 
           {/* Text Info */}
           <div className="flex flex-col">
-            <h3 className="font-['Anton'] text-xl font-normal tracking-wide text-black">
+            <h3 className="font-['Anton'] text-xl font-normal tracking-wide text-card-foreground">
               {organization?.name}
             </h3>
-            <p className="font-['Satoshi'] text-sm text-gray-500">
+            <p className="font-['Satoshi'] text-sm text-muted-foreground">
               {storeCount} {storeCount === 1 ? "store" : "stores"}
             </p>
           </div>
         </div>
 
         {/* Action Icon */}
-        <ChevronRight className="size-5 text-black transition-transform duration-300 group-hover:translate-x-1" />
+        <ChevronRight className="size-5 text-card-foreground transition-transform duration-300 group-hover:translate-x-1" />
       </div>
 
       {/* Bottom Section */}
       <div className="mt-6 flex w-full items-center justify-between">
         <Badge
           variant="outline"
-          className="h-[34px] rounded-full border-gray-300 px-4 text-sm font-normal text-black hover:bg-gray-50 font-satoshi"
+          className="h-[34px] rounded-full border-border px-4 text-sm font-normal text-foreground hover:bg-accent font-satoshi"
         >
           {plan}
         </Badge>
 
         <Badge
-          className="h-[34px] rounded-full border-0 bg-[#C9F6D9] px-4 text-sm font-normal text-black hover:bg-[#b0efc8] font-satoshi shadow-none"
+          className="h-[34px] rounded-full border-0 bg-emerald-100 dark:bg-emerald-900/30 px-4 text-sm font-normal text-emerald-900 dark:text-emerald-400 hover:bg-emerald-200 dark:hover:bg-emerald-900/40 font-satoshi shadow-none"
         >
           Active
         </Badge>

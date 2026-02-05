@@ -76,7 +76,7 @@ export function ThemeTypeSelection() {
           What Type of store you building?
         </h1>
 
-        <p className="text-[14px] leading-5 text-gray-600 font-family-satoshi">
+        <p className="text-[14px] leading-5 text-muted-foreground font-family-satoshi">
           Choose a category to get started with tailored templates
         </p>
       </div>
@@ -94,16 +94,15 @@ export function ThemeTypeSelection() {
                 className={`
                                     cursor-pointer rounded-xl overflow-hidden border transition-all
                                     duration-300 ease-in-out group relative
-                                    ${
-                                      isSelected
-                                        ? "border-primary shadow-xl scale-[1.02]"
-                                        : "border-gray-200 hover:shadow-lg hover:-translate-y-1"
-                                    }
+                                    ${isSelected
+                    ? "border-primary shadow-xl scale-[1.02]"
+                    : "border-border hover:shadow-lg hover:-translate-y-1"
+                  }
                                 `}
               >
                 {isSelected && (
                   <div className="absolute top-3 right-3 z-10 w-7 h-7 bg-primary rounded-full flex items-center justify-center shadow-md">
-                    <Check className="w-4 h-4 text-black" strokeWidth={3} />
+                    <Check className="w-4 h-4 text-primary-foreground" strokeWidth={3} />
                   </div>
                 )}
 
@@ -115,10 +114,10 @@ export function ThemeTypeSelection() {
                   />
                 </div>
 
-                <div className="p-3 text-center bg-white">
+                <div className="p-3 text-center bg-card">
                   <p
                     className={`text-sm md:text-base font-semibold transition-colors
-                                            ${isSelected ? "text-primary" : "text-gray-800 group-hover:text-black"}
+                                            ${isSelected ? "text-primary" : "text-card-foreground group-hover:text-foreground"}
                                         `}
                   >
                     {category.name}

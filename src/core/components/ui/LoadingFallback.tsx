@@ -22,7 +22,7 @@ export const GameLoader = () => {
     <DotLoader
       frames={game}
       className="gap-0.5"
-      dotClassName="bg-white/15 [&.active]:bg-white size-1.5"
+      dotClassName="bg-primary/20 [&.active]:bg-primary size-1.5"
     ></DotLoader>
   );
 };

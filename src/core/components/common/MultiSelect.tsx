@@ -383,11 +383,10 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
           `MultiSelect: Duplicate option values ${action}: ${duplicates.join(
             ", ",
           )}. ` +
-            `${
-              deduplicateOptions
-                ? "Duplicates have been removed automatically."
-                : "This may cause unexpected behavior. Consider setting 'deduplicateOptions={true}' or ensure all option values are unique."
-            }`,
+          `${deduplicateOptions
+            ? "Duplicates have been removed automatically."
+            : "This may cause unexpected behavior. Consider setting 'deduplicateOptions={true}' or ensure all option values are unique."
+          }`,
         );
       }
       return deduplicateOptions ? uniqueOptions : allOptions;
@@ -580,8 +579,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
           ).length;
 
           announce(
-            `${filteredCount} option${
-              filteredCount === 1 ? "" : "s"
+            `${filteredCount} option${filteredCount === 1 ? "" : "s"
             } found for "${searchValue}"`,
           );
         }
@@ -592,7 +590,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
     return (
       <div className="space-y-1">
         {label && (
-          <Label className="text-sm font-medium text-gray-700">{label}</Label>
+          <Label className="text-sm font-medium text-foreground">{label}</Label>
         )}
         <div className="sr-only">
           <div aria-live="polite" aria-atomic="true" role="status">
@@ -615,12 +613,11 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
           <div id={selectedCountId} className="sr-only" aria-live="polite">
             {selectedValues.length === 0
               ? "No options selected"
-              : `${selectedValues.length} option${
-                  selectedValues.length === 1 ? "" : "s"
-                } selected: ${selectedValues
-                  .map((value) => getOptionByValue(value)?.label)
-                  .filter(Boolean)
-                  .join(", ")}`}
+              : `${selectedValues.length} option${selectedValues.length === 1 ? "" : "s"
+              } selected: ${selectedValues
+                .map((value) => getOptionByValue(value)?.label)
+                .filter(Boolean)
+                .join(", ")}`}
           </div>
 
           <PopoverTrigger asChild>
@@ -634,9 +631,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
               aria-haspopup="listbox"
               aria-controls={isPopoverOpen ? listboxId : undefined}
               aria-describedby={`${triggerDescriptionId} ${selectedCountId}`}
-              aria-label={`Multi-select: ${selectedValues.length} of ${
-                getAllOptions().length
-              } options selected. ${placeholder}`}
+              aria-label={`Multi-select: ${selectedValues.length} of ${getAllOptions().length
+                } options selected. ${placeholder}`}
               className={cn(
                 "relative flex py-2 rounded-[12px] border-2 min-h-12 h-auto items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto",
                 icon ? "pl-10 pr-3" : "pl-3 pr-3",
@@ -645,7 +641,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                 screenSize === "mobile" && "min-h-12 text-base",
                 disabled && "opacity-50 cursor-not-allowed",
                 className,
-                error ? "!border-red-500" : "border-gray-300",
+                error ? "!border-destructive" : "border-input",
               )}
               style={{
                 ...widthConstraints,
@@ -653,7 +649,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
               }}
             >
               {icon && (
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
                   {icon}
                 </div>
               )}
@@ -670,8 +666,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                     style={
                       singleLine
                         ? {
-                            paddingBottom: "4px",
-                          }
+                          paddingBottom: "4px",
+                        }
                         : {}
                     }
                   >
@@ -701,19 +697,18 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               getBadgeAnimationClass(),
                               multiSelectVariants({ variant }),
                               customStyle?.gradient &&
-                                "text-white border-transparent",
+                              "text-white border-transparent",
                               responsiveSettings.compactMode &&
-                                "text-xs px-1.5 py-0.5",
+                              "text-xs px-1.5 py-0.5",
                               screenSize === "mobile" &&
-                                "max-w-[120px] truncate",
+                              "max-w-[120px] truncate",
                               singleLine && "shrink-0 whitespace-nowrap",
                               "[&>svg]:pointer-events-auto",
                             )}
                             style={{
                               ...badgeStyle,
-                              animationDuration: `${
-                                animationConfig?.duration || animation
-                              }s`,
+                              animationDuration: `${animationConfig?.duration || animation
+                                }s`,
                               animationDelay: `${animationConfig?.delay || 0}s`,
                             }}
                           >
@@ -722,7 +717,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 className={cn(
                                   "h-4 w-4 mr-2",
                                   responsiveSettings.compactMode &&
-                                    "h-3 w-3 mr-1",
+                                  "h-3 w-3 mr-1",
                                   customStyle?.iconColor && "text-current",
                                 )}
                                 {...(customStyle?.iconColor && {
@@ -761,7 +756,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 className={cn(
                                   "h-3 w-3",
                                   responsiveSettings.compactMode &&
-                                    "h-2.5 w-2.5",
+                                  "h-2.5 w-2.5",
                                 )}
                               />
                             </div>
@@ -776,20 +771,18 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                           getBadgeAnimationClass(),
                           multiSelectVariants({ variant }),
                           responsiveSettings.compactMode &&
-                            "text-xs px-1.5 py-0.5",
+                          "text-xs px-1.5 py-0.5",
                           singleLine && "shrink-0 whitespace-nowrap",
                           "[&>svg]:pointer-events-auto",
                         )}
                         style={{
-                          animationDuration: `${
-                            animationConfig?.duration || animation
-                          }s`,
+                          animationDuration: `${animationConfig?.duration || animation
+                            }s`,
                           animationDelay: `${animationConfig?.delay || 0}s`,
                         }}
                       >
-                        {`+ ${
-                          selectedValues.length - responsiveSettings.maxCount
-                        } more`}
+                        {`+ ${selectedValues.length - responsiveSettings.maxCount
+                          } more`}
                         <XCircle
                           className={cn(
                             "ml-2 h-4 w-4 cursor-pointer",
@@ -902,9 +895,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         selectedValues.length ===
                         getAllOptions().filter((opt) => !opt.disabled).length
                       }
-                      aria-label={`Select all ${
-                        getAllOptions().length
-                      } options`}
+                      aria-label={`Select all ${getAllOptions().length
+                        } options`}
                       className="cursor-pointer"
                     >
                       <div
@@ -944,13 +936,12 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             role="option"
                             aria-selected={isSelected}
                             aria-disabled={option.disabled}
-                            aria-label={`${option.label}${
-                              isSelected ? ", selected" : ", not selected"
-                            }${option.disabled ? ", disabled" : ""}`}
+                            aria-label={`${option.label}${isSelected ? ", selected" : ", not selected"
+                              }${option.disabled ? ", disabled" : ""}`}
                             className={cn(
                               "cursor-pointer",
                               option.disabled &&
-                                "opacity-50 cursor-not-allowed",
+                              "opacity-50 cursor-not-allowed",
                             )}
                             disabled={option.disabled}
                           >
@@ -991,13 +982,12 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             role="option"
                             aria-selected={isSelected}
                             aria-disabled={option.disabled}
-                            aria-label={`${option.label}${
-                              isSelected ? ", selected" : ", not selected"
-                            }${option.disabled ? ", disabled" : ""}`}
+                            aria-label={`${option.label}${isSelected ? ", selected" : ", not selected"
+                              }${option.disabled ? ", disabled" : ""}`}
                             className={cn(
                               "cursor-pointer",
                               option.disabled &&
-                                "opacity-50 cursor-not-allowed",
+                              "opacity-50 cursor-not-allowed",
                             )}
                             disabled={option.disabled}
                           >

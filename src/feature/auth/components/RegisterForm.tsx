@@ -62,11 +62,11 @@ export default function SignUpForm() {
     }
   };
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
+    <div className="bg-card p-8 rounded-2xl shadow-lg max-w-md w-full">
       <h1 className="text-2xl font-bold text-center mb-2">
         Create Your Account
       </h1>
-      <p className="text-sm text-gray-500 text-center mb-6">
+      <p className="text-sm text-muted-foreground text-center mb-6">
         Create your store in under 10 minutes
       </p>
 
@@ -117,9 +117,9 @@ export default function SignUpForm() {
           )}
         />
         <div className="flex items-center my-6">
-          <div className="grow border-t border-gray-300"></div>
-          <span className="mx-4 text-sm text-gray-500">or</span>
-          <div className="grow border-t border-gray-300"></div>
+          <div className="grow border-t border-border"></div>
+          <span className="mx-4 text-sm text-muted-foreground">or</span>
+          <div className="grow border-t border-border"></div>
         </div>
 
         <SocialButton icon={<GoogleIcon />}>Continue with Google</SocialButton>
@@ -136,9 +136,9 @@ export default function SignUpForm() {
         </Button>
       </form>
 
-      <p className="text-center text-sm text-gray-600 mt-4">
+      <p className="text-center text-sm text-muted-foreground mt-4">
         Already have an account?{" "}
-        <a href="/login" className="text-blue-600 hover:underline font-medium">
+        <a href="/login" className="text-primary hover:underline font-medium">
           log in
         </a>
       </p>

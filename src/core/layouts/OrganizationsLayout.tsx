@@ -26,7 +26,7 @@ export default function OrganizationsLayout() {
   return (
     <SidebarProvider>
       <AppSidebar items={items} />
-      <main className="flex-1 min-w-0 bg-[#FCFCFC]">
+      <main className="flex-1 min-w-0 bg-background">
         <TopNav />
         <Outlet />
       </main>

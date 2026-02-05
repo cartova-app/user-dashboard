@@ -29,7 +29,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="flex flex-col md:flex-row items-center gap-8 w-full max-w-6xl">
         <div className="w-full md:w-1/2">
           <Tabs value={currentTab} onValueChange={handleTabChange}>

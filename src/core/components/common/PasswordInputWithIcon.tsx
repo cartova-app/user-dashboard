@@ -36,21 +36,21 @@ export const PasswordInputWithIcon = forwardRef<
   return (
     <div className={cn("space-y-1", className)}>
       {label && (
-        <Label htmlFor={id} className="text-sm font-medium text-gray-700">
-          {label} {required && <span className="text-red-500">*</span>}
+        <Label htmlFor={id} className="text-sm font-medium text-foreground">
+          {label} {required && <span className="text-destructive">*</span>}
         </Label>
       )}
 
       <div className="relative">
         {/* Default Password Icon */}
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
           <Lock size={18} />
         </div>
 
         {/* Show/Hide Password Toggle */}
         <button
           type="button"
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
           onClick={() => setShowPassword((prev) => !prev)}
           tabIndex={-1}
         >
@@ -63,15 +63,15 @@ export const PasswordInputWithIcon = forwardRef<
           type={showPassword ? "text" : "password"}
           placeholder={placeholder}
           className={cn(
-            "w-full pl-10 pr-10 py-2 h-12 rounded-[12px] border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
-            error && "border-red-500 focus:ring-red-500",
+            "w-full pl-10 pr-10 py-2 h-12 rounded-[12px] border-2 border-input focus:ring-2 focus:ring-ring focus:border-ring",
+            error && "border-destructive focus:ring-destructive",
           )}
           required={required}
           {...props}
         />
       </div>
 
-      {error && <p className="text-sm text-red-500 mt-1 text-start">{error}</p>}
+      {error && <p className="text-sm text-destructive mt-1 text-start">{error}</p>}
     </div>
   );
 });

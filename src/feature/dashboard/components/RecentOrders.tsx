@@ -96,23 +96,23 @@ export default function RecentOrdersTable({
       field: "id",
       headerName: "Id.no",
       flex: 1,
-      headerIcon: <Hash className="size-4 text-slate-400" />,
+      headerIcon: <Hash className="size-4 text-muted-foreground" />,
       renderCell: ({ row }: { row: OrderItem }) => (
-        <span className="font-semibold text-slate-900">#{row.id}</span>
+        <span className="font-semibold text-foreground">#{row.id}</span>
       ),
     },
     {
       field: "productName",
       headerName: "Product Name",
       flex: 2,
-      headerIcon: <Package className="size-4 text-slate-400" />,
+      headerIcon: <Package className="size-4 text-muted-foreground" />,
       renderCell: ({ row }: { row: OrderItem }) => (
         <div className="flex items-center gap-3">
           {/* Placeholder for Product Image */}
-          <div className="size-8 rounded-lg bg-slate-100 flex items-center justify-center overflow-hidden">
+          <div className="size-8 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
             <img src={row.image} alt="" className="object-cover size-full" />
           </div>
-          <span className="font-medium text-slate-700">{row.productName}</span>
+          <span className="font-medium text-foreground">{row.productName}</span>
         </div>
       ),
     },
@@ -120,25 +120,25 @@ export default function RecentOrdersTable({
       field: "date",
       headerName: "Date",
       flex: 1.5,
-      headerIcon: <Calendar className="size-4 text-slate-400" />,
+      headerIcon: <Calendar className="size-4 text-muted-foreground" />,
       renderCell: ({ value }: { value: string }) => (
-        <span className="text-slate-600 font-medium">{value}</span>
+        <span className="text-muted-foreground font-medium">{value}</span>
       ),
     },
     {
       field: "category",
       headerName: "Category",
       flex: 1.5,
-      headerIcon: <Folder className="size-4 text-slate-400" />,
+      headerIcon: <Folder className="size-4 text-muted-foreground" />,
       renderCell: ({ value }: { value: string }) => (
-        <span className="text-slate-700 font-semibold">{value}</span>
+        <span className="text-foreground font-semibold">{value}</span>
       ),
     },
     {
       field: "status",
       headerName: "Stock",
       flex: 1.2,
-      headerIcon: <Package className="size-4 text-slate-400" />,
+      headerIcon: <Package className="size-4 text-muted-foreground" />,
       renderCell: ({ value }: { value: string }) => (
         <StatusCell status={value} /> // "In Stock" (green) or "Out of Stock" (red)
       ),
@@ -147,19 +147,19 @@ export default function RecentOrdersTable({
       field: "totalSales",
       headerName: "Total Sales",
       flex: 1,
-      headerIcon: <BarChart3 className="size-4 text-slate-400" />,
+      headerIcon: <BarChart3 className="size-4 text-muted-foreground" />,
       renderCell: ({ value }: { value: string }) => (
-        <span className="font-bold text-slate-900">{value}</span>
+        <span className="font-bold text-foreground">{value}</span>
       ),
     },
     {
       field: "actions",
       headerName: "Action",
       flex: 0.8,
-      headerIcon: <Edit3 className="size-4 text-slate-400" />,
+      headerIcon: <Edit3 className="size-4 text-muted-foreground" />,
       align: "right" as const,
       renderCell: () => (
-        <button className="p-2 text-slate-400 hover:text-black transition-colors">
+        <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
           <span className="text-xl leading-none">...</span>
         </button>
       ),
@@ -167,9 +167,9 @@ export default function RecentOrdersTable({
   ];
 
   return (
-    <div className="p-8 bg-white rounded-2xl border border-slate-100 shadow-sm mt-8">
+    <div className="p-8 bg-card rounded-2xl border border-border shadow-sm mt-8">
       <div className="mb-6 flex justify-between items-center">
-        <h2 className="text-2xl font-bold tracking-tight text-black">
+        <h2 className="text-2xl font-bold tracking-tight text-card-foreground">
           Recent Orders
         </h2>
         <div className="flex items-center gap-4">
@@ -177,10 +177,10 @@ export default function RecentOrdersTable({
             <input
               type="text"
               placeholder="Search data"
-              className="pl-4 pr-10 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-200"
+              className="pl-4 pr-10 py-2 bg-muted border border-input rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </div>
-          <button className="text-sm font-semibold text-slate-900 hover:underline">
+          <button className="text-sm font-semibold text-foreground hover:underline">
             View All
           </button>
         </div>

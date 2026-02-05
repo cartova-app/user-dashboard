@@ -33,11 +33,11 @@ export default function StoresDataTable({ data }: StoresDataTableProps) {
       field: "name",
       headerName: "Store Name",
       flex: 2,
-      headerIcon: <Home className="size-4 text-slate-400" />,
+      headerIcon: <Home className="size-4 text-muted-foreground" />,
       renderCell: ({ row }: { row: Store }) => (
-        <div className="flex items-center gap-2 font-semibold text-slate-900 uppercase">
+        <div className="flex items-center gap-2 font-semibold text-foreground uppercase">
           {row.name}
-          <ChevronRight className="size-4 text-slate-400" />
+          <ChevronRight className="size-4 text-muted-foreground" />
         </div>
       ),
     },
@@ -45,7 +45,7 @@ export default function StoresDataTable({ data }: StoresDataTableProps) {
       field: "status",
       headerName: "Status",
       flex: 1,
-      headerIcon: <Clock className="size-4 text-slate-400" />,
+      headerIcon: <Clock className="size-4 text-muted-foreground" />,
       renderCell: ({ value }: { value: string }) => (
         <StatusCell status={value} /> // This handles the "Active" or "Paused" badges
       ),
@@ -54,19 +54,19 @@ export default function StoresDataTable({ data }: StoresDataTableProps) {
       field: "products",
       headerName: "Products",
       flex: 1,
-      headerIcon: <ShoppingBag className="size-4 text-slate-400" />,
+      headerIcon: <ShoppingBag className="size-4 text-muted-foreground" />,
     },
     {
       field: "orders",
       headerName: "Orders",
       flex: 1,
-      headerIcon: <Package className="size-4 text-slate-400" />,
+      headerIcon: <Package className="size-4 text-muted-foreground" />,
     },
     {
       field: "date",
       headerName: "Created At",
       flex: 1.5,
-      headerIcon: <Clock className="size-4 text-slate-400" />,
+      headerIcon: <Clock className="size-4 text-muted-foreground" />,
       renderCell: ({ row }: { row: Store }) => (
         <span>{new Date(row?.createdAt).toUTCString().slice(0, 16)}</span>
       ),
@@ -75,10 +75,10 @@ export default function StoresDataTable({ data }: StoresDataTableProps) {
       field: "actions",
       headerName: "Action",
       flex: 1,
-      headerIcon: <Edit3 className="size-4 text-slate-400" />,
+      headerIcon: <Edit3 className="size-4 text-muted-foreground" />,
       align: "right" as const,
       renderCell: () => (
-        <button className="p-2 text-slate-400 hover:text-black transition-colors">
+        <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
           <span className="text-xl">...</span>
         </button>
       ),
@@ -86,9 +86,9 @@ export default function StoresDataTable({ data }: StoresDataTableProps) {
   ];
 
   return (
-    <div className="p-8 bg-white min-h-screen rounded-2xl">
+    <div className="p-8 bg-card min-h-screen rounded-2xl">
       <div className="mb-6 flex justify-between items-center">
-        <h1 className="text-2xl font-['Anton'] uppercase tracking-tight text-black">
+        <h1 className="text-2xl font-['Anton'] uppercase tracking-tight text-foreground">
           Stores
         </h1>
         {/* You can place your Search and Filter components here */}
