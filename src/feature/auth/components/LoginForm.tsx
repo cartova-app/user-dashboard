@@ -11,7 +11,7 @@ import { loginScehma } from "../schemas/loginScehma";
 import { PasswordInputWithIcon } from "@/core/components/common/PasswordInputWithIcon";
 import authClient from "@/core/config/auth-client";
 import { toast } from "sonner";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useState } from "react";
 
 interface LoginFormData {
@@ -121,12 +121,12 @@ export default function LoginForm() {
 
       <p className="text-center text-sm text-muted-foreground mt-4">
         Do Not have an account?{" "}
-        <a
-          href="/sign-up"
+        <Link
+          to="/sign-up"
           className="text-primary hover:underline font-medium"
         >
           Sign Up
-        </a>
+        </Link>
       </p>
     </div>
   );

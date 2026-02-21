@@ -11,7 +11,7 @@ import { UserCog } from "lucide-react";
 import authClient from "@/core/config/auth-client";
 import { useState } from "react";
 import { PasswordInputWithIcon } from "@/core/components/common/PasswordInputWithIcon";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 
 interface SignUpFormData {
@@ -138,9 +138,9 @@ export default function SignUpForm() {
 
       <p className="text-center text-sm text-muted-foreground mt-4">
         Already have an account?{" "}
-        <a href="/login" className="text-primary hover:underline font-medium">
+        <Link to="/login" className="text-primary hover:underline font-medium">
           log in
-        </a>
+        </Link>
       </p>
       <CompeleteProfileDialog isOpen={dialogOpen} setIsOpen={setDialogOpen} />
     </div>

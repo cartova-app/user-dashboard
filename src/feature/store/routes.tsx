@@ -2,7 +2,7 @@ import { lazy } from "react";
 import ProtectedRoute from "@/core/utils/ProtectRoute";
 import SuspenseWrapper from "@/core/utils/SuspenseWrapper";
 import StoreLayout from "@/core/layouts/StoreLayout";
-import { Navigate } from "react-router";
+import { Navigate } from "react-router-dom";
 
 const DashboardPage = lazy(() => import("@/feature/dashboard/pages/Dashboard"));
 const ProductsPage = lazy(() => import("./pages/Products"));

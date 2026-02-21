@@ -6,7 +6,7 @@ import OrganizationsLayout from "@/core/layouts/OrganizationsLayout";
 import ListStores from "../store/pages/List";
 import ListTeams from "../team/pages/List";
 import OrganizationProtectedRoute from "@/core/utils/OrganizationProtectedRoute";
-import { Navigate } from "react-router";
+import { Navigate } from "react-router-dom";
 const OrganizationPage = lazy(() => import("./pages/List"));
 
 export const organizationRoutes = [

@@ -1,6 +1,6 @@
 import { Badge } from "@/core/components/ui/badge";
 import { ChevronRight } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { authClient } from "@/core/config/auth-client";
 import { InferOrganization } from "better-auth/client/plugins";
 import { cn } from "@/core/lib/utils";
