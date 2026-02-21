@@ -1,11 +1,8 @@
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { Building2, FileText, Store } from "lucide-react";
 import { InputWithIcon } from "@/core/components/common/InputWithIcon";
 import { useProfileStore } from "../store/profileStore";
 import { StepperButtons } from "./StepperButtons";
-import authClient from "@/core/config/auth-client";
-import { toast } from "sonner";
-import useGenerateSlug from "@/core/hooks/useGenerateSlug";
 
 interface OrganizationFormData {
   organizationName: string;
@@ -15,8 +12,6 @@ interface OrganizationFormData {
 
 export default function OrganizationForm() {
   const { formData, updateFormData, nextStep } = useProfileStore();
-  const [isLoading, setIsLoading] = useState(false);
-  const { generateSlug } = useGenerateSlug();
 
   const {
     control,
@@ -30,41 +25,9 @@ export default function OrganizationForm() {
     },
   });
 
-  const onSubmit = async (data: OrganizationFormData) => {
-    setIsLoading(true);
-    try {
-      // Create organization using Better Auth
-      const orgSlug = generateSlug(data.organizationName);
-      const { data: orgData, error: orgError } =
-        await authClient.organization.create({
-          name: data.organizationName,
-          slug: orgSlug,
-        });
-
-      if (orgError) {
-        throw new Error(orgError.message || "Failed to create organization");
-      }
-
-      // Set the organization as active
-      await authClient.organization.setActive({
-        organizationId: orgData?.id,
-      });
-
-      toast.success("Organization created successfully");
-      updateFormData({
-        ...data,
-      });
-      nextStep();
-    } catch (error) {
-      console.error("Error creating organization:", error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Failed to create organization";
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
+  const onSubmit = (data: OrganizationFormData) => {
+    updateFormData(data);
+    nextStep();
   };
 
   return (
@@ -98,8 +61,8 @@ export default function OrganizationForm() {
               id="organizationName"
               type="text"
               placeholder="Organization Name"
+              icon={<Building2 className="w-5 h-5" />}
               error={errors.organizationName?.message}
-              disabled={isLoading}
               {...field}
             />
           )}
@@ -120,8 +83,8 @@ export default function OrganizationForm() {
               id="storeName"
               type="text"
               placeholder="Store Name"
+              icon={<Store className="w-5 h-5" />}
               error={errors.storeName?.message}
-              disabled={isLoading}
               {...field}
             />
           )}
@@ -135,17 +98,13 @@ export default function OrganizationForm() {
               id="storeDescription"
               type="text"
               placeholder="What do you sell? (e.g), Handcrafted jewelry, eco-friendly apparel, digital products."
+              icon={<FileText className="w-5 h-5" />}
               error={errors.storeDescription?.message}
-              disabled={isLoading}
               {...field}
             />
           )}
         />
-        <StepperButtons
-          showBackButton={false}
-          disabled={isLoading}
-          continueText={isLoading ? "Creating..." : "Continue"}
-        />
+        <StepperButtons showBackButton={false} continueText="Continue" />
       </form>
     </div>
   );

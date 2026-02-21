@@ -35,12 +35,10 @@ export default function StoreCard({ store }: StoreCardProps) {
 
   const formattedDate = store?.createdAt
     ? new Date(store.createdAt).toLocaleDateString("en-US", {
-      month: "long",
-      year: "numeric",
-    })
+        month: "long",
+        year: "numeric",
+      })
     : "N/A";
-
-
 
   return (
     <div
@@ -60,7 +58,9 @@ export default function StoreCard({ store }: StoreCardProps) {
           {/* Status Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800/50 w-fit">
             <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 dark:bg-yellow-400" />
-            <span className="text-sm font-medium text-yellow-800 dark:text-yellow-300">Paused</span>
+            <span className="text-sm font-medium text-yellow-800 dark:text-yellow-300">
+              Paused
+            </span>
           </div>
         </div>
 

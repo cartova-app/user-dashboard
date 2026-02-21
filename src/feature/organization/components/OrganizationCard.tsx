@@ -45,7 +45,11 @@ export default function OrganizationCard({
                 className="size-full rounded-full object-cover"
               />
             ) : (
-              <img src={HomeUserIcon} alt="Organization" className="size-6 dark:brightness-0 dark:invert" />
+              <img
+                src={HomeUserIcon}
+                alt="Organization"
+                className="size-6 dark:brightness-0 dark:invert"
+              />
             )}
           </div>
 
@@ -73,9 +77,7 @@ export default function OrganizationCard({
           {plan}
         </Badge>
 
-        <Badge
-          className="h-[34px] rounded-full border-0 bg-emerald-100 dark:bg-emerald-900/30 px-4 text-sm font-normal text-emerald-900 dark:text-emerald-400 hover:bg-emerald-200 dark:hover:bg-emerald-900/40 font-satoshi shadow-none"
-        >
+        <Badge className="h-[34px] rounded-full border-0 bg-emerald-100 dark:bg-emerald-900/30 px-4 text-sm font-normal text-emerald-900 dark:text-emerald-400 hover:bg-emerald-200 dark:hover:bg-emerald-900/40 font-satoshi shadow-none">
           Active
         </Badge>
       </div>

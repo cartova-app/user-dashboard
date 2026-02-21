@@ -29,9 +29,11 @@ export default function LoginForm() {
   const {
     control,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginScehma),
+    mode: "onTouched",
     defaultValues: {
       email: "",
       password: "",
@@ -40,29 +42,28 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
-    try {
-      await authClient.signIn.email(
-        {
-          email: data.email,
-          password: data.password,
+    const { error } = await authClient.signIn.email(
+      {
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess: (ctx) => {
+          localStorage.setItem("bearer_token", ctx?.data?.token);
+          toast.success("Login successful");
+          navigate(from, { replace: true });
         },
-        {
-          onSuccess: (ctx) => {
-            localStorage.setItem("bearer_token", ctx?.data?.token);
-            toast.success("Login successful");
-            navigate(from, { replace: true });
-          },
-        },
-      );
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Login failed";
-      toast.error(errorMessage);
-      console.log(error);
-    } finally {
-      setIsLoading(false);
+      },
+    );
+
+    if (error) {
+      const message = error.message || "Invalid email or password";
+      toast.error(message);
+      setError("root", { message });
     }
+    setIsLoading(false);
   };
+
   return (
     <div className="bg-card p-8 rounded-xl shadow-lg max-w-md w-full">
       <h1 className="text-2xl font-bold text-center mb-2">Login</h1>
@@ -71,6 +72,11 @@ export default function LoginForm() {
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {errors.root?.message && (
+          <p className="text-sm text-destructive bg-destructive/10 p-3 rounded-lg">
+            {errors.root.message}
+          </p>
+        )}
         <Controller
           name="email"
           control={control}

@@ -1,17 +1,15 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Check } from "lucide-react";
 import { useProfileStore } from "../store/profileStore";
 import { StepperButtons } from "./StepperButtons";
+import SuccessStep from "./SuccessStep";
 import ThemeImage1 from "@/assets/images/theme-1.png";
 import ThemeImage2 from "@/assets/images/theme-2.png";
 import ThemeImage3 from "@/assets/images/theme-3.png";
 import ThemeImage4 from "@/assets/images/theme-4.png";
 import ThemeImage5 from "@/assets/images/theme-5.png";
 import ThemeImage6 from "@/assets/images/theme-6.png";
-import SuccessStep from "./SuccessStep";
-import { useCreateStore } from "../api/mutations/useCreateStore";
-import { useState } from "react";
-import { toast } from "sonner";
 
 interface ThemeCategory {
   id: string;
@@ -20,20 +18,30 @@ interface ThemeCategory {
 }
 
 interface ThemeFormData {
-  category?: string;
+  theme?: string;
 }
 
-export function ThemeTypeSelection() {
+interface ThemeTypeSelectionProps {
+  onComplete?: (
+    formData: import("../store/profileStore").ProfileFormData,
+  ) => Promise<void>;
+  isSubmitting?: boolean;
+}
+
+export function ThemeTypeSelection({
+  onComplete,
+  isSubmitting = false,
+}: ThemeTypeSelectionProps) {
   const { formData, updateFormData } = useProfileStore();
   const [showSuccessStep, setShowSuccessStep] = useState(false);
+
   const { handleSubmit, setValue, watch, register } = useForm<ThemeFormData>({
     defaultValues: {
-      category: formData.category || undefined,
+      theme: formData.theme || undefined,
     },
   });
-  const { mutateAsync: createStore, isPending } = useCreateStore();
 
-  const selectedCategoryValue = watch("category");
+  const selectedThemeValue = watch("theme");
 
   const categories: ThemeCategory[] = [
     { id: "default", name: "Default Theme", image: ThemeImage1 },
@@ -44,83 +52,83 @@ export function ThemeTypeSelection() {
     { id: "bold", name: "Bold & Dynamic", image: ThemeImage6 },
   ];
 
-  const handleCategorySelect = (category: ThemeCategory) => {
-    setValue("category", category.id, { shouldValidate: true });
-    updateFormData({ category: category.id });
+  const handleThemeSelect = (theme: ThemeCategory) => {
+    setValue("theme", theme.id, { shouldValidate: true });
+    updateFormData({ theme: theme.id });
   };
 
   const onSubmit = async (data: ThemeFormData) => {
+    const finalFormData = { ...formData, theme: data.theme ?? null };
+    updateFormData({ theme: data.theme ?? null });
+
     try {
-      await createStore({ ...formData, theme: data.category });
-      toast.success("Store created successfully");
+      await onComplete?.(finalFormData);
       setShowSuccessStep(true);
-    } catch (err) {
-      console.error("Error creating store:", err);
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to create store";
-      toast.error(errorMessage);
+    } catch {
+      // Error already handled (toast) in CompeleteProfileDialog
     }
   };
 
-  // 👉 If it's success step, return SuccessStep
   if (showSuccessStep) {
     return <SuccessStep />;
   }
-
-  console.log(showSuccessStep);
   // 👉 Otherwise return theme selection UI
   return (
     <div className="w-full py-4">
       <div className="mb-6 space-y-1">
         <h1 className="text-[28px] font-bold leading-[34px] font-family-satoshi">
-          What Type of store you building?
+          Choose Your Store Theme
         </h1>
 
         <p className="text-[14px] leading-5 text-muted-foreground font-family-satoshi">
-          Choose a category to get started with tailored templates
+          Select a theme to customize the look and feel of your store
         </p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Categories Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 mb-10">
-          {categories.map((category) => {
-            const isSelected = selectedCategoryValue === category.id;
+          {categories.map((theme) => {
+            const isSelected = selectedThemeValue === theme.id;
 
             return (
               <div
-                key={category.id}
-                onClick={() => handleCategorySelect(category)}
+                key={theme.id}
+                onClick={() => handleThemeSelect(theme)}
                 className={`
-                                    cursor-pointer rounded-xl overflow-hidden border transition-all
-                                    duration-300 ease-in-out group relative
-                                    ${isSelected
-                    ? "border-primary shadow-xl scale-[1.02]"
-                    : "border-border hover:shadow-lg hover:-translate-y-1"
+                  cursor-pointer rounded-xl overflow-hidden border group relative
+                  transition-[border-color,box-shadow] duration-200 ease-out
+                  ${
+                    isSelected
+                      ? "border-primary shadow-md ring-2 ring-primary/20"
+                      : "border-border hover:border-primary/50 hover:shadow-sm"
                   }
-                                `}
+                `}
               >
                 {isSelected && (
-                  <div className="absolute top-3 right-3 z-10 w-7 h-7 bg-primary rounded-full flex items-center justify-center shadow-md">
-                    <Check className="w-4 h-4 text-primary-foreground" strokeWidth={3} />
+                  <div className="absolute top-3 right-3 z-10 w-7 h-7 bg-primary rounded-full flex items-center justify-center animate-in fade-in duration-200">
+                    <Check
+                      className="w-4 h-4 text-primary-foreground"
+                      strokeWidth={3}
+                    />
                   </div>
                 )}
 
                 <div className="w-full h-36 md:h-40 lg:h-48 overflow-hidden">
                   <img
-                    src={category.image}
-                    alt={category.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    src={theme.image}
+                    alt={theme.name}
+                    className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
                   />
                 </div>
 
                 <div className="p-3 text-center bg-card">
                   <p
-                    className={`text-sm md:text-base font-semibold transition-colors
-                                            ${isSelected ? "text-primary" : "text-card-foreground group-hover:text-foreground"}
-                                        `}
+                    className={`text-sm md:text-base font-semibold transition-colors duration-200 ease-out ${
+                      isSelected ? "text-primary" : "text-card-foreground group-hover:text-foreground"
+                    }`}
                   >
-                    {category.name}
+                    {theme.name}
                   </p>
                 </div>
               </div>
@@ -131,12 +139,12 @@ export function ThemeTypeSelection() {
         {/* Hidden input */}
         <input
           type="hidden"
-          {...register("category", { required: "Please select a category" })}
+          {...register("theme", { required: "Please select a theme" })}
         />
 
         <StepperButtons
-          disabled={!selectedCategoryValue || isPending}
-          continueText={isPending ? "Creating Store..." : "Create Store"}
+          disabled={!selectedThemeValue || isSubmitting}
+          continueText={isSubmitting ? "Creating Store..." : "Create Store"}
           showBackButton
         />
       </form>

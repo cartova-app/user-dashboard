@@ -17,6 +17,8 @@ export type ModalProps = {
   className?: string;
   showHeader?: boolean;
   closeOnOverlayClick?: boolean;
+  /** Prevents default auto-focus on open. Use when initial focus causes a jarring focus ring. */
+  onOpenAutoFocus?: (event: Event) => void;
 };
 
 function Modal({
@@ -30,12 +32,14 @@ function Modal({
   className = "",
   showHeader = true,
   closeOnOverlayClick = true,
+  onOpenAutoFocus,
 }: ModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className={`sm:max-w-[425px] backdrop-blur-sm ${className}`}
         style={{ maxWidth: width, fontFamily: "Satoshi, sans-serif" }}
+        onOpenAutoFocus={onOpenAutoFocus}
         onInteractOutside={(e) => {
           if (!closeOnOverlayClick) {
             e.preventDefault();

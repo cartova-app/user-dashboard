@@ -27,9 +27,11 @@ export default function SignUpForm() {
   const {
     control,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
+    mode: "onTouched",
     defaultValues: {
       name: "",
       email: "",
@@ -38,28 +40,24 @@ export default function SignUpForm() {
   });
 
   const onSubmit = async (data: SignUpFormData) => {
-    try {
-      setLoading(true);
-      const { data: resData, error } = await authClient.signUp.email(data);
+    setLoading(true);
+    const { data: resData, error } = await authClient.signUp.email(data);
 
-      if (error) {
-        throw new Error(error.message || "Failed to create account");
-      }
-
-      if (resData?.token) {
-        localStorage.setItem("bearer_token", resData.token);
-      }
-
-      toast.success("Account created successfully");
-      navigate("/organizations", { replace: true });
-    } catch (error) {
-      console.log(error);
-      const errorMessage =
-        error instanceof Error ? error.message : "Failed to create account";
-      toast.error(errorMessage);
-    } finally {
+    if (error) {
+      const message = error.message || "Failed to create account";
+      toast.error(message);
+      setError("root", { message });
       setLoading(false);
+      return;
     }
+
+    if (resData?.token) {
+      localStorage.setItem("bearer_token", resData.token);
+    }
+
+    toast.success("Account created successfully");
+    navigate("/organizations", { replace: true });
+    setLoading(false);
   };
   return (
     <div className="bg-card p-8 rounded-2xl shadow-lg max-w-md w-full">
@@ -71,6 +69,11 @@ export default function SignUpForm() {
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {errors.root?.message && (
+          <p className="text-sm text-destructive bg-destructive/10 p-3 rounded-lg">
+            {errors.root.message}
+          </p>
+        )}
         <Controller
           name="name"
           control={control}

@@ -15,11 +15,12 @@ function StepIcon({ active, completed, icon }: StepIconProps) {
       className={`
         flex h-[30px] w-[30px] items-center justify-center rounded-full
         transition-all duration-300 ease-in-out
-        ${completed
-          ? "bg-[#34DF6A] text-white"
-          : active
-            ? "scale-110 border-2 border-[#34DF6A] bg-background text-[#34DF6A] shadow-md"
-            : "border-2 border-transparent bg-muted text-muted-foreground"
+        ${
+          completed
+            ? "bg-[#34DF6A] text-white"
+            : active
+              ? "scale-110 border-2 border-[#34DF6A] bg-background text-[#34DF6A] shadow-md"
+              : "border-2 border-transparent bg-muted text-muted-foreground"
         }
       `}
     >
@@ -64,10 +65,11 @@ const CustomStepper = ({ steps, active }: CustomStepperProps) => {
             {/* Step Label */}
             <div className="mt-2 text-center">
               <span
-                className={`text-sm font-medium transition-all duration-300 ${index === active
+                className={`text-sm font-medium transition-all duration-300 ${
+                  index === active
                     ? "text-base font-bold text-[#34DF6A]"
                     : "text-muted-foreground"
-                  }`}
+                }`}
                 style={{ fontFamily: "Satoshi, sans-serif" }}
               >
                 {label}
@@ -78,8 +80,9 @@ const CustomStepper = ({ steps, active }: CustomStepperProps) => {
           {/* Connector Line */}
           {index < steps.length - 1 && (
             <div
-              className={`absolute top-[15px] h-[3px] rounded transition-colors duration-300 ease-in-out ${index < active ? "bg-[#34DF6A]" : "bg-border"
-                }`}
+              className={`absolute top-[15px] h-[3px] rounded transition-colors duration-300 ease-in-out ${
+                index < active ? "bg-[#34DF6A]" : "bg-border"
+              }`}
               style={{
                 [isAr ? "right" : "left"]: "50%",
                 width: "calc(100% - 30px)",

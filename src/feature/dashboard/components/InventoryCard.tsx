@@ -40,7 +40,9 @@ const InventoryCard = () => {
             <p className="text-xs font-medium text-yellow-600 dark:text-yellow-400 uppercase tracking-wider">
               Low Stock
             </p>
-            <p className="text-xl font-bold text-yellow-700 dark:text-yellow-300">12</p>
+            <p className="text-xl font-bold text-yellow-700 dark:text-yellow-300">
+              12
+            </p>
           </div>
         </div>
 

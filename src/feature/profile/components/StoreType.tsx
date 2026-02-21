@@ -127,12 +127,13 @@ export function StoreTypeSelection() {
                 key={category.id}
                 onClick={() => handleCategorySelect(category)}
                 className={`
-                                    relative cursor-pointer transition-all duration-300 ease-in-out
-                                    hover:shadow-lg hover:-translate-y-1 group
-                                    ${isSelected
-                    ? "border-2 shadow-md bg-primary/10"
-                    : "border border-border hover:border-primary/60"
-                  }
+                                    relative cursor-pointer transition-shadow duration-200 ease-out
+                                    hover:shadow-md group
+                                    ${
+                                      isSelected
+                                        ? "border-2 shadow-md bg-primary/10"
+                                        : "border border-border hover:border-primary/60"
+                                    }
                                 `}
                 style={{
                   fontFamily: "Satoshi, sans-serif",
@@ -146,7 +147,10 @@ export function StoreTypeSelection() {
                       className="w-6 h-6 rounded-full flex items-center justify-center shadow-md"
                       style={{ backgroundColor: "var(--primary)" }}
                     >
-                      <Check className="w-4 h-4 text-primary-foreground" strokeWidth={3} />
+                      <Check
+                        className="w-4 h-4 text-primary-foreground"
+                        strokeWidth={3}
+                      />
                     </div>
                   ) : (
                     <div
@@ -169,10 +173,11 @@ export function StoreTypeSelection() {
                       className={`
                                                 flex items-center justify-center w-14 h-14 rounded-full
                                                 transition-all duration-300
-                                                ${isSelected
-                          ? "shadow-lg scale-105"
-                          : "bg-muted group-hover:bg-muted/80"
-                        }
+                                                ${
+                                                  isSelected
+                                                    ? "shadow-lg scale-105"
+                                                    : "bg-muted group-hover:bg-muted/80"
+                                                }
                                             `}
                       style={{
                         backgroundColor: isSelected
@@ -181,8 +186,11 @@ export function StoreTypeSelection() {
                       }}
                     >
                       <IconComponent
-                        className={`w-7 h-7 transition-colors ${isSelected ? "text-primary-foreground" : category.color
-                          }`}
+                        className={`w-7 h-7 transition-colors ${
+                          isSelected
+                            ? "text-primary-foreground"
+                            : category.color
+                        }`}
                         strokeWidth={2}
                       />
                     </div>
@@ -191,10 +199,11 @@ export function StoreTypeSelection() {
                     <p
                       className={`
                                                 text-center text-xs font-semibold transition-colors
-                                                ${isSelected
-                          ? "text-foreground"
-                          : "text-muted-foreground group-hover:text-foreground"
-                        }
+                                                ${
+                                                  isSelected
+                                                    ? "text-foreground"
+                                                    : "text-muted-foreground group-hover:text-foreground"
+                                                }
                                             `}
                     >
                       {category.name}

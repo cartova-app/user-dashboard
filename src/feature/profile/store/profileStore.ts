@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface ProfileFormData {
+export interface ProfileFormData {
   // Step 1: Store Details
   organizationName: string;
   storeName: string;

@@ -72,10 +72,11 @@ export default function CustomPagination({
                     handlePageChange(p);
                   }
                 }}
-                className={`rounded-xl border-none transition-all duration-200 ${page === p
+                className={`rounded-xl border-none transition-all duration-200 ${
+                  page === p
                     ? "bg-primary text-primary-foreground hover:bg-primary/90 font-bold"
                     : "text-muted-foreground hover:bg-accent"
-                  }`}
+                }`}
               >
                 {p}
               </PaginationLink>

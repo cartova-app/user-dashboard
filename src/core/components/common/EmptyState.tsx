@@ -35,7 +35,9 @@ export default function EmptyState({
         <h3 className="text-lg font-semibold text-foreground mb-2">{title}</h3>
       )}
       {description && (
-        <p className="text-sm text-muted-foreground max-w-sm mb-6">{description}</p>
+        <p className="text-sm text-muted-foreground max-w-sm mb-6">
+          {description}
+        </p>
       )}
       {actionLabel && onAction && (
         <Button onClick={onAction} variant="primary">

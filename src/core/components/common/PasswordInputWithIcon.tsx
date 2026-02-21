@@ -71,7 +71,9 @@ export const PasswordInputWithIcon = forwardRef<
         />
       </div>
 
-      {error && <p className="text-sm text-destructive mt-1 text-start">{error}</p>}
+      {error && (
+        <p className="text-sm text-destructive mt-1 text-start">{error}</p>
+      )}
     </div>
   );
 });

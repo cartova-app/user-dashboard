@@ -1,4 +1,11 @@
-import { Bell, ChevronDown, LogOut, Settings, User, UserCircle } from "lucide-react";
+import {
+  Bell,
+  ChevronDown,
+  LogOut,
+  Settings,
+  User,
+  UserCircle,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,8 +59,9 @@ export function TopNav() {
                 <DropdownMenuItem
                   key={org.id}
                   onClick={() => !isActive && setActiveOrganization(org.id)}
-                  className={`flex items-center justify-between gap-2 px-3 py-2 cursor-pointer ${isActive ? "" : "text-muted-foreground"
-                    }`}
+                  className={`flex items-center justify-between gap-2 px-3 py-2 cursor-pointer ${
+                    isActive ? "" : "text-muted-foreground"
+                  }`}
                 >
                   <span className="truncate">{org.name}</span>
                   {isActive && (
@@ -104,7 +112,11 @@ export function TopNav() {
           {/* Profile */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-muted-foreground">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground"
+              >
                 <User className="size-5" />
               </Button>
             </DropdownMenuTrigger>
@@ -118,7 +130,10 @@ export function TopNav() {
                 <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut} className="text-red-600 focus:text-red-600">
+              <DropdownMenuItem
+                onClick={handleSignOut}
+                className="text-red-600 focus:text-red-600"
+              >
                 <LogOut className="mr-2 size-4" />
                 <span>Log out</span>
               </DropdownMenuItem>
