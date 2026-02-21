@@ -1,6 +1,6 @@
-import { Button } from "@/core/components/ui/button";
-import { ChevronRight, ArrowLeft } from "lucide-react";
-import { useProfileStore } from "../store/profileStore";
+import { ArrowLeft, ChevronRight } from 'lucide-react';
+import { Button } from '@/core/components/ui/button';
+import { useProfileStore } from '../store/profileStore';
 
 interface StepperButtonsProps {
   disabled?: boolean;
@@ -10,7 +10,7 @@ interface StepperButtonsProps {
 
 export function StepperButtons({
   disabled = false,
-  continueText = "Continue",
+  continueText = 'Continue',
   showBackButton = false,
 }: StepperButtonsProps) {
   const { prevStep } = useProfileStore();
@@ -18,13 +18,7 @@ export function StepperButtons({
   return (
     <div className="flex justify-between items-center mt-4">
       {showBackButton && (
-        <Button
-          type="button"
-          variant="outline"
-          onClick={prevStep}
-          size="lg"
-          className="px-6"
-        >
+        <Button type="button" variant="outline" onClick={prevStep} size="lg" className="px-6">
           <ArrowLeft className="mr-2 w-5 h-5" />
           Back
         </Button>
@@ -35,7 +29,7 @@ export function StepperButtons({
         type="submit"
         disabled={disabled}
         size="lg"
-        className={`px-8 ${!showBackButton ? "mx-auto" : ""}`}
+        className={`px-8 ${!showBackButton ? 'mx-auto' : ''}`}
       >
         {continueText}
         <ChevronRight className="ml-2 w-5 h-5" />

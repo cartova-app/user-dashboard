@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 interface SignUpData {
   name: string;
@@ -6,7 +6,7 @@ interface SignUpData {
   password: string;
 }
 
-export type TabType = "signup" | "otp";
+export type TabType = 'signup' | 'otp';
 
 interface SignUpState {
   currentTab: TabType;
@@ -15,15 +15,13 @@ interface SignUpState {
   error: string | null;
   setCurrentTab: (tab: TabType) => void;
   setSignUpData: (data: SignUpData) => void;
-  submitSignUp: (
-    data: SignUpData,
-  ) => Promise<{ success: boolean; error?: string }>;
+  submitSignUp: (data: SignUpData) => Promise<{ success: boolean; error?: string }>;
   verifyOtp: (otp: string) => Promise<{ success: boolean; error?: string }>;
   resetStore: () => void;
 }
 
 export const useSignUpStore = create<SignUpState>((set) => ({
-  currentTab: "signup",
+  currentTab: 'signup',
   signUpData: null,
   isLoading: false,
   error: null,
@@ -44,14 +42,13 @@ export const useSignUpStore = create<SignUpState>((set) => ({
 
       set({
         signUpData: data,
-        currentTab: "otp",
+        currentTab: 'otp',
         isLoading: false,
       });
 
       return { success: true };
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Failed to sign up";
+      const errorMessage = error instanceof Error ? error.message : 'Failed to sign up';
       set({
         error: errorMessage,
         isLoading: false,
@@ -76,8 +73,7 @@ export const useSignUpStore = create<SignUpState>((set) => ({
       set({ isLoading: false });
       return { success: true };
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Failed to verify OTP";
+      const errorMessage = error instanceof Error ? error.message : 'Failed to verify OTP';
       set({
         error: errorMessage,
         isLoading: false,
@@ -88,7 +84,7 @@ export const useSignUpStore = create<SignUpState>((set) => ({
 
   resetStore: () =>
     set({
-      currentTab: "signup",
+      currentTab: 'signup',
       signUpData: null,
       isLoading: false,
       error: null,

@@ -1,20 +1,19 @@
-import { Archive } from "lucide-react";
-import { House } from "lucide-react";
-import { ShoppingCart } from "lucide-react";
-import SuccessImage from "@/assets/images/complete-profile-success.png";
+import { Archive, House, ShoppingCart } from 'lucide-react';
+import SuccessImage from '@/assets/images/complete-profile-success.png';
+
 const SuccessStep = () => {
   const succesMessage = [
     {
       icon: <ShoppingCart className="text-secondary" />,
-      text: "Add your first products",
+      text: 'Add your first products',
     },
     {
       icon: <Archive className="text-secondary" />,
-      text: "Set up payment & shipping",
+      text: 'Set up payment & shipping',
     },
     {
       icon: <House className="text-secondary" />,
-      text: "Customize your store design",
+      text: 'Customize your store design',
     },
   ];
   return (
@@ -24,17 +23,14 @@ const SuccessStep = () => {
           Congratulations! Your Store is Ready
         </h1>
         <p className="text-[16px] leading-6 text-gray-600 font-family-satoshi">
-          You’ve completed onboarding journey, Head over to the dashboard to
-          finish setting up your Store.
+          You’ve completed onboarding journey, Head over to the dashboard to finish setting up your Store.
         </p>
       </div>
       <div className="flex items-center gap-1 justify-start">
-        {succesMessage.map((item, index) => (
-          <div key={index} className="flex items-center gap-1">
+        {succesMessage.map((item) => (
+          <div key={item.text} className="flex items-center gap-1">
             {item.icon}
-            <p className="text-[16px] leading-6 font-bold text-gray-600 font-family-satoshi">
-              {item.text}
-            </p>
+            <p className="text-[16px] leading-6 font-bold text-gray-600 font-family-satoshi">{item.text}</p>
           </div>
         ))}
       </div>

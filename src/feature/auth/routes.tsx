@@ -1,13 +1,13 @@
-import { lazy } from "react";
-import SuspenseWrapper from "@/core/utils/SuspenseWrapper";
-import GuestRoute from "@/core/utils/GuestRoute";
+import { lazy } from 'react';
+import GuestRoute from '@/core/utils/GuestRoute';
+import SuspenseWrapper from '@/core/utils/SuspenseWrapper';
 
-const Login = lazy(() => import("./pages/Login"));
-const SignUp = lazy(() => import("./pages/SignUp"));
+const Login = lazy(() => import('./pages/Login'));
+const SignUp = lazy(() => import('./pages/SignUp'));
 
 export const authRoutes = [
   {
-    path: "/login",
+    path: '/login',
     element: (
       <GuestRoute>
         <SuspenseWrapper>
@@ -17,7 +17,7 @@ export const authRoutes = [
     ),
   },
   {
-    path: "/sign-up",
+    path: '/sign-up',
     element: (
       <GuestRoute>
         <SuspenseWrapper>

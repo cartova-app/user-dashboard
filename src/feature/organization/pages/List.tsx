@@ -1,17 +1,16 @@
-import PageHeading from "@/core/components/common/PageHeading";
-import SearchInput from "@/core/components/common/SearchInput";
-import EmptyState from "@/core/components/common/EmptyState";
-import { useMemo, useState } from "react";
-import OrganizationCard from "../components/OrganizationCard";
-import CreateOrganizationModal from "../components/CreateOrganizationModal";
-import { Button } from "@/core/components/ui/button";
-import { Building2, Loader2, Plus, SearchX } from "lucide-react";
-import CompeleteProfileDialog from "@/feature/profile/components/CompeleteProfileDialog";
-import { useEffect } from "react";
-import { useOrganizations } from "../api/quiries/useOrganizations";
+import { Building2, Loader2, Plus, SearchX } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import EmptyState from '@/core/components/common/EmptyState';
+import PageHeading from '@/core/components/common/PageHeading';
+import SearchInput from '@/core/components/common/SearchInput';
+import { Button } from '@/core/components/ui/button';
+import CompeleteProfileDialog from '@/feature/profile/components/CompeleteProfileDialog';
+import { useOrganizations } from '../api/quiries/useOrganizations';
+import CreateOrganizationModal from '../components/CreateOrganizationModal';
+import OrganizationCard from '../components/OrganizationCard';
 
 const List = () => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openOnBoarding, setOpenOnBoarding] = useState(false);
 
@@ -21,9 +20,7 @@ const List = () => {
 
   const filteredOrganizations = useMemo(() => {
     if (!search.trim()) return organizations;
-    return organizations.filter((org) =>
-      org.name.toLowerCase().includes(search.toLowerCase()),
-    );
+    return organizations.filter((org) => org.name.toLowerCase().includes(search.toLowerCase()));
   }, [organizations, search]);
   useEffect(() => {
     setOpenOnBoarding(organizations.length === 0);
@@ -84,15 +81,8 @@ const List = () => {
         </div>
       )}
 
-      <CreateOrganizationModal
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onSuccess={refetch}
-      />
-      <CompeleteProfileDialog
-        isOpen={openOnBoarding}
-        setIsOpen={setOpenOnBoarding}
-      />
+      <CreateOrganizationModal open={isModalOpen} onOpenChange={setIsModalOpen} onSuccess={refetch} />
+      <CompeleteProfileDialog isOpen={openOnBoarding} setIsOpen={setOpenOnBoarding} />
     </div>
   );
 };

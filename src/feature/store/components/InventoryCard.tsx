@@ -1,18 +1,13 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import { Button } from "@/core/components/ui/button";
-import { Box, AlertTriangle } from "lucide-react";
+import { AlertTriangle, Box } from 'lucide-react';
+import { Button } from '@/core/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/core/components/ui/card';
 
 const InventoryCard = () => {
   return (
     <Card className="h-full">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-xl font-bold">Inventory</CardTitle>
-        <button className="text-sm font-medium text-muted-foreground hover:underline">
+        <button type="button" className="text-sm font-medium text-muted-foreground hover:underline">
           Manage Products
         </button>
       </CardHeader>
@@ -24,9 +19,7 @@ const InventoryCard = () => {
             <Box className="w-5 h-5 text-muted-foreground" />
           </div>
           <div className="text-start">
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Total Products
-            </p>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Products</p>
             <p className="text-xl font-bold">847</p>
           </div>
         </div>
@@ -40,9 +33,7 @@ const InventoryCard = () => {
             <p className="text-xs font-medium text-yellow-600 dark:text-yellow-400 uppercase tracking-wider">
               Low Stock
             </p>
-            <p className="text-xl font-bold text-yellow-700 dark:text-yellow-300">
-              12
-            </p>
+            <p className="text-xl font-bold text-yellow-700 dark:text-yellow-300">12</p>
           </div>
         </div>
 

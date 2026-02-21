@@ -1,17 +1,18 @@
-import { lazy } from "react";
-import ProtectedRoute from "@/core/utils/ProtectRoute";
-import SuspenseWrapper from "@/core/utils/SuspenseWrapper";
-import OrganizationLayout from "./layouts/OrganizationLayout";
-import OrganizationsLayout from "@/core/layouts/OrganizationsLayout";
-import ListStores from "../store/pages/List";
-import ListTeams from "../team/pages/List";
-import OrganizationProtectedRoute from "@/core/utils/OrganizationProtectedRoute";
-import { Navigate } from "react-router-dom";
-const OrganizationPage = lazy(() => import("./pages/List"));
+import { lazy } from 'react';
+import { Navigate } from 'react-router-dom';
+import OrganizationsLayout from '@/core/layouts/OrganizationsLayout';
+import OrganizationProtectedRoute from '@/core/utils/OrganizationProtectedRoute';
+import ProtectedRoute from '@/core/utils/ProtectRoute';
+import SuspenseWrapper from '@/core/utils/SuspenseWrapper';
+import ListStores from '../store/pages/List';
+import ListTeams from '../team/pages/List';
+import OrganizationLayout from './layouts/OrganizationLayout';
+
+const OrganizationPage = lazy(() => import('./pages/List'));
 
 export const organizationRoutes = [
   {
-    path: "/organizations",
+    path: '/organizations',
     element: (
       <ProtectedRoute>
         <SuspenseWrapper>
@@ -31,7 +32,7 @@ export const organizationRoutes = [
     ],
   },
   {
-    path: "/",
+    path: '/',
     element: (
       <ProtectedRoute>
         <OrganizationProtectedRoute>
@@ -47,7 +48,7 @@ export const organizationRoutes = [
         element: <Navigate to="/stores" replace />,
       },
       {
-        path: "stores",
+        path: 'stores',
         element: (
           <SuspenseWrapper>
             <ListStores />
@@ -55,7 +56,7 @@ export const organizationRoutes = [
         ),
       },
       {
-        path: "team",
+        path: 'team',
         element: (
           <SuspenseWrapper>
             <ListTeams />
@@ -63,7 +64,7 @@ export const organizationRoutes = [
         ),
       },
       {
-        path: "settings",
+        path: 'settings',
         element: (
           <SuspenseWrapper>
             <h1>Settings</h1>

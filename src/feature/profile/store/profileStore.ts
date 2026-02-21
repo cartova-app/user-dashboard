@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 export interface ProfileFormData {
   // Step 1: Store Details
@@ -22,9 +22,9 @@ interface ProfileState {
 }
 
 const initialFormData: ProfileFormData = {
-  organizationName: "",
-  storeName: "",
-  storeDescription: "",
+  organizationName: '',
+  storeName: '',
+  storeDescription: '',
   category: null,
   theme: null,
 };

@@ -1,27 +1,24 @@
-import { useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import authClient from "@/core/config/auth-client";
-import useGenerateSlug from "@/core/hooks/useGenerateSlug";
-import OrganizationForm from "./OrganizationForm";
-import GenericDialog from "@/core/components/common/Modal";
-import Stepper from "@/core/components/common/Stepper";
-import { StoreTypeSelection } from "./StoreType";
-import { ThemeTypeSelection } from "./ThemeForm";
-import { Tabs, TabsContent } from "@/core/components/ui/tabs";
-import { useProfileStore } from "../store/profileStore";
-import { useCreateStore } from "../api/mutations/useCreateStore";
-import type { ProfileFormData } from "../store/profileStore";
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import GenericDialog from '@/core/components/common/Modal';
+import Stepper from '@/core/components/common/Stepper';
+import { Tabs, TabsContent } from '@/core/components/ui/tabs';
+import authClient from '@/core/config/auth-client';
+import useGenerateSlug from '@/core/hooks/useGenerateSlug';
+import { useCreateStore } from '../api/mutations/useCreateStore';
+import type { ProfileFormData } from '../store/profileStore';
+import { useProfileStore } from '../store/profileStore';
+import OrganizationForm from './OrganizationForm';
+import { StoreTypeSelection } from './StoreType';
+import { ThemeTypeSelection } from './ThemeForm';
 
 interface CompeleteProfileDialogProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }
 
-function CompeleteProfileDialog({
-  isOpen,
-  setIsOpen,
-}: CompeleteProfileDialogProps) {
+function CompeleteProfileDialog({ isOpen, setIsOpen }: CompeleteProfileDialogProps) {
   const queryClient = useQueryClient();
   const { currentStep, resetForm } = useProfileStore();
   const { generateSlug } = useGenerateSlug();
@@ -32,14 +29,13 @@ function CompeleteProfileDialog({
     setIsSubmitting(true);
     try {
       const orgSlug = generateSlug(formData.organizationName);
-      const { data: orgData, error: orgError } =
-        await authClient.organization.create({
-          name: formData.organizationName,
-          slug: orgSlug,
-        });
+      const { data: orgData, error: orgError } = await authClient.organization.create({
+        name: formData.organizationName,
+        slug: orgSlug,
+      });
 
       if (orgError) {
-        throw new Error(orgError.message || "Failed to create organization");
+        throw new Error(orgError.message || 'Failed to create organization');
       }
 
       await authClient.organization.setActive({
@@ -49,18 +45,17 @@ function CompeleteProfileDialog({
       await createStore({
         storeName: formData.storeName,
         storeDescription: formData.storeDescription || null,
-        theme: formData.theme || "default",
-        type: formData.category || "ecommerce",
+        theme: formData.theme || 'default',
+        type: formData.category || 'ecommerce',
       });
 
-      await queryClient.invalidateQueries({ queryKey: ["organizations"] });
+      await queryClient.invalidateQueries({ queryKey: ['organizations'] });
 
-      toast.success("Store created successfully");
+      toast.success('Store created successfully');
       setTimeout(() => setIsOpen(false), 1500);
     } catch (err) {
-      console.error("Error creating organization/store:", err);
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to create store";
+      console.error('Error creating organization/store:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to create store';
       toast.error(errorMessage);
       throw err;
     } finally {
@@ -69,9 +64,9 @@ function CompeleteProfileDialog({
   };
 
   const steps = [
-    { id: "details", label: "Store Details", component: OrganizationForm },
-    { id: "category", label: "Choose Category", component: StoreTypeSelection },
-    { id: "theme", label: "Choose Theme", component: ThemeTypeSelection },
+    { id: 'details', label: 'Store Details', component: OrganizationForm },
+    { id: 'category', label: 'Choose Category', component: StoreTypeSelection },
+    { id: 'theme', label: 'Choose Theme', component: ThemeTypeSelection },
   ];
 
   const stepLabels = steps.map((step) => step.label);
@@ -100,14 +95,11 @@ function CompeleteProfileDialog({
         <Tabs value={steps[currentStep].id} className="w-full">
           {steps.map((step) => {
             const StepComponent = step.component;
-            const isLastStep = step.id === "theme";
+            const isLastStep = step.id === 'theme';
             return (
               <TabsContent key={step.id} value={step.id} className="mt-0">
                 {isLastStep ? (
-                  <StepComponent
-                    onComplete={handleComplete}
-                    isSubmitting={isSubmitting}
-                  />
+                  <StepComponent onComplete={handleComplete} isSubmitting={isSubmitting} />
                 ) : (
                   <StepComponent />
                 )}

@@ -1,15 +1,10 @@
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/core/components/ui/input-otp";
-import { Button } from "@/core/components/ui/button";
-import { useOtpStore } from "../stores/useOtpStore";
-import { useSignUpStore } from "../stores/useSignUpStore";
+import { Button } from '@/core/components/ui/button';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/core/components/ui/input-otp';
+import { useOtpStore } from '../stores/useOtpStore';
+import { useSignUpStore } from '../stores/useSignUpStore';
 
 const OtpForm = () => {
-  const { otp, isComplete, error, setOtp, clearOtp, validateOtp } =
-    useOtpStore();
+  const { otp, isComplete, error, setOtp, clearOtp, validateOtp } = useOtpStore();
   const { verifyOtp, isLoading, signUpData } = useSignUpStore();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -18,7 +13,7 @@ const OtpForm = () => {
     if (validateOtp()) {
       const result = await verifyOtp(otp);
       if (result.success) {
-        console.log("OTP verified successfully");
+        console.log('OTP verified successfully');
         // TODO: Navigate to dashboard or next step
       }
     }
@@ -27,7 +22,7 @@ const OtpForm = () => {
   const handleResend = async () => {
     clearOtp();
     // TODO: Add your resend OTP API logic here
-    console.log("Resend OTP to:", signUpData?.email);
+    console.log('Resend OTP to:', signUpData?.email);
   };
 
   return (
@@ -37,14 +32,9 @@ const OtpForm = () => {
           {/* Header Section */}
           <div className="text-center space-y-4">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold text-foreground tracking-tight">
-                Enter verification code
-              </h2>
+              <h2 className="text-3xl font-bold text-foreground tracking-tight">Enter verification code</h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                We've sent a 4-digit code to{" "}
-                <span className="font-semibold text-foreground">
-                  {signUpData?.email}
-                </span>
+                We've sent a 4-digit code to <span className="font-semibold text-foreground">{signUpData?.email}</span>
               </p>
             </div>
           </div>
@@ -52,12 +42,7 @@ const OtpForm = () => {
           {/* OTP Input Section */}
           <div className="space-y-6">
             <div className="flex justify-center">
-              <InputOTP
-                maxLength={4}
-                value={otp}
-                onChange={setOtp}
-                disabled={isLoading}
-              >
+              <InputOTP maxLength={4} value={otp} onChange={setOtp} disabled={isLoading}>
                 <InputOTPGroup className="gap-4">
                   <InputOTPSlot index={0} />
                   <InputOTPSlot index={1} />
@@ -70,11 +55,7 @@ const OtpForm = () => {
             {error && (
               <div className="text-center">
                 <p className="text-sm text-destructive bg-destructive/10 py-2 px-3 rounded-lg border border-destructive/20 inline-flex items-center">
-                  <svg
-                    className="w-4 h-4 mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
+                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                     <path
                       fillRule="evenodd"
                       d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
@@ -102,7 +83,7 @@ const OtpForm = () => {
                 <span>Verifying...</span>
               </div>
             ) : (
-              "Verify Code"
+              'Verify Code'
             )}
           </Button>
 
@@ -113,7 +94,7 @@ const OtpForm = () => {
               disabled={isLoading}
               className="text-sm text-muted-foreground hover:text-foreground transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
             >
-              Didn't receive the code?{" "}
+              Didn't receive the code?{' '}
               <span className="font-semibold text-primary group-hover:text-primary/80 group-hover:underline transition-all duration-200">
                 Resend
               </span>
@@ -124,7 +105,7 @@ const OtpForm = () => {
         {/* Security Footer */}
         <div className="text-center pt-6 border-t border-border">
           <div className="flex items-center justify-center space-x-2 text-xs text-muted-foreground">
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path
                 fillRule="evenodd"
                 d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"

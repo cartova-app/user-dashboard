@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { authClient } from "@/core/config/auth-client";
+import type { ReactNode } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { authClient } from '@/core/config/auth-client';
 
 interface ProtectedRouteProps {
   children: ReactNode;

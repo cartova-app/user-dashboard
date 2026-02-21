@@ -1,18 +1,17 @@
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { InputWithIcon } from "@/core/components/common/InputWithIcon";
-import { SocialButton } from "@/core/components/common/SocialButton";
-import { Button } from "@/core/components/ui/button";
-import { MailIcon, Facebook } from "lucide-react";
-import GoogleIcon from "@/assets/icons/Google.svg?react";
-import { signUpSchema } from "../schemas/signUpSchema";
-import CompeleteProfileDialog from "@/feature/profile/components/CompeleteProfileDialog";
-import { UserCog } from "lucide-react";
-import authClient from "@/core/config/auth-client";
-import { useState } from "react";
-import { PasswordInputWithIcon } from "@/core/components/common/PasswordInputWithIcon";
-import { useNavigate, Link } from "react-router-dom";
-import { toast } from "sonner";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Facebook, MailIcon, UserCog } from 'lucide-react';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import GoogleIcon from '@/assets/icons/Google.svg?react';
+import { InputWithIcon } from '@/core/components/common/InputWithIcon';
+import { PasswordInputWithIcon } from '@/core/components/common/PasswordInputWithIcon';
+import { SocialButton } from '@/core/components/common/SocialButton';
+import { Button } from '@/core/components/ui/button';
+import authClient from '@/core/config/auth-client';
+import CompeleteProfileDialog from '@/feature/profile/components/CompeleteProfileDialog';
+import { signUpSchema } from '../schemas/signUpSchema';
 
 interface SignUpFormData {
   name: string;
@@ -31,11 +30,11 @@ export default function SignUpForm() {
     formState: { errors },
   } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
-    mode: "onTouched",
+    mode: 'onTouched',
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
+      name: '',
+      email: '',
+      password: '',
     },
   });
 
@@ -44,35 +43,29 @@ export default function SignUpForm() {
     const { data: resData, error } = await authClient.signUp.email(data);
 
     if (error) {
-      const message = error.message || "Failed to create account";
+      const message = error.message || 'Failed to create account';
       toast.error(message);
-      setError("root", { message });
+      setError('root', { message });
       setLoading(false);
       return;
     }
 
     if (resData?.token) {
-      localStorage.setItem("bearer_token", resData.token);
+      localStorage.setItem('bearer_token', resData.token);
     }
 
-    toast.success("Account created successfully");
-    navigate("/organizations", { replace: true });
+    toast.success('Account created successfully');
+    navigate('/organizations', { replace: true });
     setLoading(false);
   };
   return (
     <div className="bg-card p-8 rounded-2xl shadow-lg max-w-md w-full">
-      <h1 className="text-2xl font-bold text-center mb-2">
-        Create Your Account
-      </h1>
-      <p className="text-sm text-muted-foreground text-center mb-6">
-        Create your store in under 10 minutes
-      </p>
+      <h1 className="text-2xl font-bold text-center mb-2">Create Your Account</h1>
+      <p className="text-sm text-muted-foreground text-center mb-6">Create your store in under 10 minutes</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {errors.root?.message && (
-          <p className="text-sm text-destructive bg-destructive/10 p-3 rounded-lg">
-            {errors.root.message}
-          </p>
+          <p className="text-sm text-destructive bg-destructive/10 p-3 rounded-lg">{errors.root.message}</p>
         )}
         <Controller
           name="name"
@@ -111,12 +104,7 @@ export default function SignUpForm() {
           name="password"
           control={control}
           render={({ field }) => (
-            <PasswordInputWithIcon
-              id="password"
-              placeholder="Password"
-              error={errors.password?.message}
-              {...field}
-            />
+            <PasswordInputWithIcon id="password" placeholder="Password" error={errors.password?.message} {...field} />
           )}
         />
         <div className="flex items-center my-6">
@@ -129,18 +117,13 @@ export default function SignUpForm() {
 
         <SocialButton icon={<Facebook />}>Continue with Facebook</SocialButton>
 
-        <Button
-          variant="primary"
-          className="w-full"
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? "Creating Account..." : "Create Account"}
+        <Button variant="primary" className="w-full" type="submit" disabled={loading}>
+          {loading ? 'Creating Account...' : 'Create Account'}
         </Button>
       </form>
 
       <p className="text-center text-sm text-muted-foreground mt-4">
-        Already have an account?{" "}
+        Already have an account?{' '}
         <Link to="/login" className="text-primary hover:underline font-medium">
           log in
         </Link>

@@ -1,6 +1,6 @@
-import React, { useState, ReactNode } from "react";
-import CustomPagination from "./CustomPagination";
-import { useTranslation } from "react-i18next";
+import type React from 'react';
+import { type ReactNode, useState } from 'react';
+import CustomPagination from './CustomPagination';
 
 interface EmptyStateProps {
   title?: string;
@@ -15,6 +15,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({ title, description }) => (
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
@@ -24,12 +25,8 @@ const EmptyState: React.FC<EmptyStateProps> = ({ title, description }) => (
         />
       </svg>
     </div>
-    <h3 className="text-lg font-semibold text-foreground mb-2">
-      {title || "No results found"}
-    </h3>
-    <p className="text-sm text-muted-foreground">
-      {description || "Try adjusting your filters or search criteria"}
-    </p>
+    <h3 className="text-lg font-semibold text-foreground mb-2">{title || 'No results found'}</h3>
+    <p className="text-sm text-muted-foreground">{description || 'Try adjusting your filters or search criteria'}</p>
   </div>
 );
 
@@ -39,41 +36,35 @@ interface DefaultCellProps {
   maxWidth?: string;
 }
 
-export const DefaultCell: React.FC<DefaultCellProps> = ({
-  value,
-  icon = null,
-  maxWidth = "none",
-}) => (
+export const DefaultCell: React.FC<DefaultCellProps> = ({ value, icon = null, maxWidth = 'none' }) => (
   <div className="flex items-center h-full gap-2 group">
     <div
-      className={`flex items-center gap-2 ${maxWidth !== "none" ? "" : "max-w-full"}`}
-      style={maxWidth !== "none" ? { maxWidth } : undefined}
-      title={String(value || "")}
+      className={`flex items-center gap-2 ${maxWidth !== 'none' ? '' : 'max-w-full'}`}
+      style={maxWidth !== 'none' ? { maxWidth } : undefined}
+      title={String(value || '')}
     >
-      <span className="text-sm font-medium text-foreground wrap-break-word">
-        {value}
-      </span>
+      <span className="text-sm font-medium text-foreground wrap-break-word">{value}</span>
       {icon}
     </div>
   </div>
 );
 
-export interface DataTableColumn<R = any> {
-  field: string;
+export interface DataTableColumn<R = Record<string, unknown>> {
+  field: keyof R & string;
   headerName: string;
   headerIcon?: ReactNode;
   width?: string;
   minWidth?: number;
   flex?: number;
-  align?: "left" | "center" | "right";
-  headerAlign?: "left" | "center" | "right";
+  align?: 'left' | 'center' | 'right';
+  headerAlign?: 'left' | 'center' | 'right';
   sortable?: boolean;
-  renderCell?: (params: { row: R; value: any }) => ReactNode;
+  renderCell?: (params: { row: R; value: R[keyof R] }) => ReactNode;
 }
 
 // Reuse your existing calculateColumnWidths function
 const calculateColumnWidths = (
-  columns: DataTableColumn[],
+  columns: Pick<DataTableColumn, 'width' | 'flex' | 'minWidth'>[],
   containerWidth: number,
 ): string[] => {
   const totalFlex = columns.reduce((sum, col) => sum + (col.flex || 0), 0);
@@ -87,13 +78,13 @@ const calculateColumnWidths = (
     if (col.width) return col.width;
     if (col.flex && totalFlex > 0) {
       const flexWidth = (availableWidth * col.flex) / totalFlex;
-      return Math.max(flexWidth, col.minWidth || 150) + "px";
+      return `${Math.max(flexWidth, col.minWidth || 150)}px`;
     }
-    return (col.minWidth || 150) + "px";
+    return `${col.minWidth || 150}px`;
   });
 };
 
-interface DataTableProps<R = any> {
+interface DataTableProps<R = Record<string, unknown>> {
   columns: DataTableColumn<R>[];
   rows: R[];
   total?: number;
@@ -104,7 +95,7 @@ interface DataTableProps<R = any> {
   pageSize?: number;
   onPageSizeChange?: (pageSize: number) => void;
 }
-export default function DataTable<R extends Record<string, any>>({
+export default function DataTable<R extends Record<string, unknown>>({
   columns = [],
   rows = [],
   total = 0,
@@ -114,14 +105,11 @@ export default function DataTable<R extends Record<string, any>>({
   onRowClick,
   pageSize = 10,
 }: DataTableProps<R>) {
-  const { t } = useTranslation();
   const [sortConfig, setSortConfig] = useState<{
     field: string | null;
-    direction: "asc" | "desc" | null;
+    direction: 'asc' | 'desc' | null;
   }>({ field: null, direction: null });
-  const [_selectedRows, _setSelectedRows] = useState(
-    new Set<string | number>(),
-  );
+  const [_selectedRows, _setSelectedRows] = useState(new Set<string | number>());
 
   const pageCount = Math.ceil(total / pageSize);
   const shouldPaginate = total > 5;
@@ -130,11 +118,10 @@ export default function DataTable<R extends Record<string, any>>({
   const handleSort = (field: string) => {
     setSortConfig((prev) => {
       if (prev.field === field) {
-        if (prev.direction === "asc")
-          return { field, direction: "desc" as const };
-        if (prev.direction === "desc") return { field: null, direction: null };
+        if (prev.direction === 'asc') return { field, direction: 'desc' as const };
+        if (prev.direction === 'desc') return { field: null, direction: null };
       }
-      return { field, direction: "asc" as const };
+      return { field, direction: 'asc' as const };
     });
   };
 
@@ -147,14 +134,9 @@ export default function DataTable<R extends Record<string, any>>({
             <thead>
               <tr>
                 {columns.map((column, index) => {
-                  const headerAlign =
-                    column.headerAlign || column.align || "left";
+                  const headerAlign = column.headerAlign || column.align || 'left';
                   const textAlign =
-                    headerAlign === "right"
-                      ? "text-right"
-                      : headerAlign === "center"
-                        ? "text-center"
-                        : "text-left";
+                    headerAlign === 'right' ? 'text-right' : headerAlign === 'center' ? 'text-center' : 'text-left';
                   return (
                     <th
                       key={column.field}
@@ -162,7 +144,7 @@ export default function DataTable<R extends Record<string, any>>({
                       style={{ width: columnWidths[index] }}
                     >
                       <div
-                        className={`flex items-center gap-2 group ${headerAlign === "right" ? "justify-end" : headerAlign === "center" ? "justify-center" : ""}`}
+                        className={`flex items-center gap-2 group ${headerAlign === 'right' ? 'justify-end' : headerAlign === 'center' ? 'justify-center' : ''}`}
                       >
                         {/* Icons match the ones in your design (Home icon for Store Name, etc) */}
                         {column.headerIcon}
@@ -171,14 +153,11 @@ export default function DataTable<R extends Record<string, any>>({
                         </span>
                         {column.sortable !== false && (
                           <button
+                            type="button"
                             onClick={() => handleSort(column.field)}
                             className="text-muted-foreground/50 hover:text-foreground"
                           >
-                            {sortConfig.field === column.field
-                              ? sortConfig.direction === "asc"
-                                ? "↑"
-                                : "↓"
-                              : "⇅"}
+                            {sortConfig.field === column.field ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '⇅'}
                           </button>
                         )}
                       </div>
@@ -192,39 +171,32 @@ export default function DataTable<R extends Record<string, any>>({
               {rows.length === 0 ? (
                 <tr>
                   <td colSpan={columns.length}>
-                    <EmptyState
-                      title={t("layout.general.no_data_title")}
-                      description={t("layout.general.no_data")}
-                    />
+                    <EmptyState title="No results found" description="Try adjusting your filters or search criteria" />
                   </td>
                 </tr>
               ) : (
-                rows.map((row: any, rowIndex) => (
+                rows.map((row, rowIndex) => (
                   <tr
-                    key={(row as any).id || rowIndex}
+                    key={(row.id as string | number) || rowIndex}
                     onClick={() => onRowClick?.(row)}
                     className="bg-card hover:bg-muted/50 transition-all cursor-pointer group shadow-sm first:rounded-t-xl last:rounded-b-xl"
                   >
-                    {columns.map((column, colIndex) => {
-                      const align = column.align || "left";
+                    {columns.map((column) => {
+                      const align = column.align || 'left';
                       const textAlign =
-                        align === "right"
-                          ? "text-right"
-                          : align === "center"
-                            ? "text-center"
-                            : "text-left";
+                        align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left';
                       return (
                         <td
-                          key={colIndex}
+                          key={column.field}
                           className={`px-6 py-4 text-sm first:rounded-l-2xl last:rounded-r-2xl border-none ${textAlign}`}
                         >
                           {column.renderCell ? (
                             column.renderCell({
                               row,
-                              value: (row as any)[column.field],
+                              value: row[column.field],
                             })
                           ) : (
-                            <DefaultCell value={(row as any)[column.field]} />
+                            <DefaultCell value={row[column.field] as string | number | null | undefined} />
                           )}
                         </td>
                       );
@@ -239,11 +211,7 @@ export default function DataTable<R extends Record<string, any>>({
         {/* Pagination Section */}
         {shouldPaginate && (
           <div className="mt-4 flex items-center justify-between px-2">
-            <CustomPagination
-              page={page}
-              pageCount={pageCount}
-              setPage={handlePageChange}
-            />
+            <CustomPagination page={page} pageCount={pageCount} setPage={handlePageChange} />
           </div>
         )}
       </div>

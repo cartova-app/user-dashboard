@@ -1,22 +1,14 @@
 // components/ui/SearchInput.tsx
-"use client";
+'use client';
 
-import { Search, X } from "lucide-react";
-import React, {
-  forwardRef,
-  ReactNode,
-  ChangeEvent,
-  KeyboardEvent,
-} from "react";
-import { cn } from "@/core/lib/utils";
+import { Search, X } from 'lucide-react';
+import React, { type ChangeEvent, forwardRef, type KeyboardEvent, type ReactNode } from 'react';
+import { cn } from '@/core/lib/utils';
 
-type SearchInputSize = "sm" | "md" | "lg";
-type SearchInputVariant = "default" | "ghost" | "filled";
+type SearchInputSize = 'sm' | 'md' | 'lg';
+type SearchInputVariant = 'default' | 'ghost' | 'filled';
 
-interface SearchInputProps extends Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  "size" | "onChange"
-> {
+interface SearchInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
   value: string;
   onChange: (value: string) => void;
   onSearch?: (value: string) => void;
@@ -38,11 +30,11 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
       value,
       onChange,
       onSearch,
-      placeholder = "Search...",
+      placeholder = 'Search...',
       showClearButton = true,
       icon,
-      variant = "default",
-      size = "md",
+      variant = 'default',
+      size = 'md',
       isLoading = false,
       debounceMs,
       containerClassName,
@@ -98,8 +90,8 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     };
 
     const handleClear = () => {
-      setInternalValue("");
-      onChange("");
+      setInternalValue('');
+      onChange('');
       if (debounceMs) {
         setIsDebouncing(false);
       }
@@ -107,12 +99,12 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
       // Trigger search on Enter
-      if (e.key === "Enter" && onSearch) {
+      if (e.key === 'Enter' && onSearch) {
         onSearch(internalValue);
       }
 
       // Clear on Escape
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         handleClear();
       }
 
@@ -125,36 +117,33 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
       }
     };
 
-    const isClearable =
-      showClearButton && internalValue?.length > 0 && !isLoading;
+    const isClearable = showClearButton && internalValue?.length > 0 && !isLoading;
 
     // Size classes
     const sizeClasses: Record<SearchInputSize, string> = {
-      sm: "h-8 px-3 text-sm",
-      md: "h-10 px-4",
-      lg: "h-12 px-4 text-lg",
+      sm: 'h-8 px-3 text-sm',
+      md: 'h-10 px-4',
+      lg: 'h-12 px-4 text-lg',
     };
 
     // Variant classes
     const variantClasses: Record<SearchInputVariant, string> = {
-      default:
-        "border border-input bg-background hover:border-ring focus:border-ring focus:ring-2 focus:ring-ring/20",
-      ghost:
-        "border border-transparent bg-transparent hover:bg-accent focus:bg-background focus:border-input",
+      default: 'border border-input bg-background hover:border-ring focus:border-ring focus:ring-2 focus:ring-ring/20',
+      ghost: 'border border-transparent bg-transparent hover:bg-accent focus:bg-background focus:border-input',
       filled:
-        "border border-transparent bg-muted hover:bg-muted/80 focus:bg-background focus:border-ring focus:ring-2 focus:ring-ring/20",
+        'border border-transparent bg-muted hover:bg-muted/80 focus:bg-background focus:border-ring focus:ring-2 focus:ring-ring/20',
     };
 
     return (
-      <div className={cn("relative w-full", containerClassName)}>
+      <div className={cn('relative w-full', containerClassName)}>
         <div className="relative">
           {/* Search Icon */}
           <div
             className={cn(
-              "absolute left-3 top-1/2 -translate-y-1/2",
-              "flex items-center justify-center",
-              "text-muted-foreground",
-              isLoading && "text-primary",
+              'absolute left-3 top-1/2 -translate-y-1/2',
+              'flex items-center justify-center',
+              'text-muted-foreground',
+              isLoading && 'text-primary',
             )}
           >
             {isLoading ? (
@@ -170,21 +159,20 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           <input
             ref={ref}
             type="search"
-            role="searchbox"
             value={debounceMs ? internalValue : value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             className={cn(
-              "w-full rounded-lg",
-              "outline-none transition-all duration-200",
-              "text-foreground placeholder:text-muted-foreground",
-              "disabled:cursor-not-allowed disabled:opacity-50",
+              'w-full rounded-lg',
+              'outline-none transition-all duration-200',
+              'text-foreground placeholder:text-muted-foreground',
+              'disabled:cursor-not-allowed disabled:opacity-50',
               sizeClasses[size],
               variantClasses[variant],
-              "pl-10", // Padding for icon
-              isClearable && "pr-10", // Padding for clear button
-              "focus:outline-none",
+              'pl-10', // Padding for icon
+              isClearable && 'pr-10', // Padding for clear button
+              'focus:outline-none',
               className,
             )}
             aria-label={placeholder}
@@ -197,13 +185,13 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
               type="button"
               onClick={handleClear}
               className={cn(
-                "absolute right-3 top-1/2 -translate-y-1/2",
-                "flex items-center justify-center",
-                "h-5 w-5 rounded-full",
-                "text-muted-foreground hover:text-foreground",
-                "hover:bg-accent",
-                "transition-colors",
-                "focus:outline-none focus:ring-2 focus:ring-ring/20",
+                'absolute right-3 top-1/2 -translate-y-1/2',
+                'flex items-center justify-center',
+                'h-5 w-5 rounded-full',
+                'text-muted-foreground hover:text-foreground',
+                'hover:bg-accent',
+                'transition-colors',
+                'focus:outline-none focus:ring-2 focus:ring-ring/20',
               )}
               aria-label="Clear search"
             >
@@ -217,13 +205,13 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
               type="button"
               onClick={handleSearchClick}
               className={cn(
-                "absolute right-3 top-1/2 -translate-y-1/2",
-                "flex items-center justify-center",
-                "h-6 w-6 rounded",
-                "text-muted-foreground hover:text-primary",
-                "hover:bg-accent",
-                "transition-colors",
-                "focus:outline-none focus:ring-2 focus:ring-ring/20",
+                'absolute right-3 top-1/2 -translate-y-1/2',
+                'flex items-center justify-center',
+                'h-6 w-6 rounded',
+                'text-muted-foreground hover:text-primary',
+                'hover:bg-accent',
+                'transition-colors',
+                'focus:outline-none focus:ring-2 focus:ring-ring/20',
               )}
               aria-label="Search"
             >
@@ -250,6 +238,6 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   },
 );
 
-SearchInput.displayName = "SearchInput";
+SearchInput.displayName = 'SearchInput';
 
 export default SearchInput;

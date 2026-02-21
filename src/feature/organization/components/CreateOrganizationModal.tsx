@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import Modal from "@/core/components/common/Modal";
-import { InputWithIcon } from "@/core/components/common/InputWithIcon";
-import { Button } from "@/core/components/ui/button";
-import { authClient } from "@/core/config/auth-client";
-import { createOrganizationSchema } from "../schemas/organizationSchema";
-import { Building2 } from "lucide-react";
-import useGenerateSlug from "@/core/hooks/useGenerateSlug";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Building2 } from 'lucide-react';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { InputWithIcon } from '@/core/components/common/InputWithIcon';
+import Modal from '@/core/components/common/Modal';
+import { Button } from '@/core/components/ui/button';
+import { authClient } from '@/core/config/auth-client';
+import useGenerateSlug from '@/core/hooks/useGenerateSlug';
+import { createOrganizationSchema } from '../schemas/organizationSchema';
 
 export default function CreateOrganizationModal({
   open,
@@ -29,7 +29,7 @@ export default function CreateOrganizationModal({
   } = useForm({
     resolver: zodResolver(createOrganizationSchema),
     defaultValues: {
-      name: "",
+      name: '',
     },
   });
 
@@ -43,16 +43,16 @@ export default function CreateOrganizationModal({
       });
 
       if (error) {
-        throw new Error(error.message || "Failed to create organization");
+        throw new Error(error.message || 'Failed to create organization');
       }
 
-      toast.success("Organization created successfully");
+      toast.success('Organization created successfully');
       reset();
       onOpenChange(false);
       onSuccess?.();
     } catch (error) {
-      console.error("Error creating organization:", error);
-      toast.error((error as Error)?.message || "Failed to create organization");
+      console.error('Error creating organization:', error);
+      toast.error((error as Error)?.message || 'Failed to create organization');
     } finally {
       setIsLoading(false);
     }
@@ -93,16 +93,11 @@ export default function CreateOrganizationModal({
         />
 
         <div className="flex gap-3 justify-end">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => handleClose(false)}
-            disabled={isLoading}
-          >
+          <Button type="button" variant="outline" onClick={() => handleClose(false)} disabled={isLoading}>
             Cancel
           </Button>
           <Button type="submit" disabled={isLoading} variant="primary">
-            {isLoading ? "Creating..." : "Create"}
+            {isLoading ? 'Creating...' : 'Create'}
           </Button>
         </div>
       </form>

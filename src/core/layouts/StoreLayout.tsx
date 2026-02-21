@@ -1,17 +1,8 @@
-import { SidebarProvider } from "@/core/components/ui/sidebar";
-import AppSidebar from "@/core/components/layout/AppSideBar";
-import { TopNav } from "@/core/components/layout/TopNav";
-import {
-  Settings,
-  LayoutDashboard,
-  Box,
-  ShoppingBag,
-  UserRoundSearch,
-  BarChart3,
-  PenLine,
-  Code2,
-} from "lucide-react";
-import { useParams, Outlet } from "react-router-dom";
+import { BarChart3, Box, Code2, LayoutDashboard, PenLine, Settings, ShoppingBag, UserRoundSearch } from 'lucide-react';
+import { Outlet, useParams } from 'react-router-dom';
+import AppSidebar from '@/core/components/layout/AppSideBar';
+import { TopNav } from '@/core/components/layout/TopNav';
+import { SidebarProvider } from '@/core/components/ui/sidebar';
 
 export default function StoreLayout() {
   const { storeId } = useParams();
@@ -19,42 +10,42 @@ export default function StoreLayout() {
   // Menu items based on your image
   const items = [
     {
-      title: "Dashboard",
+      title: 'Dashboard',
       url: `/stores/${storeId}/dashboard`,
       icon: LayoutDashboard,
     },
     {
-      title: "Products",
+      title: 'Products',
       url: `/stores/${storeId}/products`,
       icon: Box,
     },
     {
-      title: "Orders",
+      title: 'Orders',
       url: `/stores/${storeId}/orders`,
       icon: ShoppingBag,
     },
     {
-      title: "Customers",
+      title: 'Customers',
       url: `/stores/${storeId}/customers`,
       icon: UserRoundSearch, // Or Users
     },
     {
-      title: "Analytics",
+      title: 'Analytics',
       url: `/stores/${storeId}/analytics`,
       icon: BarChart3,
     },
     {
-      title: "Appearance",
+      title: 'Appearance',
       url: `/stores/${storeId}/appearance`,
       icon: PenLine,
     },
     {
-      title: "Developer tools",
+      title: 'Developer tools',
       url: `/stores/${storeId}/developer-tools`,
       icon: Code2,
     },
     {
-      title: "Settings",
+      title: 'Settings',
       url: `/stores/${storeId}/settings`,
       icon: Settings,
     },

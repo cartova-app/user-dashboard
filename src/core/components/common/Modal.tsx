@@ -1,10 +1,4 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/core/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/core/components/ui/dialog';
 
 export type ModalProps = {
   open: boolean;
@@ -27,9 +21,9 @@ function Modal({
   title,
   description,
   children,
-  width = "75%",
+  width = '75%',
   showCloseButton = true,
-  className = "",
+  className = '',
   showHeader = true,
   closeOnOverlayClick = true,
   onOpenAutoFocus,
@@ -38,7 +32,7 @@ function Modal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className={`sm:max-w-[425px] backdrop-blur-sm ${className}`}
-        style={{ maxWidth: width, fontFamily: "Satoshi, sans-serif" }}
+        style={{ maxWidth: width, fontFamily: 'Satoshi, sans-serif' }}
         onOpenAutoFocus={onOpenAutoFocus}
         onInteractOutside={(e) => {
           if (!closeOnOverlayClick) {
@@ -52,9 +46,7 @@ function Modal({
             {title && (
               <DialogHeader className="text-left">
                 <DialogTitle className="text-xl font-bold">{title}</DialogTitle>
-                {description && (
-                  <DialogDescription>{description}</DialogDescription>
-                )}
+                {description && <DialogDescription>{description}</DialogDescription>}
               </DialogHeader>
             )}
 
@@ -74,7 +66,7 @@ function Modal({
         )}
 
         {/* Content */}
-        <div className={!showHeader ? "mt-0" : ""}>{children}</div>
+        <div className={!showHeader ? 'mt-0' : ''}>{children}</div>
       </DialogContent>
     </Dialog>
   );

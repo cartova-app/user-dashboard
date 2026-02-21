@@ -1,22 +1,20 @@
-import { Badge } from "@/core/components/ui/badge";
-import { ChevronRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { authClient } from "@/core/config/auth-client";
-import { InferOrganization } from "better-auth/client/plugins";
-import { cn } from "@/core/lib/utils";
-import HomeUserIcon from "@/assets/icons/home-user-icon.svg";
+import type { InferOrganization } from 'better-auth/client/plugins';
+import { ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import HomeUserIcon from '@/assets/icons/home-user-icon.svg';
+import { Badge } from '@/core/components/ui/badge';
+import { authClient } from '@/core/config/auth-client';
+import { cn } from '@/core/lib/utils';
 
 interface OrganizationCardProps {
-  organization: InferOrganization<{}>;
+  organization: InferOrganization<Record<string, never>>;
 }
 
-export default function OrganizationCard({
-  organization,
-}: OrganizationCardProps) {
+export default function OrganizationCard({ organization }: OrganizationCardProps) {
   const navigate = useNavigate();
   const { refetch: refetchSession } = authClient.useSession();
   const storeCount = organization?.metadata?.storeCount ?? 0;
-  const plan = organization?.metadata?.plan ?? "Free plan";
+  const plan = organization?.metadata?.plan ?? 'Free plan';
 
   const handleClick = async () => {
     await authClient.organization.setActive({
@@ -28,9 +26,10 @@ export default function OrganizationCard({
 
   return (
     <button
+      type="button"
       onClick={handleClick}
       className={cn(
-        "cursor-pointer group relative flex w-full max-w-2xl flex-col rounded-2xl border border-border bg-card p-6 text-left shadow-sm transition-all duration-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        'cursor-pointer group relative flex w-full max-w-2xl flex-col rounded-2xl border border-border bg-card p-6 text-left shadow-sm transition-all duration-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
       )}
     >
       {/* Top Section */}
@@ -39,17 +38,9 @@ export default function OrganizationCard({
           {/* Icon */}
           <div className="relative flex size-[50px] shrink-0 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/30">
             {organization?.logo ? (
-              <img
-                src={organization.logo}
-                alt={organization.name}
-                className="size-full rounded-full object-cover"
-              />
+              <img src={organization.logo} alt={organization.name} className="size-full rounded-full object-cover" />
             ) : (
-              <img
-                src={HomeUserIcon}
-                alt="Organization"
-                className="size-6 dark:brightness-0 dark:invert"
-              />
+              <img src={HomeUserIcon} alt="Organization" className="size-6 dark:brightness-0 dark:invert" />
             )}
           </div>
 
@@ -59,7 +50,7 @@ export default function OrganizationCard({
               {organization?.name}
             </h3>
             <p className="font-['Satoshi'] text-sm text-muted-foreground">
-              {storeCount} {storeCount === 1 ? "store" : "stores"}
+              {storeCount} {storeCount === 1 ? 'store' : 'stores'}
             </p>
           </div>
         </div>

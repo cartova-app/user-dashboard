@@ -6,7 +6,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/core/components/ui/pagination";
+} from '@/core/components/ui/pagination';
 
 interface CustomPaginationProps {
   page: number;
@@ -14,11 +14,7 @@ interface CustomPaginationProps {
   setPage?: (page: number) => void;
 }
 
-export default function CustomPagination({
-  page,
-  pageCount,
-  setPage,
-}: CustomPaginationProps) {
+export default function CustomPagination({ page, pageCount, setPage }: CustomPaginationProps) {
   // Logic to determine which page numbers to show
   const getPageNumbers = (): (number | string)[] => {
     const pages: (number | string)[] = [];
@@ -26,11 +22,11 @@ export default function CustomPagination({
       for (let i = 1; i <= pageCount; i++) pages.push(i);
     } else {
       if (page <= 3) {
-        pages.push(1, 2, 3, "...", pageCount);
+        pages.push(1, 2, 3, '...', pageCount);
       } else if (page > pageCount - 3) {
-        pages.push(1, "...", pageCount - 2, pageCount - 1, pageCount);
+        pages.push(1, '...', pageCount - 2, pageCount - 1, pageCount);
       } else {
-        pages.push(1, "...", page, "...", pageCount);
+        pages.push(1, '...', page, '...', pageCount);
       }
     }
     return pages;
@@ -53,14 +49,14 @@ export default function CustomPagination({
               e.preventDefault();
               if (page > 1) handlePageChange(page - 1);
             }}
-            className={`rounded-xl border-none hover:bg-accent ${page === 1 ? "pointer-events-none opacity-40" : ""}`}
+            className={`rounded-xl border-none hover:bg-accent ${page === 1 ? 'pointer-events-none opacity-40' : ''}`}
           />
         </PaginationItem>
 
         {/* Page Numbers */}
         {getPageNumbers().map((p, index) => (
-          <PaginationItem key={index}>
-            {p === "..." ? (
+          <PaginationItem key={p === '...' ? `ellipsis-${index}` : p}>
+            {p === '...' ? (
               <PaginationEllipsis />
             ) : (
               <PaginationLink
@@ -68,14 +64,14 @@ export default function CustomPagination({
                 isActive={page === p}
                 onClick={(e) => {
                   e.preventDefault();
-                  if (typeof p === "number") {
+                  if (typeof p === 'number') {
                     handlePageChange(p);
                   }
                 }}
                 className={`rounded-xl border-none transition-all duration-200 ${
                   page === p
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90 font-bold"
-                    : "text-muted-foreground hover:bg-accent"
+                    ? 'bg-primary text-primary-foreground hover:bg-primary/90 font-bold'
+                    : 'text-muted-foreground hover:bg-accent'
                 }`}
               >
                 {p}
@@ -92,7 +88,7 @@ export default function CustomPagination({
               e.preventDefault();
               if (page < pageCount) handlePageChange(page + 1);
             }}
-            className={`rounded-xl border-none hover:bg-accent ${page === pageCount ? "pointer-events-none opacity-40" : ""}`}
+            className={`rounded-xl border-none hover:bg-accent ${page === pageCount ? 'pointer-events-none opacity-40' : ''}`}
           />
         </PaginationItem>
       </PaginationContent>

@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { authClient } from "@/core/config/auth-client";
+import type { ReactNode } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { authClient } from '@/core/config/auth-client';
 
 interface GuestRouteProps {
   children: ReactNode;
@@ -22,7 +22,7 @@ const GuestRoute = ({ children }: GuestRouteProps) => {
   // Redirect to dashboard if already authenticated
   if (session) {
     // Redirect to the page they were trying to access, or dashboard
-    const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || '/';
     return <Navigate to={from} replace />;
   }
 

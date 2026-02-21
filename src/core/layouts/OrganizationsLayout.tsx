@@ -1,23 +1,23 @@
-import { SidebarProvider } from "@/core/components/ui/sidebar";
-import AppSidebar from "@/core/components/layout/AppSideBar";
-import { Settings, Store, Users } from "lucide-react";
-import { Outlet } from "react-router-dom";
-import { TopNav } from "../components/layout/TopNav";
+import { Settings, Store, Users } from 'lucide-react';
+import { Outlet } from 'react-router-dom';
+import AppSidebar from '@/core/components/layout/AppSideBar';
+import { SidebarProvider } from '@/core/components/ui/sidebar';
+import { TopNav } from '../components/layout/TopNav';
 
 export default function OrganizationsLayout() {
   const items = [
     {
-      title: "Stores",
+      title: 'Stores',
       url: `/stores`,
       icon: Store,
     },
     {
-      title: "Team",
+      title: 'Team',
       url: `/team`,
       icon: Users,
     },
     {
-      title: "Settings",
+      title: 'Settings',
       url: `/settings`,
       icon: Settings,
     },

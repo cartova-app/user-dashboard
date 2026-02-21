@@ -1,7 +1,7 @@
-import { LayoutGrid, Rows } from "lucide-react";
-import { Button } from "@/core/components/ui/button";
+import { LayoutGrid, Rows } from 'lucide-react';
+import { Button } from '@/core/components/ui/button';
 
-export type ViewType = "grid" | "list";
+export type ViewType = 'grid' | 'list';
 
 interface ViewToggleProps {
   view: ViewType;
@@ -15,11 +15,9 @@ export function ViewToggle({ view, setView }: ViewToggleProps) {
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => setView("grid")}
+        onClick={() => setView('grid')}
         className={`size-10 rounded-xl transition-all ${
-          view === "grid"
-            ? "bg-accent text-accent-foreground shadow-sm"
-            : "text-muted-foreground hover:bg-accent/50"
+          view === 'grid' ? 'bg-accent text-accent-foreground shadow-sm' : 'text-muted-foreground hover:bg-accent/50'
         }`}
       >
         <LayoutGrid className="size-5" strokeWidth={1.5} />
@@ -29,11 +27,9 @@ export function ViewToggle({ view, setView }: ViewToggleProps) {
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => setView("list")}
+        onClick={() => setView('list')}
         className={`size-10 rounded-xl transition-all ${
-          view === "list"
-            ? "bg-accent text-accent-foreground shadow-sm"
-            : "text-muted-foreground hover:bg-accent/50"
+          view === 'list' ? 'bg-accent text-accent-foreground shadow-sm' : 'text-muted-foreground hover:bg-accent/50'
         }`}
       >
         <Rows className="size-5" strokeWidth={1.5} />

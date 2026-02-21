@@ -1,3 +1,6 @@
+import type { LucideIcon } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import Logo from '@/assets/icons/logo.svg?react';
 import {
   Sidebar,
   SidebarContent,
@@ -5,14 +8,10 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
   SidebarTrigger,
-} from "@/core/components/ui/sidebar";
-
-import Logo from "@/assets/icons/logo.svg?react";
-import { Link, useLocation } from "react-router-dom";
-import { LucideIcon } from "lucide-react";
+} from '@/core/components/ui/sidebar';
 
 interface NavItem {
   title: string;
@@ -43,9 +42,7 @@ function AppSidebar({ items = [] }: AppSidebarProps) {
           <SidebarGroupContent>
             <SidebarMenu className="gap-1.5">
               {items.map((item) => {
-                const isActive =
-                  location.pathname === item.url ||
-                  location.pathname.startsWith(item.url + "/");
+                const isActive = location.pathname === item.url || location.pathname.startsWith(`${item.url}/`);
 
                 return (
                   <SidebarMenuItem key={item.title}>
@@ -66,10 +63,7 @@ function AppSidebar({ items = [] }: AppSidebarProps) {
                         group/menu-button
                       "
                     >
-                      <Link
-                        to={item.url}
-                        className="flex items-center gap-3 w-full"
-                      >
+                      <Link to={item.url} className="flex items-center gap-3 w-full">
                         {/* Active indicator */}
                         {isActive && (
                           <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 rounded-r-full bg-[#5a6e00] dark:bg-[#ecff77] group-data-[collapsible=icon]:hidden" />
@@ -77,13 +71,11 @@ function AppSidebar({ items = [] }: AppSidebarProps) {
 
                         {/* Icon */}
                         <item.icon
-                          className={`size-5 shrink-0 transition-colors duration-200 ${isActive ? "text-[#5a6e00] dark:text-[#ecff77]" : "text-muted-foreground/80 group-hover:text-sidebar-accent-foreground"}`}
+                          className={`size-5 shrink-0 transition-colors duration-200 ${isActive ? 'text-[#5a6e00] dark:text-[#ecff77]' : 'text-muted-foreground/80 group-hover:text-sidebar-accent-foreground'}`}
                         />
 
                         {/* Title */}
-                        <span className="truncate group-data-[collapsible=icon]:hidden">
-                          {item.title}
-                        </span>
+                        <span className="truncate group-data-[collapsible=icon]:hidden">{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

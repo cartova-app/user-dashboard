@@ -1,9 +1,9 @@
-import SignUpForm from "../components/RegisterForm";
-import OtpForm from "../components/OtpForm";
-import SignUpBannar from "@/assets/images/sign-up-bannar.png";
-import OtpBannar from "@/assets/images/otp-bannar.png";
-import { Tabs, TabsContent } from "@/core/components/ui/tabs";
-import { useSignUpStore, TabType } from "../stores/useSignUpStore";
+import OtpBannar from '@/assets/images/otp-bannar.png';
+import SignUpBannar from '@/assets/images/sign-up-bannar.png';
+import { Tabs, TabsContent } from '@/core/components/ui/tabs';
+import OtpForm from '../components/OtpForm';
+import SignUpForm from '../components/RegisterForm';
+import { type TabType, useSignUpStore } from '../stores/useSignUpStore';
 
 const SignUp = () => {
   const { currentTab, setCurrentTab } = useSignUpStore();
@@ -12,17 +12,17 @@ const SignUp = () => {
     {
       id: 1,
       image: SignUpBannar,
-      title: "Build Your Dream Store, Manage Everything, Grow Globally",
+      title: 'Build Your Dream Store, Manage Everything, Grow Globally',
     },
     {
       id: 2,
       image: OtpBannar,
-      title: "Your security is our priority",
+      title: 'Your security is our priority',
     },
   ];
 
   // Get the current slide based on the active tab
-  const currentSlide = currentTab === "otp" ? slides[1] : slides[0];
+  const currentSlide = currentTab === 'otp' ? slides[1] : slides[0];
 
   const handleTabChange = (value: string) => {
     setCurrentTab(value as TabType);
@@ -49,9 +49,7 @@ const SignUp = () => {
               alt={currentSlide.title}
               className="rounded-lg w-[500px] h-auto transition-opacity duration-300"
             />
-            <h2 className="text-2xl font-bold mt-4 text-center">
-              {currentSlide.title}
-            </h2>
+            <h2 className="text-2xl font-bold mt-4 text-center">{currentSlide.title}</h2>
           </div>
         </div>
       </div>

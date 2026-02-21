@@ -1,8 +1,8 @@
-import { Controller, useForm } from "react-hook-form";
-import { Building2, FileText, Store } from "lucide-react";
-import { InputWithIcon } from "@/core/components/common/InputWithIcon";
-import { useProfileStore } from "../store/profileStore";
-import { StepperButtons } from "./StepperButtons";
+import { Building2, FileText, Store } from 'lucide-react';
+import { Controller, useForm } from 'react-hook-form';
+import { InputWithIcon } from '@/core/components/common/InputWithIcon';
+import { useProfileStore } from '../store/profileStore';
+import { StepperButtons } from './StepperButtons';
 
 interface OrganizationFormData {
   organizationName: string;
@@ -19,9 +19,9 @@ export default function OrganizationForm() {
     formState: { errors },
   } = useForm<OrganizationFormData>({
     defaultValues: {
-      organizationName: formData.organizationName || "",
-      storeName: formData.storeName || "",
-      storeDescription: formData.storeDescription || "",
+      organizationName: formData.organizationName || '',
+      storeName: formData.storeName || '',
+      storeDescription: formData.storeDescription || '',
     },
   });
 
@@ -33,12 +33,10 @@ export default function OrganizationForm() {
   return (
     <div className="w-full py-6">
       <div className="mb-8 space-y-1.5">
-        <h1 className="text-[32px] font-bold leading-[38px] font-family-satoshi">
-          Let's Set Up Your Store
-        </h1>
+        <h1 className="text-[32px] font-bold leading-[38px] font-family-satoshi">Let's Set Up Your Store</h1>
         <p
           className="text-[16px] leading-6 text-muted-foreground font-family-satoshi"
-          style={{ fontFamily: "Satoshi, sans-serif" }}
+          style={{ fontFamily: 'Satoshi, sans-serif' }}
         >
           Tell us more about your business to get started.
         </p>
@@ -49,15 +47,15 @@ export default function OrganizationForm() {
           name="organizationName"
           control={control}
           rules={{
-            required: "Organization name is required",
+            required: 'Organization name is required',
             minLength: {
               value: 2,
-              message: "Organization name must be at least 2 characters",
+              message: 'Organization name must be at least 2 characters',
             },
           }}
           render={({ field }) => (
             <InputWithIcon
-              label={"Organization Name"}
+              label={'Organization Name'}
               id="organizationName"
               type="text"
               placeholder="Organization Name"
@@ -71,15 +69,15 @@ export default function OrganizationForm() {
           name="storeName"
           control={control}
           rules={{
-            required: "Store name is required",
+            required: 'Store name is required',
             minLength: {
               value: 2,
-              message: "Store name must be at least 2 characters",
+              message: 'Store name must be at least 2 characters',
             },
           }}
           render={({ field }) => (
             <InputWithIcon
-              label={"Store Name"}
+              label={'Store Name'}
               id="storeName"
               type="text"
               placeholder="Store Name"
@@ -94,7 +92,7 @@ export default function OrganizationForm() {
           control={control}
           render={({ field }) => (
             <InputWithIcon
-              label={"Store Description"}
+              label={'Store Description'}
               id="storeDescription"
               type="text"
               placeholder="What do you sell? (e.g), Handcrafted jewelry, eco-friendly apparel, digital products."

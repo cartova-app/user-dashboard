@@ -1,18 +1,14 @@
-import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { BadgeDollarSign, Building2, FileText, Globe, Palette } from 'lucide-react';
+import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { Building2, Globe, FileText } from 'lucide-react';
-
-import Modal from '@/core/components/common/Modal';
 import { InputWithIcon } from '@/core/components/common/InputWithIcon';
+import Modal from '@/core/components/common/Modal';
+import { MultiSelect } from '@/core/components/common/MultiSelect';
 import { SelectWithIcon } from '@/core/components/common/Select';
 import { Button } from '@/core/components/ui/button';
-
-import { createStoreSchema } from '../schemas/createStoreSchema';
-import { BadgeDollarSign } from 'lucide-react';
-import { Palette } from 'lucide-react';
-import { MultiSelect } from '@/core/components/common/MultiSelect';
 import useCreateStore from '../api/mutations/useCreateStore';
+import { createStoreSchema } from '../schemas/createStoreSchema';
 
 interface CreateStoreModalProps {
   open: boolean;
@@ -29,12 +25,8 @@ interface StoreFormData {
   allowedCurrencies: ('EGP' | 'USD' | 'EUR' | 'GBP')[];
 }
 
-export default function CreateStoreModal({
-  open,
-  onOpenChange,
-}: CreateStoreModalProps) {
-  const { mutateAsync: createStoreFn, isPending: isCreateStorePending } =
-    useCreateStore();
+export default function CreateStoreModal({ open, onOpenChange }: CreateStoreModalProps) {
+  const { mutateAsync: createStoreFn, isPending: isCreateStorePending } = useCreateStore();
 
   const { control, handleSubmit, reset } = useForm<StoreFormData>({
     resolver: zodResolver(createStoreSchema),
@@ -53,9 +45,7 @@ export default function CreateStoreModal({
     try {
       const payload = {
         ...data,
-        allowedCurrencies: data.allowedCurrencies?.length
-          ? data.allowedCurrencies
-          : [data.defaultCurrency],
+        allowedCurrencies: data.allowedCurrencies?.length ? data.allowedCurrencies : [data.defaultCurrency],
       };
 
       await createStoreFn(payload);
@@ -65,8 +55,7 @@ export default function CreateStoreModal({
       reset();
       onOpenChange(false);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Failed to create Store';
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create Store';
       toast.error(errorMessage);
     }
   };
@@ -77,13 +66,7 @@ export default function CreateStoreModal({
   };
 
   return (
-    <Modal
-      open={open}
-      onOpenChange={handleClose}
-      title="Create Store"
-      description="Create a new store"
-      width="60%"
-    >
+    <Modal open={open} onOpenChange={handleClose} title="Create Store" description="Create a new store" width="60%">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Row 1: Store Name + Domain */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -221,19 +204,10 @@ export default function CreateStoreModal({
 
         {/* Actions */}
         <div className="flex justify-end gap-3 pt-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => handleClose(false)}
-            disabled={isCreateStorePending}
-          >
+          <Button type="button" variant="outline" onClick={() => handleClose(false)} disabled={isCreateStorePending}>
             Cancel
           </Button>
-          <Button
-            type="submit"
-            disabled={isCreateStorePending}
-            variant="primary"
-          >
+          <Button type="submit" disabled={isCreateStorePending} variant="primary">
             {isCreateStorePending ? 'Creating...' : 'Create'}
           </Button>
         </div>

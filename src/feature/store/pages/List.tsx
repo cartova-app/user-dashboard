@@ -1,16 +1,15 @@
-import PageHeading from "@/core/components/common/PageHeading";
-import { ViewToggle, ViewType } from "@/core/components/common/ViewToggle";
-import { Button } from "@/core/components/ui/button";
-import { Plus } from "lucide-react";
-import { useState } from "react";
-import StoreCard from "../components/StoreCard";
-import StoresDataTable from "../components/StoresDataTable";
-import useGetAllStores from "../api/quiries/useGetAllStores";
-import { Loader2 } from "lucide-react";
-import CreateStoreModal from "../components/CreateStoreModal";
+import { Loader2, Plus } from 'lucide-react';
+import { useState } from 'react';
+import PageHeading from '@/core/components/common/PageHeading';
+import { ViewToggle, type ViewType } from '@/core/components/common/ViewToggle';
+import { Button } from '@/core/components/ui/button';
+import useGetAllStores from '../api/quiries/useGetAllStores';
+import CreateStoreModal from '../components/CreateStoreModal';
+import StoreCard from '../components/StoreCard';
+import StoresDataTable from '../components/StoresDataTable';
 
 const List = () => {
-  const [view, setView] = useState<ViewType>("grid");
+  const [view, setView] = useState<ViewType>('grid');
   const [addOpenModel, setAddOpenModel] = useState(false);
   const { data, isPending } = useGetAllStores();
   console.log(data);
@@ -30,23 +29,17 @@ const List = () => {
         />
         <div className="flex">
           <ViewToggle view={view} setView={setView} />
-          <Button
-            variant="primary"
-            className="ml-4"
-            onClick={() => setAddOpenModel(true)}
-          >
+          <Button variant="primary" className="ml-4" onClick={() => setAddOpenModel(true)}>
             <Plus className="w-4 h-4 mr-2" />
             New Store
           </Button>
         </div>
       </div>
-      {view === "grid" ? (
+      {view === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {data?.items?.map(
-            (store: { id: string; name: string; [key: string]: unknown }) => (
-              <StoreCard key={store.id} store={store} />
-            ),
-          )}
+          {data?.items?.map((store: { id: string; name: string; [key: string]: unknown }) => (
+            <StoreCard key={store.id} store={store} />
+          ))}
         </div>
       ) : (
         <StoresDataTable data={data} />

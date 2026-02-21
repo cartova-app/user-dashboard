@@ -1,21 +1,21 @@
-import { lazy } from "react";
-import ProtectedRoute from "@/core/utils/ProtectRoute";
-import SuspenseWrapper from "@/core/utils/SuspenseWrapper";
-import StoreLayout from "@/core/layouts/StoreLayout";
-import { Navigate } from "react-router-dom";
+import { lazy } from 'react';
+import { Navigate } from 'react-router-dom';
+import StoreLayout from '@/core/layouts/StoreLayout';
+import ProtectedRoute from '@/core/utils/ProtectRoute';
+import SuspenseWrapper from '@/core/utils/SuspenseWrapper';
 
-const DashboardPage = lazy(() => import("./pages/Dashboard"));
-const ProductsPage = lazy(() => import("./pages/Products"));
-const OrdersPage = lazy(() => import("./pages/Orders"));
-const CustomersPage = lazy(() => import("./pages/Customers"));
-const AnalyticsPage = lazy(() => import("./pages/Analytics"));
-const AppearancePage = lazy(() => import("./pages/Appearance"));
-const DeveloperToolsPage = lazy(() => import("./pages/DeveloperTools"));
-const SettingsPage = lazy(() => import("./pages/Settings"));
+const DashboardPage = lazy(() => import('./pages/Dashboard'));
+const ProductsPage = lazy(() => import('./pages/Products'));
+const OrdersPage = lazy(() => import('./pages/Orders'));
+const CustomersPage = lazy(() => import('./pages/Customers'));
+const AnalyticsPage = lazy(() => import('./pages/Analytics'));
+const AppearancePage = lazy(() => import('./pages/Appearance'));
+const DeveloperToolsPage = lazy(() => import('./pages/DeveloperTools'));
+const SettingsPage = lazy(() => import('./pages/Settings'));
 
 export const storeRoutes = [
   {
-    path: "/stores/:storeId",
+    path: '/stores/:storeId',
     element: (
       <ProtectedRoute>
         <SuspenseWrapper>
@@ -29,7 +29,7 @@ export const storeRoutes = [
         element: <Navigate to="dashboard" replace />,
       },
       {
-        path: "dashboard",
+        path: 'dashboard',
         element: (
           <SuspenseWrapper>
             <DashboardPage />
@@ -37,7 +37,7 @@ export const storeRoutes = [
         ),
       },
       {
-        path: "products",
+        path: 'products',
         element: (
           <SuspenseWrapper>
             <ProductsPage />
@@ -45,7 +45,7 @@ export const storeRoutes = [
         ),
       },
       {
-        path: "orders",
+        path: 'orders',
         element: (
           <SuspenseWrapper>
             <OrdersPage />
@@ -53,7 +53,7 @@ export const storeRoutes = [
         ),
       },
       {
-        path: "customers",
+        path: 'customers',
         element: (
           <SuspenseWrapper>
             <CustomersPage />
@@ -61,7 +61,7 @@ export const storeRoutes = [
         ),
       },
       {
-        path: "analytics",
+        path: 'analytics',
         element: (
           <SuspenseWrapper>
             <AnalyticsPage />
@@ -69,7 +69,7 @@ export const storeRoutes = [
         ),
       },
       {
-        path: "appearance",
+        path: 'appearance',
         element: (
           <SuspenseWrapper>
             <AppearancePage />
@@ -77,7 +77,7 @@ export const storeRoutes = [
         ),
       },
       {
-        path: "developer-tools",
+        path: 'developer-tools',
         element: (
           <SuspenseWrapper>
             <DeveloperToolsPage />
@@ -85,7 +85,7 @@ export const storeRoutes = [
         ),
       },
       {
-        path: "settings",
+        path: 'settings',
         element: (
           <SuspenseWrapper>
             <SettingsPage />

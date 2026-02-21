@@ -1,4 +1,7 @@
 // components/SelectWithIcon.js
+
+import { forwardRef, type ReactNode } from 'react';
+import { Label } from '@/core/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -6,10 +9,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
-import { Label } from "@/core/components/ui/label";
-import { cn } from "@/core/lib/utils";
-import { forwardRef, ReactNode } from "react";
+} from '@/core/components/ui/select';
+import { cn } from '@/core/lib/utils';
 
 interface SelectOption {
   value: string;
@@ -30,18 +31,15 @@ interface SelectWithIconProps {
   disabled?: boolean;
 }
 
-export const SelectWithIcon = forwardRef<
-  HTMLButtonElement,
-  SelectWithIconProps
->(function SelectWithIcon(
+export const SelectWithIcon = forwardRef<HTMLButtonElement, SelectWithIconProps>(function SelectWithIcon(
   {
     label,
     id,
-    placeholder = "Select...",
+    placeholder = 'Select...',
     icon,
-    className = "",
+    className = '',
     required = false,
-    error = "",
+    error = '',
     options = [],
     value,
     onValueChange,
@@ -50,7 +48,7 @@ export const SelectWithIcon = forwardRef<
   ref,
 ) {
   return (
-    <div className={cn("space-y-1", className)}>
+    <div className={cn('space-y-1', className)}>
       {/* Label */}
       {label && (
         <Label htmlFor={id} className="text-sm font-medium text-foreground">
@@ -60,21 +58,17 @@ export const SelectWithIcon = forwardRef<
 
       {/* Select */}
       <div className="relative">
-        {icon && (
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-10">
-            {icon}
-          </div>
-        )}
+        {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-10">{icon}</div>}
 
         <Select value={value} onValueChange={onValueChange} disabled={disabled}>
           <SelectTrigger
             ref={ref}
             id={id}
             className={cn(
-              "w-full h-12! rounded-[12px] border-2 border-input px-3",
-              "focus:ring-2 focus:ring-ring focus:border-ring",
-              icon && "pl-10",
-              error && "border-destructive focus:ring-destructive",
+              'w-full h-12! rounded-[12px] border-2 border-input px-3',
+              'focus:ring-2 focus:ring-ring focus:border-ring',
+              icon && 'pl-10',
+              error && 'border-destructive focus:ring-destructive',
             )}
           >
             <SelectValue placeholder={placeholder} />
@@ -93,9 +87,7 @@ export const SelectWithIcon = forwardRef<
       </div>
 
       {/* Error */}
-      {error && (
-        <p className="text-sm text-destructive mt-1 text-start">{error}</p>
-      )}
+      {error && <p className="text-sm text-destructive mt-1 text-start">{error}</p>}
     </div>
   );
 });

@@ -30,3 +30,5 @@ tsconfig.node.tsbuildinfo
 
 # Agent Skills
 **/skills
+
+.pnpm-store

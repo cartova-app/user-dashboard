@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { ComponentProps, useCallback, useEffect, useRef } from "react";
+import { type ComponentProps, useCallback, useEffect, useRef } from 'react';
 
-import { cn } from "@/core/lib/utils";
+import { cn } from '@/core/lib/utils';
 
 type DotLoaderProps = {
   frames: number[][];
@@ -11,7 +11,7 @@ type DotLoaderProps = {
   duration?: number;
   repeatCount?: number;
   onComplete?: () => void;
-} & ComponentProps<"div">;
+} & ComponentProps<'div'>;
 
 export const DotLoader = ({
   frames,
@@ -26,7 +26,7 @@ export const DotLoader = ({
   const gridRef = useRef<HTMLDivElement>(null);
   const currentIndex = useRef(0);
   const repeats = useRef(0);
-  const interval = useRef<any>(null);
+  const interval = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const applyFrameToDots = useCallback(
     (dots: HTMLDivElement[], frameIndex: number) => {
@@ -34,7 +34,7 @@ export const DotLoader = ({
       if (!frame) return;
 
       dots.forEach((dot, index) => {
-        dot.classList.toggle("active", frame.includes(index));
+        dot.classList.toggle('active', frame.includes(index));
       });
     },
     [frames],
@@ -43,7 +43,7 @@ export const DotLoader = ({
   useEffect(() => {
     currentIndex.current = 0;
     repeats.current = 0;
-  }, [frames]);
+  }, []);
 
   useEffect(() => {
     if (isPlaying) {
@@ -56,7 +56,7 @@ export const DotLoader = ({
       interval.current = setInterval(() => {
         applyFrameToDots(dots, currentIndex.current);
         if (currentIndex.current + 1 >= frames.length) {
-          if (repeatCount != -1 && repeats.current + 1 >= repeatCount) {
+          if (repeatCount !== -1 && repeats.current + 1 >= repeatCount) {
             clearInterval(interval.current!);
             onComplete?.();
           }
@@ -74,13 +74,9 @@ export const DotLoader = ({
   }, [frames, isPlaying, applyFrameToDots, duration, repeatCount, onComplete]);
 
   return (
-    <div
-      {...props}
-      ref={gridRef}
-      className={cn("grid w-fit grid-cols-7 gap-0.5", className)}
-    >
+    <div {...props} ref={gridRef} className={cn('grid w-fit grid-cols-7 gap-0.5', className)}>
       {Array.from({ length: 49 }).map((_, i) => (
-        <div key={i} className={cn("h-1.5 w-1.5 rounded-sm", dotClassName)} />
+        <div key={`dot-${i.toString()}`} className={cn('h-1.5 w-1.5 rounded-sm', dotClassName)} />
       ))}
     </div>
   );

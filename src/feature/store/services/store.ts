@@ -1,5 +1,5 @@
-import axiosInstance from "@/core/config/axiosInstance";
-import { API_END_POINTS } from "@/core/constants/api";
+import axiosInstance from '@/core/config/axiosInstance';
+import { API_END_POINTS } from '@/core/constants/api';
 
 export interface StoreData {
   name: string;

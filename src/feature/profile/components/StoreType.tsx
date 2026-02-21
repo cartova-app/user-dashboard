@@ -1,19 +1,8 @@
-import { useForm } from "react-hook-form";
-import { Card, CardContent } from "@/core/components/ui/card";
-import {
-  Shirt,
-  Smartphone,
-  Pizza,
-  Heart,
-  Sofa,
-  Code,
-  Palette,
-  HelpCircle,
-  Check,
-  LucideIcon,
-} from "lucide-react";
-import { useProfileStore } from "../store/profileStore";
-import { StepperButtons } from "./StepperButtons";
+import { Check, Code, Heart, HelpCircle, type LucideIcon, Palette, Pizza, Shirt, Smartphone, Sofa } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { Card, CardContent } from '@/core/components/ui/card';
+import { useProfileStore } from '../store/profileStore';
+import { StepperButtons } from './StepperButtons';
 
 interface Category {
   id: string;
@@ -28,68 +17,67 @@ interface StoreTypeFormData {
 
 export function StoreTypeSelection() {
   const { formData, updateFormData, nextStep } = useProfileStore();
-  const { handleSubmit, setValue, watch, register } =
-    useForm<StoreTypeFormData>({
-      defaultValues: {
-        category: formData.category || null,
-      },
-    });
+  const { handleSubmit, setValue, watch, register } = useForm<StoreTypeFormData>({
+    defaultValues: {
+      category: formData.category || null,
+    },
+  });
 
-  const selectedCategoryValue = watch("category");
+  const selectedCategoryValue = watch('category');
 
   const categories: Category[] = [
     {
-      id: "fashion",
-      name: "Fashion & Apparel",
+      id: 'fashion',
+      name: 'Fashion & Apparel',
       icon: Shirt,
-      color: "text-pink-500",
+      color: 'text-pink-500',
     },
     {
-      id: "electronics",
-      name: "Electronics",
+      id: 'electronics',
+      name: 'Electronics',
       icon: Smartphone,
-      color: "text-blue-500",
+      color: 'text-blue-500',
     },
     {
-      id: "food",
-      name: "Food & Drinks",
+      id: 'food',
+      name: 'Food & Drinks',
       icon: Pizza,
-      color: "text-orange-500",
+      color: 'text-orange-500',
     },
     {
-      id: "beauty",
-      name: "Beauty",
+      id: 'beauty',
+      name: 'Beauty',
       icon: Heart,
-      color: "text-red-500",
+      color: 'text-red-500',
     },
     {
-      id: "furniture",
-      name: "Furniture",
+      id: 'furniture',
+      name: 'Furniture',
       icon: Sofa,
-      color: "text-brown-500",
+      color: 'text-brown-500',
     },
     {
-      id: "digital",
-      name: "Digital Product",
+      id: 'digital',
+      name: 'Digital Product',
       icon: Code,
-      color: "text-green-500",
+      color: 'text-green-500',
     },
     {
-      id: "art",
-      name: "Art & Crafts",
+      id: 'art',
+      name: 'Art & Crafts',
       icon: Palette,
-      color: "text-purple-500",
+      color: 'text-purple-500',
     },
     {
-      id: "other",
-      name: "Other/ Not Sure",
+      id: 'other',
+      name: 'Other/ Not Sure',
       icon: HelpCircle,
-      color: "text-gray-500",
+      color: 'text-gray-500',
     },
   ];
 
   const handleCategorySelect = (category: Category) => {
-    setValue("category", category.id, { shouldValidate: true });
+    setValue('category', category.id, { shouldValidate: true });
     updateFormData({ category: category.id });
   };
 
@@ -101,16 +89,10 @@ export function StoreTypeSelection() {
   return (
     <div className="w-full py-4">
       <div className="mb-6 space-y-1">
-        <h1
-          className="text-[28px] font-bold leading-[34px]"
-          style={{ fontFamily: "Satoshi, sans-serif" }}
-        >
+        <h1 className="text-[28px] font-bold leading-[34px]" style={{ fontFamily: 'Satoshi, sans-serif' }}>
           What Type of Store Are You Building?
         </h1>
-        <p
-          className="text-[14px] leading-5 text-muted-foreground"
-          style={{ fontFamily: "Satoshi, sans-serif" }}
-        >
+        <p className="text-[14px] leading-5 text-muted-foreground" style={{ fontFamily: 'Satoshi, sans-serif' }}>
           Choose a category to get started with tailored templates
         </p>
       </div>
@@ -131,13 +113,13 @@ export function StoreTypeSelection() {
                                     hover:shadow-md group
                                     ${
                                       isSelected
-                                        ? "border-2 shadow-md bg-primary/10"
-                                        : "border border-border hover:border-primary/60"
+                                        ? 'border-2 shadow-md bg-primary/10'
+                                        : 'border border-border hover:border-primary/60'
                                     }
                                 `}
                 style={{
-                  fontFamily: "Satoshi, sans-serif",
-                  borderColor: isSelected ? "var(--primary)" : undefined,
+                  fontFamily: 'Satoshi, sans-serif',
+                  borderColor: isSelected ? 'var(--primary)' : undefined,
                 }}
               >
                 {/* Selection Indicator - Top Right */}
@@ -145,24 +127,12 @@ export function StoreTypeSelection() {
                   {isSelected ? (
                     <div
                       className="w-6 h-6 rounded-full flex items-center justify-center shadow-md"
-                      style={{ backgroundColor: "var(--primary)" }}
+                      style={{ backgroundColor: 'var(--primary)' }}
                     >
-                      <Check
-                        className="w-4 h-4 text-primary-foreground"
-                        strokeWidth={3}
-                      />
+                      <Check className="w-4 h-4 text-primary-foreground" strokeWidth={3} />
                     </div>
                   ) : (
-                    <div
-                      className="w-6 h-6 rounded-full border-2 border-border transition-colors"
-                      style={{ borderColor: undefined }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.borderColor = "var(--primary)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.borderColor = "")
-                      }
-                    />
+                    <div className="w-6 h-6 rounded-full border-2 border-border transition-colors hover:border-primary" />
                   )}
                 </div>
 
@@ -175,21 +145,17 @@ export function StoreTypeSelection() {
                                                 transition-all duration-300
                                                 ${
                                                   isSelected
-                                                    ? "shadow-lg scale-105"
-                                                    : "bg-muted group-hover:bg-muted/80"
+                                                    ? 'shadow-lg scale-105'
+                                                    : 'bg-muted group-hover:bg-muted/80'
                                                 }
                                             `}
                       style={{
-                        backgroundColor: isSelected
-                          ? "var(--primary)"
-                          : undefined,
+                        backgroundColor: isSelected ? 'var(--primary)' : undefined,
                       }}
                     >
                       <IconComponent
                         className={`w-7 h-7 transition-colors ${
-                          isSelected
-                            ? "text-primary-foreground"
-                            : category.color
+                          isSelected ? 'text-primary-foreground' : category.color
                         }`}
                         strokeWidth={2}
                       />
@@ -201,8 +167,8 @@ export function StoreTypeSelection() {
                                                 text-center text-xs font-semibold transition-colors
                                                 ${
                                                   isSelected
-                                                    ? "text-foreground"
-                                                    : "text-muted-foreground group-hover:text-foreground"
+                                                    ? 'text-foreground'
+                                                    : 'text-muted-foreground group-hover:text-foreground'
                                                 }
                                             `}
                     >
@@ -216,10 +182,7 @@ export function StoreTypeSelection() {
         </div>
 
         {/* Hidden input for react-hook-form */}
-        <input
-          type="hidden"
-          {...register("category", { required: "Please select a category" })}
-        />
+        <input type="hidden" {...register('category', { required: 'Please select a category' })} />
 
         <StepperButtons disabled={!selectedCategoryValue} showBackButton />
       </form>

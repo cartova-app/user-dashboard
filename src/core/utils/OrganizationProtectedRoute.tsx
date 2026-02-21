@@ -1,14 +1,12 @@
-import { ReactNode } from "react";
-import { Navigate } from "react-router-dom";
-import { authClient } from "@/core/config/auth-client";
+import type { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
+import { authClient } from '@/core/config/auth-client';
 
 interface OrganizationProtectedRouteProps {
   children: ReactNode;
 }
 
-const OrganizationProtectedRoute = ({
-  children,
-}: OrganizationProtectedRouteProps) => {
+const OrganizationProtectedRoute = ({ children }: OrganizationProtectedRouteProps) => {
   const { data, error, isPending } = authClient.useSession();
 
   // Show loading state only on initial load (not during background refetches like org switch)

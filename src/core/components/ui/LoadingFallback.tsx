@@ -1,4 +1,5 @@
-import { DotLoader } from "@/core/components/ui/dot-loader";
+import { DotLoader } from '@/core/components/ui/dot-loader';
+
 const game = [
   [14, 7, 0, 8, 6, 13, 20],
   [14, 7, 13, 20, 16, 27, 21],

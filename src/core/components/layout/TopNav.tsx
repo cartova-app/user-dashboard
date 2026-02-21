@@ -1,11 +1,7 @@
-import {
-  Bell,
-  ChevronDown,
-  LogOut,
-  Settings,
-  User,
-  UserCircle,
-} from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { Bell, ChevronDown, LogOut, Settings, User, UserCircle } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@/core/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,12 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/core/components/ui/dropdown-menu';
-import { Button } from '@/core/components/ui/button';
-import { Link, useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
-import { Badge } from '../ui/badge';
-import { ThemeToggle } from '../common/ThemeToggle';
 import authClient from '@/core/config/auth-client';
+import { ThemeToggle } from '../common/ThemeToggle';
+import { Badge } from '../ui/badge';
 
 export function TopNav() {
   const { data: activeOrganization } = authClient.useActiveOrganization();
@@ -48,7 +41,10 @@ export function TopNav() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-1 text-sm font-semibold text-foreground outline-none">
+            <button
+              type="button"
+              className="flex items-center gap-1 text-sm font-semibold text-foreground outline-none"
+            >
               {activeOrganization?.name}
               <ChevronDown className="ml-1 size-4 text-muted-foreground" />
             </button>
@@ -93,11 +89,7 @@ export function TopNav() {
         {/* Action Icons */}
         <div className="flex items-center gap-4">
           {/* Notification with Badge */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative text-muted-foreground"
-          >
+          <Button variant="ghost" size="icon" className="relative text-muted-foreground">
             <Bell className="size-5" />
             <span className="absolute right-2.5 top-2.5 flex size-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
@@ -106,18 +98,12 @@ export function TopNav() {
           </Button>
 
           {/* Language / Region */}
-          <span className="cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground">
-            EN
-          </span>
+          <span className="cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground">EN</span>
 
           {/* Profile */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-muted-foreground"
-              >
+              <Button variant="ghost" size="icon" className="text-muted-foreground">
                 <User className="size-5" />
               </Button>
             </DropdownMenuTrigger>
@@ -131,10 +117,7 @@ export function TopNav() {
                 <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={handleSignOut}
-                className="text-red-600 focus:text-red-600"
-              >
+              <DropdownMenuItem onClick={handleSignOut} className="text-red-600 focus:text-red-600">
                 <LogOut className="mr-2 size-4" />
                 <span>Log out</span>
               </DropdownMenuItem>

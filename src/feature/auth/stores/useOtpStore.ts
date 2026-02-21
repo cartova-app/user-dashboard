@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
 interface OtpState {
   otp: string;
@@ -11,7 +11,7 @@ interface OtpState {
 }
 
 export const useOtpStore = create<OtpState>((set) => ({
-  otp: "",
+  otp: '',
   isComplete: false,
   error: null,
 
@@ -24,7 +24,7 @@ export const useOtpStore = create<OtpState>((set) => ({
 
   clearOtp: () =>
     set({
-      otp: "",
+      otp: '',
       isComplete: false,
       error: null,
     }),
@@ -34,11 +34,11 @@ export const useOtpStore = create<OtpState>((set) => ({
   validateOtp: () => {
     const { otp } = useOtpStore.getState();
     if (otp.length !== 4) {
-      set({ error: "Please enter a 4-digit code" });
+      set({ error: 'Please enter a 4-digit code' });
       return false;
     }
     if (!/^\d+$/.test(otp)) {
-      set({ error: "OTP must contain only numbers" });
+      set({ error: 'OTP must contain only numbers' });
       return false;
     }
     set({ error: null });

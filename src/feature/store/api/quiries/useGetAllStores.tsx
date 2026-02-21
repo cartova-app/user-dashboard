@@ -1,9 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import { getAllStoresFn } from "../../services/store";
+import { useQuery } from '@tanstack/react-query';
+import { getAllStoresFn } from '../../services/store';
 
 const useGetAllStores = () => {
   return useQuery({
-    queryKey: ["stores"],
+    queryKey: ['stores'],
     queryFn: () => getAllStoresFn(),
   });
 };

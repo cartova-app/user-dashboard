@@ -1,5 +1,5 @@
-import { Outlet } from "react-router-dom";
-import TopBar from "../components/TopBar";
+import { Outlet } from 'react-router-dom';
+import TopBar from '../components/TopBar';
 
 const OrganizationLayout = () => {
   return (

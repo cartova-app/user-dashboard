@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Check } from "lucide-react";
-import { useProfileStore } from "../store/profileStore";
-import { StepperButtons } from "./StepperButtons";
-import SuccessStep from "./SuccessStep";
-import ThemeImage1 from "@/assets/images/theme-1.png";
-import ThemeImage2 from "@/assets/images/theme-2.png";
-import ThemeImage3 from "@/assets/images/theme-3.png";
-import ThemeImage4 from "@/assets/images/theme-4.png";
-import ThemeImage5 from "@/assets/images/theme-5.png";
-import ThemeImage6 from "@/assets/images/theme-6.png";
+import { Check } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import ThemeImage1 from '@/assets/images/theme-1.png';
+import ThemeImage2 from '@/assets/images/theme-2.png';
+import ThemeImage3 from '@/assets/images/theme-3.png';
+import ThemeImage4 from '@/assets/images/theme-4.png';
+import ThemeImage5 from '@/assets/images/theme-5.png';
+import ThemeImage6 from '@/assets/images/theme-6.png';
+import { useProfileStore } from '../store/profileStore';
+import { StepperButtons } from './StepperButtons';
+import SuccessStep from './SuccessStep';
 
 interface ThemeCategory {
   id: string;
@@ -22,16 +22,11 @@ interface ThemeFormData {
 }
 
 interface ThemeTypeSelectionProps {
-  onComplete?: (
-    formData: import("../store/profileStore").ProfileFormData,
-  ) => Promise<void>;
+  onComplete?: (formData: import('../store/profileStore').ProfileFormData) => Promise<void>;
   isSubmitting?: boolean;
 }
 
-export function ThemeTypeSelection({
-  onComplete,
-  isSubmitting = false,
-}: ThemeTypeSelectionProps) {
+export function ThemeTypeSelection({ onComplete, isSubmitting = false }: ThemeTypeSelectionProps) {
   const { formData, updateFormData } = useProfileStore();
   const [showSuccessStep, setShowSuccessStep] = useState(false);
 
@@ -41,19 +36,19 @@ export function ThemeTypeSelection({
     },
   });
 
-  const selectedThemeValue = watch("theme");
+  const selectedThemeValue = watch('theme');
 
   const categories: ThemeCategory[] = [
-    { id: "default", name: "Default Theme", image: ThemeImage1 },
-    { id: "minimal", name: "Modren Minimal", image: ThemeImage2 },
-    { id: "luxury", name: "Artisan Crafts", image: ThemeImage3 },
-    { id: "classic", name: "Classic", image: ThemeImage4 },
-    { id: "industrial", name: "Industrial", image: ThemeImage5 },
-    { id: "bold", name: "Bold & Dynamic", image: ThemeImage6 },
+    { id: 'default', name: 'Default Theme', image: ThemeImage1 },
+    { id: 'minimal', name: 'Modren Minimal', image: ThemeImage2 },
+    { id: 'luxury', name: 'Artisan Crafts', image: ThemeImage3 },
+    { id: 'classic', name: 'Classic', image: ThemeImage4 },
+    { id: 'industrial', name: 'Industrial', image: ThemeImage5 },
+    { id: 'bold', name: 'Bold & Dynamic', image: ThemeImage6 },
   ];
 
   const handleThemeSelect = (theme: ThemeCategory) => {
-    setValue("theme", theme.id, { shouldValidate: true });
+    setValue('theme', theme.id, { shouldValidate: true });
     updateFormData({ theme: theme.id });
   };
 
@@ -76,9 +71,7 @@ export function ThemeTypeSelection({
   return (
     <div className="w-full py-4">
       <div className="mb-6 space-y-1">
-        <h1 className="text-[28px] font-bold leading-[34px] font-family-satoshi">
-          Choose Your Store Theme
-        </h1>
+        <h1 className="text-[28px] font-bold leading-[34px] font-family-satoshi">Choose Your Store Theme</h1>
 
         <p className="text-[14px] leading-5 text-muted-foreground font-family-satoshi">
           Select a theme to customize the look and feel of your store
@@ -92,25 +85,29 @@ export function ThemeTypeSelection({
             const isSelected = selectedThemeValue === theme.id;
 
             return (
-              <div
+              <button
+                type="button"
                 key={theme.id}
                 onClick={() => handleThemeSelect(theme)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleThemeSelect(theme);
+                  }
+                }}
                 className={`
-                  cursor-pointer rounded-xl overflow-hidden border group relative
+                  cursor-pointer rounded-xl overflow-hidden border group relative text-left
                   transition-[border-color,box-shadow] duration-200 ease-out
                   ${
                     isSelected
-                      ? "border-primary shadow-md ring-2 ring-primary/20"
-                      : "border-border hover:border-primary/50 hover:shadow-sm"
+                      ? 'border-primary shadow-md ring-2 ring-primary/20'
+                      : 'border-border hover:border-primary/50 hover:shadow-sm'
                   }
                 `}
               >
                 {isSelected && (
                   <div className="absolute top-3 right-3 z-10 w-7 h-7 bg-primary rounded-full flex items-center justify-center animate-in fade-in duration-200">
-                    <Check
-                      className="w-4 h-4 text-primary-foreground"
-                      strokeWidth={3}
-                    />
+                    <Check className="w-4 h-4 text-primary-foreground" strokeWidth={3} />
                   </div>
                 )}
 
@@ -125,26 +122,23 @@ export function ThemeTypeSelection({
                 <div className="p-3 text-center bg-card">
                   <p
                     className={`text-sm md:text-base font-semibold transition-colors duration-200 ease-out ${
-                      isSelected ? "text-primary" : "text-card-foreground group-hover:text-foreground"
+                      isSelected ? 'text-primary' : 'text-card-foreground group-hover:text-foreground'
                     }`}
                   >
                     {theme.name}
                   </p>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
 
         {/* Hidden input */}
-        <input
-          type="hidden"
-          {...register("theme", { required: "Please select a theme" })}
-        />
+        <input type="hidden" {...register('theme', { required: 'Please select a theme' })} />
 
         <StepperButtons
           disabled={!selectedThemeValue || isSubmitting}
-          continueText={isSubmitting ? "Creating Store..." : "Create Store"}
+          continueText={isSubmitting ? 'Creating Store...' : 'Create Store'}
           showBackButton
         />
       </form>
