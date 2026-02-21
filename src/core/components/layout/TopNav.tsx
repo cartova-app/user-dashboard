@@ -5,35 +5,36 @@ import {
   Settings,
   User,
   UserCircle,
-} from "lucide-react";
+} from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/core/components/ui/dropdown-menu";
-import { Button } from "@/core/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import { Badge } from "../ui/badge";
-import { ThemeToggle } from "../common/ThemeToggle";
-import authClient from "@/core/config/auth-client";
+} from '@/core/components/ui/dropdown-menu';
+import { Button } from '@/core/components/ui/button';
+import { Link, useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { Badge } from '../ui/badge';
+import { ThemeToggle } from '../common/ThemeToggle';
+import authClient from '@/core/config/auth-client';
 
 export function TopNav() {
   const { data: activeOrganization } = authClient.useActiveOrganization();
   const { data: organizations } = authClient.useListOrganizations();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const setActiveOrganization = async (id: string) => {
-    await authClient.organization.setActive({
-      organizationId: id,
-    });
-    navigate(`/`);
+    await authClient.organization.setActive({ organizationId: id });
+    await queryClient.invalidateQueries();
+    navigate('/stores');
   };
 
   const handleSignOut = async () => {
     await authClient.signOut();
-    navigate("/login");
+    navigate('/login');
   };
 
   return (
@@ -60,7 +61,7 @@ export function TopNav() {
                   key={org.id}
                   onClick={() => !isActive && setActiveOrganization(org.id)}
                   className={`flex items-center justify-between gap-2 px-3 py-2 cursor-pointer ${
-                    isActive ? "" : "text-muted-foreground"
+                    isActive ? '' : 'text-muted-foreground'
                   }`}
                 >
                   <span className="truncate">{org.name}</span>

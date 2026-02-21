@@ -9,10 +9,10 @@ interface OrganizationProtectedRouteProps {
 const OrganizationProtectedRoute = ({
   children,
 }: OrganizationProtectedRouteProps) => {
-  const { data, error, isPending, isRefetching } = authClient.useSession();
+  const { data, error, isPending } = authClient.useSession();
 
-  // Show loading state while checking authentication
-  if (isPending || isRefetching) {
+  // Show loading state only on initial load (not during background refetches like org switch)
+  if (isPending) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>

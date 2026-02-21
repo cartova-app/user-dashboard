@@ -92,5 +92,5 @@ The route guards use Better Auth's `useSession` hook which:
 Check the feature route files for examples:
 
 - `src/feature/auth/routes.jsx` - Uses GuestRoute
-- `src/feature/dashboard/routes.jsx` - Uses ProtectedRoute
+- `src/feature/store/routes.tsx` - Uses ProtectedRoute
 - `src/feature/profile/routes.jsx` - Uses ProtectedRoute

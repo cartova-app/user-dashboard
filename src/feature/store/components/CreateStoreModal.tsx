@@ -1,18 +1,18 @@
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { Building2, Globe, FileText } from "lucide-react";
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+import { Building2, Globe, FileText } from 'lucide-react';
 
-import Modal from "@/core/components/common/Modal";
-import { InputWithIcon } from "@/core/components/common/InputWithIcon";
-import { SelectWithIcon } from "@/core/components/common/Select";
-import { Button } from "@/core/components/ui/button";
+import Modal from '@/core/components/common/Modal';
+import { InputWithIcon } from '@/core/components/common/InputWithIcon';
+import { SelectWithIcon } from '@/core/components/common/Select';
+import { Button } from '@/core/components/ui/button';
 
-import { createStoreSchema } from "../schemas/createStoreSchema";
-import { BadgeDollarSign } from "lucide-react";
-import { Palette } from "lucide-react";
-import { MultiSelect } from "@/core/components/common/MultiSelect";
-import useCreateStore from "../api/mutations/useCreateStore";
+import { createStoreSchema } from '../schemas/createStoreSchema';
+import { BadgeDollarSign } from 'lucide-react';
+import { Palette } from 'lucide-react';
+import { MultiSelect } from '@/core/components/common/MultiSelect';
+import useCreateStore from '../api/mutations/useCreateStore';
 
 interface CreateStoreModalProps {
   open: boolean;
@@ -23,10 +23,10 @@ interface StoreFormData {
   name: string;
   domain?: string;
   description?: string;
-  theme: "basic" | "advanced";
-  type: "ecommerce" | "services";
-  defaultCurrency: "EGP" | "USD" | "EUR" | "GBP";
-  allowedCurrencies: ("EGP" | "USD" | "EUR" | "GBP")[];
+  theme: 'basic' | 'advanced';
+  type: 'ecommerce' | 'services';
+  defaultCurrency: 'EGP' | 'USD' | 'EUR' | 'GBP';
+  allowedCurrencies: ('EGP' | 'USD' | 'EUR' | 'GBP')[];
 }
 
 export default function CreateStoreModal({
@@ -39,13 +39,13 @@ export default function CreateStoreModal({
   const { control, handleSubmit, reset } = useForm<StoreFormData>({
     resolver: zodResolver(createStoreSchema),
     defaultValues: {
-      name: "",
+      name: '',
       domain: undefined,
-      description: "",
-      theme: "basic",
-      type: "ecommerce",
-      defaultCurrency: "EGP",
-      allowedCurrencies: ["EGP"],
+      description: '',
+      theme: 'basic',
+      type: 'ecommerce',
+      defaultCurrency: 'EGP',
+      allowedCurrencies: ['EGP'],
     },
   });
 
@@ -60,13 +60,13 @@ export default function CreateStoreModal({
 
       await createStoreFn(payload);
 
-      toast.success("Store created successfully");
+      toast.success('Store created successfully');
 
       reset();
       onOpenChange(false);
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : "Failed to create Store";
+        error instanceof Error ? error.message : 'Failed to create Store';
       toast.error(errorMessage);
     }
   };
@@ -145,8 +145,8 @@ export default function CreateStoreModal({
                 icon={<Palette className="w-5 h-5" />}
                 error={error?.message}
                 options={[
-                  { value: "basic", label: "Basic" },
-                  { value: "advanced", label: "Advanced" },
+                  { value: 'basic', label: 'Basic' },
+                  { value: 'advanced', label: 'Advanced' },
                 ]}
                 value={field.value}
                 onValueChange={field.onChange}
@@ -164,8 +164,8 @@ export default function CreateStoreModal({
                 icon={<Building2 className="w-5 h-5" />}
                 error={error?.message}
                 options={[
-                  { value: "ecommerce", label: "Ecommerce" },
-                  { value: "services", label: "Services" },
+                  { value: 'ecommerce', label: 'Ecommerce' },
+                  { value: 'services', label: 'Services' },
                 ]}
                 value={field.value}
                 onValueChange={field.onChange}
@@ -186,9 +186,9 @@ export default function CreateStoreModal({
                 icon={<BadgeDollarSign className="w-5 h-5" />}
                 error={error?.message}
                 options={[
-                  { value: "EGP", label: "Egyptian Pound (EGP)" },
-                  { value: "USD", label: "US Dollar (USD)" },
-                  { value: "EUR", label: "Euro (EUR)" },
+                  { value: 'EGP', label: 'Egyptian Pound (EGP)' },
+                  { value: 'USD', label: 'US Dollar (USD)' },
+                  { value: 'EUR', label: 'Euro (EUR)' },
                 ]}
                 value={field.value}
                 onValueChange={field.onChange}
@@ -198,24 +198,21 @@ export default function CreateStoreModal({
           <Controller
             name="allowedCurrencies"
             control={control}
-            render={({ field, fieldState: { error } }) => {
-              console.log(error);
-              return (
-                <MultiSelect
-                  label="Allowed Currencies"
-                  placeholder="Select Currencies"
-                  icon={<BadgeDollarSign className="w-5 h-5" />}
-                  error={error?.message}
-                  options={[
-                    { value: "EGP", label: "Egyptian Pound (EGP)" },
-                    { value: "USD", label: "US Dollar (USD)" },
-                    { value: "EUR", label: "Euro (EUR)" },
-                  ]}
-                  value={field.value}
-                  onValueChange={field.onChange}
-                />
-              );
-            }}
+            render={({ field, fieldState: { error } }) => (
+              <MultiSelect
+                label="Allowed Currencies"
+                placeholder="Select Currencies"
+                icon={<BadgeDollarSign className="w-5 h-5" />}
+                error={error?.message}
+                options={[
+                  { value: 'EGP', label: 'Egyptian Pound (EGP)' },
+                  { value: 'USD', label: 'US Dollar (USD)' },
+                  { value: 'EUR', label: 'Euro (EUR)' },
+                ]}
+                value={field.value}
+                onValueChange={field.onChange}
+              />
+            )}
           />
 
           {/* Placeholder for future field */}
@@ -237,7 +234,7 @@ export default function CreateStoreModal({
             disabled={isCreateStorePending}
             variant="primary"
           >
-            {isCreateStorePending ? "Creating..." : "Create"}
+            {isCreateStorePending ? 'Creating...' : 'Create'}
           </Button>
         </div>
       </form>

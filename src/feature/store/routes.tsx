@@ -4,7 +4,7 @@ import SuspenseWrapper from "@/core/utils/SuspenseWrapper";
 import StoreLayout from "@/core/layouts/StoreLayout";
 import { Navigate } from "react-router-dom";
 
-const DashboardPage = lazy(() => import("@/feature/dashboard/pages/Dashboard"));
+const DashboardPage = lazy(() => import("./pages/Dashboard"));
 const ProductsPage = lazy(() => import("./pages/Products"));
 const OrdersPage = lazy(() => import("./pages/Orders"));
 const CustomersPage = lazy(() => import("./pages/Customers"));
