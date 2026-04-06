@@ -1,5 +1,9 @@
 import axiosInstance from '@/core/config/axiosInstance';
-import { API_END_POINTS } from '@/core/constants/api';
+import {
+  storeCreateMutationDef,
+  storeDetailQueryDef,
+  storeListQueryDef,
+} from '@/feature/store/api/storeQueryDefinitions';
 
 export interface StoreData {
   name: string;
@@ -11,12 +15,27 @@ export interface StoreData {
   allowedCurrencies?: string[];
 }
 
-export const getAllStoresFn = async () => {
-  const response = await axiosInstance.get(API_END_POINTS.STORE.GET_ALL);
-  return response.data;
+/** Shape returned by GET /stores/:id — extend when the API exposes more fields. */
+export type StoreDetail = {
+  id: string;
+  name: string;
+  [key: string]: unknown;
 };
 
-export const createStoreFn = async (data: StoreData) => {
-  const response = await axiosInstance.post(API_END_POINTS.STORE.CREATE, data);
-  return response.data;
-};
+export async function fetchStoreList() {
+  const { url } = storeListQueryDef();
+  const { data } = await axiosInstance.get(url);
+  return data;
+}
+
+export async function fetchStoreById(storeId: string): Promise<StoreDetail> {
+  const { url } = storeDetailQueryDef(storeId);
+  const { data } = await axiosInstance.get<StoreDetail>(url);
+  return data;
+}
+
+export async function createStoreFn(data: StoreData) {
+  const { url } = storeCreateMutationDef();
+  const { data: created } = await axiosInstance.post(url, data);
+  return created;
+}

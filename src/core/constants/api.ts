@@ -3,8 +3,17 @@ export const API_END_POINTS = {
     GET_ALL: '/api/dashboard/stores',
     CREATE: '/api/dashboard/stores',
     GET: '/api/dashboard/stores',
+    BY_ID: (storeId: string) => `/api/dashboard/stores/${storeId}`,
   },
-  CATEGORY: {
-    GET: '/category',
+  PRODUCTS: {
+    BASE: (storeId: string) => `/api/dashboard/stores/${storeId}/products`,
+    BY_ID: (storeId: string, productId: string) => `/api/dashboard/stores/${storeId}/products/${productId}`,
+    IMAGES: (storeId: string, productId: string) => `/api/dashboard/stores/${storeId}/products/${productId}/images`,
+  },
+  CATEGORIES: {
+    BASE: (storeId: string) => `/api/dashboard/stores/${storeId}/categories`,
+    BY_ID: (storeId: string, categoryId: string) => `/api/dashboard/stores/${storeId}/categories/${categoryId}`,
+    ICON: (storeId: string, categoryId: string) => `/api/dashboard/stores/${storeId}/categories/${categoryId}/icon`,
+    IS_NAME_AVAILABLE: (storeId: string) => `/api/dashboard/stores/${storeId}/categories/is-name-available`,
   },
 };

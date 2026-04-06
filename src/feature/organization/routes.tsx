@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import OrganizationsLayout from '@/core/layouts/OrganizationsLayout';
+import NotFound from '@/core/pages/NotFound';
 import OrganizationProtectedRoute from '@/core/utils/OrganizationProtectedRoute';
 import ProtectedRoute from '@/core/utils/ProtectRoute';
 import SuspenseWrapper from '@/core/utils/SuspenseWrapper';
@@ -29,6 +30,7 @@ export const organizationRoutes = [
           </SuspenseWrapper>
         ),
       },
+      { path: '*', element: <NotFound variant="embedded" /> },
     ],
   },
   {
@@ -71,6 +73,7 @@ export const organizationRoutes = [
           </SuspenseWrapper>
         ),
       },
+      { path: '*', element: <NotFound variant="embedded" /> },
     ],
   },
 ];

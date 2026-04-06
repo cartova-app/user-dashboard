@@ -1,17 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createStoreFn } from '../../services/store';
+import { storeCreateMutationDef, storeKeys } from '@/feature/store/api/storeQueryDefinitions';
+import { createStoreFn } from '@/feature/store/services/store';
 
 const useCreateStore = () => {
-  // Get QueryClient from the context
   const queryClient = useQueryClient();
+  const { mutationKey } = storeCreateMutationDef();
   return useMutation({
+    mutationKey,
     mutationFn: createStoreFn,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['stores'] });
+      queryClient.invalidateQueries({ queryKey: storeKeys.all });
     },
     onError: (error) => {
-      console.error('Login failed:', error);
-      throw error; // Re-throw for component handling
+      console.error('Create store failed:', error);
     },
   });
 };

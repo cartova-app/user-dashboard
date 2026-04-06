@@ -1,11 +1,13 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
-import StoreLayout from '@/core/layouts/StoreLayout';
-import ProtectedRoute from '@/core/utils/ProtectRoute';
+import NotFound from '@/core/pages/NotFound';
+import { globalLoaderPendingElement } from '@/core/routing/globalDataRouteUi';
 import SuspenseWrapper from '@/core/utils/SuspenseWrapper';
+import { STORE_LAYOUT_ROUTE_ID, StoreRoute, storeLayoutLoader } from '@/feature/store/storeRoute';
 
 const DashboardPage = lazy(() => import('./pages/Dashboard'));
 const ProductsPage = lazy(() => import('./pages/Products'));
+const CategoriesPage = lazy(() => import('./pages/Categories'));
 const OrdersPage = lazy(() => import('./pages/Orders'));
 const CustomersPage = lazy(() => import('./pages/Customers'));
 const AnalyticsPage = lazy(() => import('./pages/Analytics'));
@@ -15,14 +17,11 @@ const SettingsPage = lazy(() => import('./pages/Settings'));
 
 export const storeRoutes = [
   {
+    id: STORE_LAYOUT_ROUTE_ID,
     path: '/stores/:storeId',
-    element: (
-      <ProtectedRoute>
-        <SuspenseWrapper>
-          <StoreLayout />
-        </SuspenseWrapper>
-      </ProtectedRoute>
-    ),
+    loader: storeLayoutLoader,
+    hydrateFallbackElement: globalLoaderPendingElement,
+    element: <StoreRoute />,
     children: [
       {
         index: true,
@@ -41,6 +40,14 @@ export const storeRoutes = [
         element: (
           <SuspenseWrapper>
             <ProductsPage />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: 'categories',
+        element: (
+          <SuspenseWrapper>
+            <CategoriesPage />
           </SuspenseWrapper>
         ),
       },
@@ -92,6 +99,7 @@ export const storeRoutes = [
           </SuspenseWrapper>
         ),
       },
+      { path: '*', element: <NotFound variant="embedded" /> },
     ],
   },
 ];
