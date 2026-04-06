@@ -17,7 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/core/components/ui/dropdown-menu';
-import type { Product } from '../../services/product';
+import type { Product } from '../../types';
 
 interface ProductRow extends Record<string, unknown> {
   id: string;

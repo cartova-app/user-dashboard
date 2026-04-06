@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Package, Tag, Upload, X } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Controller, useForm, type Resolver } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -11,18 +12,23 @@ import { SelectWithIcon } from "@/core/components/common/Select";
 import { Button } from "@/core/components/ui/button";
 import { Label } from "@/core/components/ui/label";
 import {
-  useAddProductImage,
-  useRemoveProductImage,
-} from "../../api/mutations/useProductImages";
-import useUpdateProduct from "../../api/mutations/useUpdateProduct";
-import useGetCategories from "../../api/queries/useGetCategories";
+  addProductImageMutationOptions,
+  categoryListQueryOptions,
+  removeProductImageMutationOptions,
+  updateProductMutationOptions,
+} from "@/feature/store/api/storeQueryDefinitions";
 import {
   createProductSchema,
   type CreateProductFormData,
 } from "../../schemas/productSchema";
-import type { Product } from "../../services/product";
+import type { Product } from '../../types';
 
-type ProductImage = Product["images"][number];
+type ProductImage = Product['images'][number];
+
+interface FilePreview {
+  file: File;
+  preview: string;
+}
 
 interface EditProductModalProps {
   open: boolean;
@@ -36,16 +42,23 @@ export default function EditProductModal({
   product,
 }: EditProductModalProps) {
   const { storeId } = useParams<{ storeId: string }>();
-  const { data: categoriesData } = useGetCategories(storeId!, { limit: 100 });
-  const { mutateAsync: updateProduct, isPending: isUpdating } =
-    useUpdateProduct(storeId!);
-  const { mutateAsync: addImage } = useAddProductImage(storeId!);
-  const { mutateAsync: removeImage } = useRemoveProductImage(storeId!);
+  const queryClient = useQueryClient();
+  const { data: categoriesData } = useQuery({
+    ...categoryListQueryOptions(storeId ?? "", { limit: 100 }),
+    enabled: Boolean(storeId),
+  });
+  const { mutateAsync: updateProduct, isPending: isUpdating } = useMutation(
+    updateProductMutationOptions(queryClient, storeId ?? ""),
+  );
+  const { mutateAsync: addImage } = useMutation(
+    addProductImageMutationOptions(queryClient, storeId ?? ""),
+  );
+  const { mutateAsync: removeImage } = useMutation(
+    removeProductImageMutationOptions(queryClient, storeId ?? ""),
+  );
 
   const [existingImages, setExistingImages] = useState<ProductImage[]>([]);
-  const [newImageFiles, setNewImageFiles] = useState<
-    { file: File; preview: string }[]
-  >([]);
+  const [newImageFiles, setNewImageFiles] = useState<FilePreview[]>([]);
   const [removedImageKeys, setRemovedImageKeys] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

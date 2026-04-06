@@ -4,6 +4,7 @@ import { I18nextProvider } from 'react-i18next';
 import { RouterProvider } from 'react-router-dom';
 import { ErrorBoundary } from '@/core/components/common/ErrorBoundary';
 import { Toaster } from '@/core/components/ui/sonner';
+import SessionQuerySyncProvider from '@/core/providers/session-query-sync-provider';
 import i18n from '@/core/config/localization';
 import { ThemeProvider } from '@/core/providers/theme-provider';
 import { queryClient } from './query-client';
@@ -14,6 +15,7 @@ function App() {
     <I18nextProvider i18n={i18n}>
       <Toaster />
       <QueryClientProvider client={queryClient}>
+        <SessionQuerySyncProvider />
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <ErrorBoundary>
             <RouterProvider router={router} />

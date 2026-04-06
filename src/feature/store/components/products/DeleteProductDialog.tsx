@@ -1,10 +1,11 @@
 import { Loader2, Trash2 } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import Modal from '@/core/components/common/Modal';
 import { Button } from '@/core/components/ui/button';
-import useDeleteProduct from '../../api/mutations/useDeleteProduct';
-import type { Product } from '../../services/product';
+import { deleteProductMutationOptions } from '@/feature/store/api/storeQueryDefinitions';
+import type { Product } from '../../types';
 
 interface DeleteProductDialogProps {
   product: Product | null;
@@ -14,7 +15,10 @@ interface DeleteProductDialogProps {
 
 export default function DeleteProductDialog({ product, open, onOpenChange }: DeleteProductDialogProps) {
   const { storeId } = useParams<{ storeId: string }>();
-  const { mutateAsync: deleteProduct, isPending } = useDeleteProduct(storeId!);
+  const queryClient = useQueryClient();
+  const { mutateAsync: deleteProduct, isPending } = useMutation(
+    deleteProductMutationOptions(queryClient, storeId ?? ''),
+  );
 
   const handleDelete = async () => {
     if (!product) return;

@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImagePlus, Loader2, Package, Tag, Upload, X } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useRef, useState } from "react";
 import { Controller, useForm, type Resolver } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -9,9 +10,11 @@ import { MultiSelect } from "@/core/components/common/MultiSelect";
 import { SelectWithIcon } from "@/core/components/common/Select";
 import { Button } from "@/core/components/ui/button";
 import { Label } from "@/core/components/ui/label";
-import useCreateProduct from "../../api/mutations/useCreateProduct";
-import { useAddProductImage } from "../../api/mutations/useProductImages";
-import useGetCategories from "../../api/queries/useGetCategories";
+import {
+  addProductImageMutationOptions,
+  categoryListQueryOptions,
+  createProductMutationOptions,
+} from "@/feature/store/api/storeQueryDefinitions";
 import {
   createProductSchema,
   type CreateProductFormData,
@@ -22,19 +25,29 @@ interface AddProductFormProps {
   onCancel: () => void;
 }
 
+interface FilePreview {
+  file: File;
+  preview: string;
+}
+
 export default function AddProductForm({
   onSuccess,
   onCancel,
 }: AddProductFormProps) {
   const { storeId } = useParams<{ storeId: string }>();
-  const { data: categoriesData } = useGetCategories(storeId!, { limit: 100 });
-  const { mutateAsync: createProduct, isPending: isCreating } =
-    useCreateProduct(storeId!);
-  const { mutateAsync: addImage } = useAddProductImage(storeId!);
+  const queryClient = useQueryClient();
+  const { data: categoriesData } = useQuery({
+    ...categoryListQueryOptions(storeId ?? "", { limit: 100 }),
+    enabled: Boolean(storeId),
+  });
+  const { mutateAsync: createProduct, isPending: isCreating } = useMutation(
+    createProductMutationOptions(queryClient, storeId ?? ""),
+  );
+  const { mutateAsync: addImage } = useMutation(
+    addProductImageMutationOptions(queryClient, storeId ?? ""),
+  );
 
-  const [imageFiles, setImageFiles] = useState<
-    { file: File; preview: string }[]
-  >([]);
+  const [imageFiles, setImageFiles] = useState<FilePreview[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { control, handleSubmit, reset } = useForm<CreateProductFormData>({

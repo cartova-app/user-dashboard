@@ -1,17 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FolderTree, Loader2 } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, type Resolver } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { InputWithIcon } from '@/core/components/common/InputWithIcon';
 import Modal from '@/core/components/common/Modal';
 import { Button } from '@/core/components/ui/button';
 import { Label } from '@/core/components/ui/label';
-import useCreateCategory from '../../api/mutations/useCreateCategory';
-import useUpdateCategory from '../../api/mutations/useUpdateCategory';
+import {
+  createCategoryMutationOptions,
+  updateCategoryMutationOptions,
+} from '@/feature/store/api/storeQueryDefinitions';
 import { categorySchema, type CategoryFormData } from '../../schemas/categorySchema';
-import type { Category } from '../../services/category';
+import type { Category } from '../../types';
 
 interface CategoryFormModalProps {
   open: boolean;
@@ -22,13 +25,18 @@ interface CategoryFormModalProps {
 export default function CategoryFormModal({ open, onOpenChange, category }: CategoryFormModalProps) {
   const { storeId } = useParams<{ storeId: string }>();
   const isEditing = !!category;
+  const queryClient = useQueryClient();
 
-  const { mutateAsync: createCategory, isPending: isCreating } = useCreateCategory(storeId!);
-  const { mutateAsync: updateCategory, isPending: isUpdating } = useUpdateCategory(storeId!);
+  const { mutateAsync: createCategory, isPending: isCreating } = useMutation(
+    createCategoryMutationOptions(queryClient, storeId ?? ''),
+  );
+  const { mutateAsync: updateCategory, isPending: isUpdating } = useMutation(
+    updateCategoryMutationOptions(queryClient, storeId ?? ''),
+  );
   const isPending = isCreating || isUpdating;
 
   const { control, handleSubmit, reset } = useForm<CategoryFormData>({
-    resolver: zodResolver(categorySchema),
+    resolver: zodResolver(categorySchema) as Resolver<CategoryFormData>,
     defaultValues: {
       name: '',
       description: '',

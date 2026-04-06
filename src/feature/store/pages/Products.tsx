@@ -1,12 +1,13 @@
 import { Loader2, Plus, Settings } from "lucide-react";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import EmptyState from "@/core/components/common/EmptyState";
 import PageHeading from "@/core/components/common/PageHeading";
 import type { ViewType } from "@/core/components/common/ViewToggle";
 import { Button } from "@/core/components/ui/button";
-import useGetProducts from "../api/queries/useGetProducts";
-import type { Product } from "../services/product";
+import { productListQueryOptions } from "../api/storeQueryDefinitions";
+import type { Product } from "../types";
 import AddProductForm from "../components/products/AddProductForm";
 import DeleteProductDialog from "../components/products/DeleteProductDialog";
 import EditProductModal from "../components/products/EditProductModal";
@@ -38,12 +39,15 @@ const Products = () => {
   const [deleteProduct, setDeleteProduct] = useState<Product | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const { data, isPending } = useGetProducts(storeId!, {
-    page,
-    limit: PAGE_SIZE,
-    q: search || undefined,
-    sortBy,
-    sort,
+  const { data, isPending } = useQuery({
+    ...productListQueryOptions(storeId ?? "", {
+      page,
+      limit: PAGE_SIZE,
+      q: search || undefined,
+      sortBy,
+      sort,
+    }),
+    enabled: Boolean(storeId),
   });
 
   const handleSearchChange = (value: string) => {

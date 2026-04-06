@@ -4,8 +4,8 @@ import EmptyState from '@/core/components/common/EmptyState';
 import PageHeading from '@/core/components/common/PageHeading';
 import SearchInput from '@/core/components/common/SearchInput';
 import { Button } from '@/core/components/ui/button';
+import authClient from '@/core/config/auth-client';
 import CompeleteProfileDialog from '@/feature/profile/components/CompeleteProfileDialog';
-import { useOrganizations } from '../api/quiries/useOrganizations';
 import CreateOrganizationModal from '../components/CreateOrganizationModal';
 import OrganizationCard from '../components/OrganizationCard';
 
@@ -14,9 +14,9 @@ const List = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openOnBoarding, setOpenOnBoarding] = useState(false);
 
-  const { data, isPending, error, refetch } = useOrganizations();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const organizations = data?.data ?? [];
+  const { data: organizationsData, isPending, error, refetch } =
+    authClient.useListOrganizations();
+  const organizations = organizationsData ?? [];
 
   const filteredOrganizations = useMemo(() => {
     if (!search.trim()) return organizations;

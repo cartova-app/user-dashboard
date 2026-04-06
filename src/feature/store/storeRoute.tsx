@@ -9,8 +9,7 @@ import { queryClient } from '@/app/query-client';
 import StoreLayout from '@/core/layouts/StoreLayout';
 import ProtectedRoute from '@/core/utils/ProtectRoute';
 import SuspenseWrapper from '@/core/utils/SuspenseWrapper';
-import { storeDetailQueryDef } from '@/feature/store/api/storeQueryDefinitions';
-import { fetchStoreById, type StoreDetail } from '@/feature/store/services/store';
+import { storeDetailQueryOptions } from './api/storeQueryDefinitions';
 
 /** Pass to `useRouteLoaderData(STORE_LAYOUT_ROUTE_ID)` from child routes when needed. */
 export const STORE_LAYOUT_ROUTE_ID = 'store-layout' as const;
@@ -21,13 +20,8 @@ export async function storeLayoutLoader({ params }: LoaderFunctionArgs) {
     throw new Response(null, { status: 400, statusText: 'Missing store' });
   }
 
-  const { queryKey } = storeDetailQueryDef(storeId);
-
   try {
-    const store = await queryClient.ensureQueryData<StoreDetail>({
-      queryKey,
-      queryFn: () => fetchStoreById(storeId),
-    });
+    const store = await queryClient.ensureQueryData(storeDetailQueryOptions(storeId));
     return { store };
   } catch (error) {
     if (axios.isAxiosError(error)) {

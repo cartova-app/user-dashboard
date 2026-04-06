@@ -1,12 +1,13 @@
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import EmptyState from "@/core/components/common/EmptyState";
 import PageHeading from "@/core/components/common/PageHeading";
 import SearchInput from "@/core/components/common/SearchInput";
 import { Button } from "@/core/components/ui/button";
-import useGetCategories from "../api/queries/useGetCategories";
-import type { Category } from "../services/category";
+import { categoryListQueryOptions } from "../api/storeQueryDefinitions";
+import type { Category } from "../types";
 import CategoriesTable from "../components/categories/CategoriesTable";
 import CategoryFormModal from "../components/categories/CategoryFormModal";
 import DeleteCategoryDialog from "../components/categories/DeleteCategoryDialog";
@@ -29,12 +30,15 @@ const Categories = () => {
   const [deleteCategory, setDeleteCategory] = useState<Category | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const { data, isPending } = useGetCategories(storeId!, {
-    page,
-    limit: PAGE_SIZE,
-    q: search || undefined,
-    sortBy,
-    sort,
+  const { data, isPending } = useQuery({
+    ...categoryListQueryOptions(storeId ?? "", {
+      page,
+      limit: PAGE_SIZE,
+      q: search || undefined,
+      sortBy,
+      sort,
+    }),
+    enabled: Boolean(storeId),
   });
 
   const handleSearchChange = (value: string) => {

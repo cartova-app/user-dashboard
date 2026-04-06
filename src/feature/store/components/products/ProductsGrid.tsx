@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/core/components/ui/dropdown-menu';
-import type { Product } from '../../services/product';
+import type { Product } from '../../types';
 
 interface ProductsGridProps {
   products: Product[];
@@ -19,15 +19,17 @@ interface ProductsGridProps {
   onDelete: (product: Product) => void;
 }
 
+interface ProductCardProps {
+  product: Product;
+  onEdit: (product: Product) => void;
+  onDelete: (product: Product) => void;
+}
+
 function ProductCard({
   product,
   onEdit,
   onDelete,
-}: {
-  product: Product;
-  onEdit: (product: Product) => void;
-  onDelete: (product: Product) => void;
-}) {
+}: ProductCardProps) {
   const status = product.visible ? 'active' : 'inactive';
 
   return (

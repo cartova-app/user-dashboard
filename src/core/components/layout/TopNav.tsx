@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { Bell, ChevronDown, LogOut, Settings, User, UserCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/core/components/ui/button';
@@ -16,13 +15,13 @@ import { Badge } from '../ui/badge';
 export function TopNav() {
   const { data: activeOrganization } = authClient.useActiveOrganization();
   const { data: organizations } = authClient.useListOrganizations();
+  const { refetch: refetchSession } = authClient.useSession();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const setActiveOrganization = async (id: string) => {
     await authClient.organization.setActive({ organizationId: id });
-    await queryClient.invalidateQueries();
-    navigate('/stores');
+    await refetchSession();
+    navigate('/stores', { replace: true });
   };
 
   const handleSignOut = async () => {

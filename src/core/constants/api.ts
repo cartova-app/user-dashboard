@@ -17,3 +17,10 @@ export const API_END_POINTS = {
     IS_NAME_AVAILABLE: (storeId: string) => `/api/dashboard/stores/${storeId}/categories/is-name-available`,
   },
 };
+
+export type QueryDefinitions = {
+  [key: string]: {
+    key: readonly unknown[] | ((...args: any[]) => readonly unknown[]);
+    url: string | ((...args: any[]) => string);
+  };
+};

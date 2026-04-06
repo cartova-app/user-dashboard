@@ -1,17 +1,19 @@
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import PageHeading from "@/core/components/common/PageHeading";
 import { ViewToggle, type ViewType } from "@/core/components/common/ViewToggle";
 import { Button } from "@/core/components/ui/button";
-import useGetAllStores from "../api/queries/useGetAllStores";
+import { storeListQueryOptions } from "../api/storeQueryDefinitions";
 import CreateStoreModal from "../components/CreateStoreModal";
 import StoreCard from "../components/StoreCard";
 import StoresDataTable from "../components/StoresDataTable";
+import type { StoreListItem } from "../types";
 
 const List = () => {
   const [view, setView] = useState<ViewType>("grid");
   const [addOpenModel, setAddOpenModel] = useState(false);
-  const { data, isPending } = useGetAllStores();
+  const { data, isPending } = useQuery(storeListQueryOptions());
   console.log(data);
   if (isPending) {
     return (
@@ -41,11 +43,9 @@ const List = () => {
       </div>
       {view === "grid" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {data?.items?.map(
-            (store: { id: string; name: string; [key: string]: unknown }) => (
-              <StoreCard key={store.id} store={store} />
-            ),
-          )}
+          {data?.items?.map((store: StoreListItem) => (
+            <StoreCard key={store.id} store={store} />
+          ))}
         </div>
       ) : (
         <StoresDataTable data={data} />

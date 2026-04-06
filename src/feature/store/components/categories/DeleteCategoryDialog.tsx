@@ -1,10 +1,11 @@
 import { Loader2, Trash2 } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import Modal from '@/core/components/common/Modal';
 import { Button } from '@/core/components/ui/button';
-import useDeleteCategory from '../../api/mutations/useDeleteCategory';
-import type { Category } from '../../services/category';
+import { deleteCategoryMutationOptions } from '@/feature/store/api/storeQueryDefinitions';
+import type { Category } from '../../types';
 
 interface DeleteCategoryDialogProps {
   category: Category | null;
@@ -14,7 +15,10 @@ interface DeleteCategoryDialogProps {
 
 export default function DeleteCategoryDialog({ category, open, onOpenChange }: DeleteCategoryDialogProps) {
   const { storeId } = useParams<{ storeId: string }>();
-  const { mutateAsync: deleteCategory, isPending } = useDeleteCategory(storeId!);
+  const queryClient = useQueryClient();
+  const { mutateAsync: deleteCategory, isPending } = useMutation(
+    deleteCategoryMutationOptions(queryClient, storeId ?? ''),
+  );
 
   const handleDelete = async () => {
     if (!category) return;

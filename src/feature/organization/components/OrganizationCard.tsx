@@ -1,4 +1,3 @@
-import type { InferOrganization } from 'better-auth/client/plugins';
 import { ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import HomeUserIcon from '@/assets/icons/home-user-icon.svg';
@@ -6,8 +5,12 @@ import { Badge } from '@/core/components/ui/badge';
 import { authClient } from '@/core/config/auth-client';
 import { cn } from '@/core/lib/utils';
 
+type Organization = NonNullable<
+  ReturnType<typeof authClient.useListOrganizations>['data']
+>[number];
+
 interface OrganizationCardProps {
-  organization: InferOrganization<Record<string, never>>;
+  organization: Organization;
 }
 
 export default function OrganizationCard({ organization }: OrganizationCardProps) {
@@ -21,7 +24,7 @@ export default function OrganizationCard({ organization }: OrganizationCardProps
       organizationId: organization.id,
     });
     await refetchSession();
-    navigate(`/`);
+    navigate('/stores', { replace: true });
   };
 
   return (

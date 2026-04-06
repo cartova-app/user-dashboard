@@ -1,7 +1,8 @@
 import { Filter, SlidersHorizontal } from 'lucide-react';
 import SearchInput from '@/core/components/common/SearchInput';
-import { ViewToggle, type ViewType } from '@/core/components/common/ViewToggle';
+import { ViewToggle } from '@/core/components/common/ViewToggle';
 import { Button } from '@/core/components/ui/button';
+import type { ViewType } from '@/core/components/common/ViewToggle';
 
 type FilterTab = 'all' | 'status' | 'inventory' | 'price';
 

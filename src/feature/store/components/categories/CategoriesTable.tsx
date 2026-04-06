@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/core/components/ui/dropdown-menu';
-import type { Category } from '../../services/category';
+import type { Category } from '../../types';
 
 type CategoryIcon = Category['icon'];
 
