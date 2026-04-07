@@ -1,6 +1,6 @@
-import { Loader2, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import EmptyState from "@/core/components/common/EmptyState";
 import PageHeading from "@/core/components/common/PageHeading";
@@ -30,15 +30,18 @@ const Categories = () => {
   const [deleteCategory, setDeleteCategory] = useState<Category | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const { data, isPending } = useQuery({
-    ...categoryListQueryOptions(storeId ?? "", {
+  if (!storeId) {
+    return null;
+  }
+
+  const { data } = useSuspenseQuery({
+    ...categoryListQueryOptions(storeId, {
       page,
       limit: PAGE_SIZE,
       q: search || undefined,
       sortBy,
       sort,
     }),
-    enabled: Boolean(storeId),
   });
 
   const handleSearchChange = (value: string) => {
@@ -116,11 +119,7 @@ const Categories = () => {
       </div>
 
       {/* Table */}
-      {isPending ? (
-        <div className="flex items-center justify-center min-h-[300px]">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        </div>
-      ) : categories.length === 0 ? (
+      {categories.length === 0 ? (
         <EmptyState
           title="No categories found"
           description="Create your first category to organize products."

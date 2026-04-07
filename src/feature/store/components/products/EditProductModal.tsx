@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Package, Tag, Upload, X } from "lucide-react";
+import { Package, Tag, Upload, X } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Controller, useForm, type Resolver } from "react-hook-form";
@@ -10,6 +10,7 @@ import Modal from "@/core/components/common/Modal";
 import { MultiSelect } from "@/core/components/common/MultiSelect";
 import { SelectWithIcon } from "@/core/components/common/Select";
 import { Button } from "@/core/components/ui/button";
+import { InlineLoader } from "@/core/components/ui/LoadingFallback";
 import { Label } from "@/core/components/ui/label";
 import {
   addProductImageMutationOptions,
@@ -375,7 +376,7 @@ export default function EditProductModal({
             Cancel
           </Button>
           <Button type="submit" variant="primary" disabled={isUpdating}>
-            {isUpdating && <Loader2 className="size-4 animate-spin" />}
+            {isUpdating && <InlineLoader className="size-4" />}
             Save Changes
           </Button>
         </div>

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ImagePlus, Loader2, Package, Tag, Upload, X } from "lucide-react";
+import { ImagePlus, Package, Tag, Upload, X } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useRef, useState } from "react";
 import { Controller, useForm, type Resolver } from "react-hook-form";
@@ -9,6 +9,7 @@ import { InputWithIcon } from "@/core/components/common/InputWithIcon";
 import { MultiSelect } from "@/core/components/common/MultiSelect";
 import { SelectWithIcon } from "@/core/components/common/Select";
 import { Button } from "@/core/components/ui/button";
+import { InlineLoader } from "@/core/components/ui/LoadingFallback";
 import { Label } from "@/core/components/ui/label";
 import {
   addProductImageMutationOptions,
@@ -363,12 +364,12 @@ export default function AddProductForm({
             onClick={handleSaveAsDraft}
             disabled={isCreating}
           >
-            {isCreating ? <Loader2 className="size-4 animate-spin" /> : null}
+            {isCreating ? <InlineLoader className="size-4" /> : null}
             Save as draft
           </Button>
           <Button type="submit" variant="primary" disabled={isCreating}>
             {isCreating ? (
-              <Loader2 className="size-4 animate-spin" />
+              <InlineLoader className="size-4" />
             ) : (
               <ImagePlus className="size-4" />
             )}

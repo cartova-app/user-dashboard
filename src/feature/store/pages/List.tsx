@@ -1,6 +1,6 @@
-import { Loader2, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import PageHeading from "@/core/components/common/PageHeading";
 import { ViewToggle, type ViewType } from "@/core/components/common/ViewToggle";
 import { Button } from "@/core/components/ui/button";
@@ -13,15 +13,9 @@ import type { StoreListItem } from "../types";
 const List = () => {
   const [view, setView] = useState<ViewType>("grid");
   const [addOpenModel, setAddOpenModel] = useState(false);
-  const { data, isPending } = useQuery(storeListQueryOptions());
+  const { data } = useSuspenseQuery(storeListQueryOptions());
   console.log(data);
-  if (isPending) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
-  }
+
   return (
     <div className="space-y-10 text-start p-8 w-full">
       <div className="flex justify-between items-end">

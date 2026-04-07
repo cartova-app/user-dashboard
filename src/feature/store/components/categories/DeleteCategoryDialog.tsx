@@ -1,9 +1,10 @@
-import { Loader2, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import Modal from '@/core/components/common/Modal';
 import { Button } from '@/core/components/ui/button';
+import { InlineLoader } from '@/core/components/ui/LoadingFallback';
 import { deleteCategoryMutationOptions } from '@/feature/store/api/storeQueryDefinitions';
 import type { Category } from '../../types';
 
@@ -44,7 +45,7 @@ export default function DeleteCategoryDialog({ category, open, onOpenChange }: D
             Cancel
           </Button>
           <Button variant="destructive" onClick={handleDelete} disabled={isPending}>
-            {isPending ? <Loader2 className="size-4 animate-spin" /> : <Trash2 className="size-4" />}
+            {isPending ? <InlineLoader className="size-4" /> : <Trash2 className="size-4" />}
             Delete
           </Button>
         </div>

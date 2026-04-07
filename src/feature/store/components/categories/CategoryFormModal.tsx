@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FolderTree, Loader2 } from 'lucide-react';
+import { FolderTree } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { Controller, useForm, type Resolver } from 'react-hook-form';
@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { InputWithIcon } from '@/core/components/common/InputWithIcon';
 import Modal from '@/core/components/common/Modal';
 import { Button } from '@/core/components/ui/button';
+import { InlineLoader } from '@/core/components/ui/LoadingFallback';
 import { Label } from '@/core/components/ui/label';
 import {
   createCategoryMutationOptions,
@@ -157,7 +158,7 @@ export default function CategoryFormModal({ open, onOpenChange, category }: Cate
             Cancel
           </Button>
           <Button type="submit" variant="primary" disabled={isPending}>
-            {isPending && <Loader2 className="size-4 animate-spin" />}
+            {isPending && <InlineLoader className="size-4" />}
             {isEditing ? 'Save Changes' : 'Create'}
           </Button>
         </div>

@@ -1,4 +1,13 @@
 import { DotLoader } from '@/core/components/ui/dot-loader';
+import { cn } from '@/core/lib/utils';
+
+type LoaderMode = 'fullscreen' | 'section' | 'inline';
+
+type GameLoaderProps = {
+  mode?: LoaderMode;
+  className?: string;
+  dotClassName?: string;
+};
 
 const game = [
   [14, 7, 0, 8, 6, 13, 20],
@@ -18,12 +27,37 @@ const game = [
   [28, 21, 14, 6, 13, 20, 10],
   [14, 6, 13, 20, 9, 7, 21],
 ];
-export const GameLoader = () => {
+const modeClassName: Record<LoaderMode, string> = {
+  fullscreen: 'bg-background flex min-h-screen w-full items-center justify-center',
+  section: 'flex min-h-[300px] w-full items-center justify-center',
+  inline: 'inline-flex items-center justify-center',
+};
+
+export const GameLoader = ({
+  mode = 'fullscreen',
+  className,
+  dotClassName,
+}: GameLoaderProps) => {
   return (
-    <DotLoader
-      frames={game}
-      className="gap-0.5"
-      dotClassName="bg-primary/20 [&.active]:bg-primary size-1.5"
-    ></DotLoader>
+    <div role="status" aria-live="polite" className={cn(modeClassName[mode], className)}>
+      <DotLoader
+        frames={game}
+        className="gap-0.5"
+        dotClassName={cn('size-1.5 bg-foreground/15 [&.active]:bg-primary', dotClassName)}
+      />
+      <span className="sr-only">Loading</span>
+    </div>
   );
 };
+
+export const FullScreenLoader = (props: Omit<GameLoaderProps, 'mode'>) => (
+  <GameLoader mode="fullscreen" {...props} />
+);
+
+export const SectionLoader = (props: Omit<GameLoaderProps, 'mode'>) => (
+  <GameLoader mode="section" {...props} />
+);
+
+export const InlineLoader = (props: Omit<GameLoaderProps, 'mode'>) => (
+  <GameLoader mode="inline" {...props} />
+);

@@ -1,6 +1,6 @@
-import { Loader2, Plus, Settings } from "lucide-react";
+import { Plus, Settings } from "lucide-react";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import EmptyState from "@/core/components/common/EmptyState";
 import PageHeading from "@/core/components/common/PageHeading";
@@ -23,6 +23,10 @@ const PAGE_SIZE = 8;
 const Products = () => {
   const { storeId } = useParams<{ storeId: string }>();
 
+  if (!storeId) {
+    return null;
+  }
+
   const [pageView, setPageView] = useState<PageView>("list");
   const [view, setView] = useState<ViewType>("list");
   const [page, setPage] = useState(1);
@@ -39,15 +43,14 @@ const Products = () => {
   const [deleteProduct, setDeleteProduct] = useState<Product | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const { data, isPending } = useQuery({
-    ...productListQueryOptions(storeId ?? "", {
+  const { data } = useSuspenseQuery({
+    ...productListQueryOptions(storeId, {
       page,
       limit: PAGE_SIZE,
       q: search || undefined,
       sortBy,
       sort,
     }),
-    enabled: Boolean(storeId),
   });
 
   const handleSearchChange = (value: string) => {
@@ -163,11 +166,7 @@ const Products = () => {
       />
 
       {/* Content */}
-      {isPending ? (
-        <div className="flex items-center justify-center min-h-[300px]">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        </div>
-      ) : products.length === 0 ? (
+      {products.length === 0 ? (
         <EmptyState
           title="No products found"
           description="Add your first product to get started."
