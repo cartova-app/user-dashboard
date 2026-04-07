@@ -1,5 +1,6 @@
-import { Bell, ChevronDown, LogOut, Settings, User, UserCircle } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { Bell, ChevronDown, LogOut, Settings, Store, User, UserCircle } from 'lucide-react';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/core/components/ui/button';
 import {
   DropdownMenu,
@@ -9,19 +10,41 @@ import {
   DropdownMenuTrigger,
 } from '@/core/components/ui/dropdown-menu';
 import authClient from '@/core/config/auth-client';
+import { storeListQueryOptions } from '@/feature/store/api/storeQueryDefinitions';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { Badge } from '../ui/badge';
 
 export function TopNav() {
+  const { storeId } = useParams<{ storeId?: string }>();
+  const location = useLocation();
   const { data: activeOrganization } = authClient.useActiveOrganization();
   const { data: organizations } = authClient.useListOrganizations();
   const { refetch: refetchSession } = authClient.useSession();
+  const { data: storesData } = useQuery({
+    ...storeListQueryOptions(),
+    enabled: Boolean(storeId),
+  });
   const navigate = useNavigate();
+
+  const stores = storesData?.items ?? [];
+  const activeStore = stores.find((store) => store.id === storeId);
 
   const setActiveOrganization = async (id: string) => {
     await authClient.organization.setActive({ organizationId: id });
     await refetchSession();
     navigate('/stores', { replace: true });
+  };
+
+  const setActiveStore = (id: string) => {
+    if (!storeId) return;
+
+    const storeBasePath = `/stores/${storeId}`;
+    const currentSubPath = location.pathname.startsWith(storeBasePath)
+      ? location.pathname.slice(storeBasePath.length)
+      : '';
+    const nextPath = `/stores/${id}${currentSubPath || '/dashboard'}`;
+
+    navigate(nextPath, { replace: true });
   };
 
   const handleSignOut = async () => {
@@ -38,46 +61,104 @@ export function TopNav() {
           <UserCircle className="size-5 text-emerald-600 dark:text-emerald-400" />
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              type="button"
-              className="flex items-center gap-1 text-sm font-semibold text-foreground outline-none"
-            >
-              {activeOrganization?.name}
-              <ChevronDown className="ml-1 size-4 text-muted-foreground" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56">
-            {organizations?.map((org) => {
-              const isActive = org.id === activeOrganization?.id;
-              return (
-                <DropdownMenuItem
-                  key={org.id}
-                  onClick={() => !isActive && setActiveOrganization(org.id)}
-                  className={`flex items-center justify-between gap-2 px-3 py-2 cursor-pointer ${
-                    isActive ? '' : 'text-muted-foreground'
-                  }`}
-                >
-                  <span className="truncate">{org.name}</span>
-                  {isActive && (
-                    <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
+          <Link to="/stores" className="text-sm font-semibold text-foreground hover:text-primary transition-colors">
+            {activeOrganization?.name}
+          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className="inline-flex size-7 items-center justify-center rounded-md text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-foreground"
+                aria-label="Switch organization"
+              >
+                <ChevronDown className="size-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-56">
+              {organizations?.map((org) => {
+                const isActive = org.id === activeOrganization?.id;
+                return (
+                  <DropdownMenuItem
+                    key={org.id}
+                    onClick={() => !isActive && setActiveOrganization(org.id)}
+                    className={`flex cursor-pointer items-center justify-between gap-2 px-3 py-2 ${
+                      isActive ? '' : 'text-muted-foreground'
+                    }`}
+                  >
+                    <span className="truncate">{org.name}</span>
+                    {isActive && (
                       <Badge
                         variant="secondary"
-                        className="bg-lime-100 text-lime-700 dark:bg-lime-900/30 dark:text-lime-400 border-none text-[10px] h-5 px-1.5 font-bold uppercase tracking-tight"
+                        className="h-5 border-none bg-lime-100 px-1.5 text-[10px] font-bold uppercase tracking-tight text-lime-700 dark:bg-lime-900/30 dark:text-lime-400"
                       >
                         Active
                       </Badge>
-                    </div>
-                  )}
-                </DropdownMenuItem>
-              );
-            })}
-            <DropdownMenuItem>
-              <Link to="/organizations">Manage Organizations</Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                    )}
+                  </DropdownMenuItem>
+                );
+              })}
+              <DropdownMenuItem asChild>
+                <Link to="/organizations">Manage Organizations</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        {storeId && (
+          <>
+            <div className="mx-2 h-5 w-px bg-border" />
+            <div className="flex size-9 items-center justify-center rounded-full bg-cyan-100 dark:bg-cyan-950/50">
+              <Store className="size-5 text-cyan-600 dark:text-cyan-400" />
+            </div>
+            <div className="flex items-center gap-1">
+              <Link
+                to={`/stores/${storeId}/dashboard`}
+                className="max-w-48 truncate text-sm font-semibold text-foreground transition-colors hover:text-primary"
+              >
+                {activeStore?.name ?? 'Store'}
+              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    className="inline-flex size-7 items-center justify-center rounded-md text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-foreground"
+                    aria-label="Switch store"
+                  >
+                    <ChevronDown className="size-4" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-56">
+                  {stores.map((store) => {
+                    const isActive = store.id === storeId;
+                    return (
+                      <DropdownMenuItem
+                        key={store.id}
+                        onClick={() => !isActive && setActiveStore(store.id)}
+                        className={`flex cursor-pointer items-center justify-between gap-2 px-3 py-2 ${
+                          isActive ? '' : 'text-muted-foreground'
+                        }`}
+                      >
+                        <span className="truncate">{store.name}</span>
+                        {isActive && (
+                          <Badge
+                            variant="secondary"
+                            className="h-5 border-none bg-lime-100 px-1.5 text-[10px] font-bold uppercase tracking-tight text-lime-700 dark:bg-lime-900/30 dark:text-lime-400"
+                          >
+                            Active
+                          </Badge>
+                        )}
+                      </DropdownMenuItem>
+                    );
+                  })}
+                  <DropdownMenuItem asChild>
+                    <Link to="/stores">Manage Stores</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Right Side: Utilities */}
