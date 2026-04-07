@@ -3,7 +3,7 @@ import { useState } from 'react';
 import DataTable, { type DataTableColumn } from '@/core/components/common/DataTable';
 import StatusCell from '@/core/components/common/StatusCell';
 
-interface OrderItem {
+interface OrderItem extends Record<string, unknown> {
   id: string;
   productName: string;
   image: string;
@@ -12,6 +12,7 @@ interface OrderItem {
   status: string;
   totalSales: string;
   createdAt: string;
+  actions?: string;
 }
 
 interface OrdersData {
@@ -110,22 +111,22 @@ export default function RecentOrdersTable({ ordersData }: RecentOrdersTableProps
       headerName: 'Date',
       flex: 1.5,
       headerIcon: <Calendar className="size-4 text-muted-foreground" />,
-      renderCell: ({ value }: { value: string }) => <span className="text-muted-foreground font-medium">{value}</span>,
+      renderCell: ({ value }: { value: unknown }) => <span className="text-muted-foreground font-medium">{String(value)}</span>,
     },
     {
       field: 'category',
       headerName: 'Category',
       flex: 1.5,
       headerIcon: <Folder className="size-4 text-muted-foreground" />,
-      renderCell: ({ value }: { value: string }) => <span className="text-foreground font-semibold">{value}</span>,
+      renderCell: ({ value }: { value: unknown }) => <span className="text-foreground font-semibold">{String(value)}</span>,
     },
     {
       field: 'status',
       headerName: 'Stock',
       flex: 1.2,
       headerIcon: <Package className="size-4 text-muted-foreground" />,
-      renderCell: ({ value }: { value: string }) => (
-        <StatusCell status={value} /> // "In Stock" (green) or "Out of Stock" (red)
+      renderCell: ({ value }: { value: unknown }) => (
+        <StatusCell status={String(value)} /> // "In Stock" (green) or "Out of Stock" (red)
       ),
     },
     {
@@ -133,7 +134,7 @@ export default function RecentOrdersTable({ ordersData }: RecentOrdersTableProps
       headerName: 'Total Sales',
       flex: 1,
       headerIcon: <BarChart3 className="size-4 text-muted-foreground" />,
-      renderCell: ({ value }: { value: string }) => <span className="font-bold text-foreground">{value}</span>,
+      renderCell: ({ value }: { value: unknown }) => <span className="font-bold text-foreground">{String(value)}</span>,
     },
     {
       field: 'actions',

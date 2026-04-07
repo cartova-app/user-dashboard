@@ -94,6 +94,7 @@ interface DataTableProps<R = Record<string, unknown>> {
   onRowClick?: (row: R) => void;
   pageSize?: number;
   onPageSizeChange?: (pageSize: number) => void;
+  onSortChange?: (field: string | null, direction: 'asc' | 'desc' | null) => void;
 }
 export default function DataTable<R extends Record<string, unknown>>({
   columns = [],
@@ -104,6 +105,7 @@ export default function DataTable<R extends Record<string, unknown>>({
   containerWidth = 1200,
   onRowClick,
   pageSize = 10,
+  onSortChange,
 }: DataTableProps<R>) {
   const [sortConfig, setSortConfig] = useState<{
     field: string | null;
@@ -117,11 +119,16 @@ export default function DataTable<R extends Record<string, unknown>>({
 
   const handleSort = (field: string) => {
     setSortConfig((prev) => {
+      let next: { field: string | null; direction: 'asc' | 'desc' | null };
       if (prev.field === field) {
-        if (prev.direction === 'asc') return { field, direction: 'desc' as const };
-        if (prev.direction === 'desc') return { field: null, direction: null };
+        if (prev.direction === 'asc') next = { field, direction: 'desc' };
+        else if (prev.direction === 'desc') next = { field: null, direction: null };
+        else next = { field, direction: 'asc' };
+      } else {
+        next = { field, direction: 'asc' };
       }
-      return { field, direction: 'asc' as const };
+      onSortChange?.(next.field, next.direction);
+      return next;
     });
   };
 
@@ -151,7 +158,7 @@ export default function DataTable<R extends Record<string, unknown>>({
                         <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                           {column.headerName}
                         </span>
-                        {column.sortable !== false && (
+                        {column.sortable === true && (
                           <button
                             type="button"
                             onClick={() => handleSort(column.field)}

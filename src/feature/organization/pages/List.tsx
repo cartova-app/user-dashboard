@@ -1,11 +1,12 @@
-import { Building2, Loader2, Plus, SearchX } from 'lucide-react';
+import { Building2, Plus, SearchX } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import EmptyState from '@/core/components/common/EmptyState';
 import PageHeading from '@/core/components/common/PageHeading';
 import SearchInput from '@/core/components/common/SearchInput';
 import { Button } from '@/core/components/ui/button';
+import { SectionLoader } from '@/core/components/ui/LoadingFallback';
+import authClient from '@/core/config/auth-client';
 import CompeleteProfileDialog from '@/feature/profile/components/CompeleteProfileDialog';
-import { useOrganizations } from '../api/quiries/useOrganizations';
 import CreateOrganizationModal from '../components/CreateOrganizationModal';
 import OrganizationCard from '../components/OrganizationCard';
 
@@ -14,9 +15,9 @@ const List = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openOnBoarding, setOpenOnBoarding] = useState(false);
 
-  const { data, isPending, error, refetch } = useOrganizations();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const organizations = data?.data ?? [];
+  const { data: organizationsData, isPending, error, refetch } =
+    authClient.useListOrganizations();
+  const organizations = organizationsData ?? [];
 
   const filteredOrganizations = useMemo(() => {
     if (!search.trim()) return organizations;
@@ -26,11 +27,7 @@ const List = () => {
     setOpenOnBoarding(organizations.length === 0);
   }, [organizations]);
   if (isPending) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
+    return <SectionLoader className="min-h-[400px]" />;
   }
 
   if (error) {

@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import GenericDialog from '@/core/components/common/Modal';
@@ -6,7 +6,7 @@ import Stepper from '@/core/components/common/Stepper';
 import { Tabs, TabsContent } from '@/core/components/ui/tabs';
 import authClient from '@/core/config/auth-client';
 import useGenerateSlug from '@/core/hooks/useGenerateSlug';
-import { useCreateStore } from '../api/mutations/useCreateStore';
+import { createStoreMutationOptions } from '../api/profileQueryDefinitions';
 import type { ProfileFormData } from '../store/profileStore';
 import { useProfileStore } from '../store/profileStore';
 import OrganizationForm from './OrganizationForm';
@@ -22,7 +22,9 @@ function CompeleteProfileDialog({ isOpen, setIsOpen }: CompeleteProfileDialogPro
   const queryClient = useQueryClient();
   const { currentStep, resetForm } = useProfileStore();
   const { generateSlug } = useGenerateSlug();
-  const { mutateAsync: createStore } = useCreateStore();
+  const { mutateAsync: createStore } = useMutation(
+    createStoreMutationOptions(queryClient),
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleComplete = async (formData: ProfileFormData) => {
@@ -48,8 +50,6 @@ function CompeleteProfileDialog({ isOpen, setIsOpen }: CompeleteProfileDialogPro
         theme: formData.theme || 'default',
         type: formData.category || 'ecommerce',
       });
-
-      await queryClient.invalidateQueries({ queryKey: ['organizations'] });
 
       toast.success('Store created successfully');
       setTimeout(() => setIsOpen(false), 1500);

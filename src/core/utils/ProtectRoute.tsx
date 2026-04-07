@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { FullScreenLoader } from '@/core/components/ui/LoadingFallback';
 import { authClient } from '@/core/config/auth-client';
 
 interface ProtectedRouteProps {
@@ -12,11 +13,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   // Show loading state while checking authentication
   if (isPending) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
+    return <FullScreenLoader />;
   }
 
   // Redirect to login if not authenticated

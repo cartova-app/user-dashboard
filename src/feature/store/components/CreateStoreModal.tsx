@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BadgeDollarSign, Building2, FileText, Globe, Palette } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { InputWithIcon } from '@/core/components/common/InputWithIcon';
@@ -7,7 +8,7 @@ import Modal from '@/core/components/common/Modal';
 import { MultiSelect } from '@/core/components/common/MultiSelect';
 import { SelectWithIcon } from '@/core/components/common/Select';
 import { Button } from '@/core/components/ui/button';
-import useCreateStore from '../api/mutations/useCreateStore';
+import { storeCreateMutationOptions } from '@/feature/store/api/storeQueryDefinitions';
 import { createStoreSchema } from '../schemas/createStoreSchema';
 
 interface CreateStoreModalProps {
@@ -26,7 +27,10 @@ interface StoreFormData {
 }
 
 export default function CreateStoreModal({ open, onOpenChange }: CreateStoreModalProps) {
-  const { mutateAsync: createStoreFn, isPending: isCreateStorePending } = useCreateStore();
+  const queryClient = useQueryClient();
+  const { mutateAsync: createStoreFn, isPending: isCreateStorePending } = useMutation(
+    storeCreateMutationOptions(queryClient),
+  );
 
   const { control, handleSubmit, reset } = useForm<StoreFormData>({
     resolver: zodResolver(createStoreSchema),
