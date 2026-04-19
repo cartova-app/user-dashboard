@@ -7,6 +7,7 @@ import { STORE_LAYOUT_ROUTE_ID, StoreRoute, storeLayoutLoader } from '@/feature/
 
 const DashboardPage = lazy(() => import('./pages/Dashboard'));
 const ProductsPage = lazy(() => import('./pages/Products'));
+const ProductPreviewPage = lazy(() => import('./pages/ProductPreview'));
 const CategoriesPage = lazy(() => import('./pages/Categories'));
 const OrdersPage = lazy(() => import('./pages/Orders'));
 const CustomersPage = lazy(() => import('./pages/Customers'));
@@ -40,6 +41,14 @@ export const storeRoutes = [
         element: (
           <SuspenseWrapper>
             <ProductsPage />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: 'products/:productId',
+        element: (
+          <SuspenseWrapper>
+            <ProductPreviewPage />
           </SuspenseWrapper>
         ),
       },

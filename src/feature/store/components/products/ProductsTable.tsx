@@ -38,6 +38,7 @@ interface ProductsTableProps {
   pageSize: number;
   onEdit: (product: Product) => void;
   onDelete: (product: Product) => void;
+  onOpen: (productId: string) => void; 
   onSortChange?: (sortBy: string | null, sort: 'asc' | 'desc' | null) => void;
 }
 
@@ -63,6 +64,7 @@ export default function ProductsTable({
   onEdit,
   onDelete,
   onSortChange,
+  onOpen
 }: ProductsTableProps) {
   const rows = products.map(mapProductToRow);
 
@@ -79,7 +81,7 @@ export default function ProductsTable({
             {row.image ? (
               <img
                 src={row.image}
-                alt={row.name}
+                alt={row.name as string}
                 className="size-full object-cover"
               />
             ) : (
@@ -88,9 +90,18 @@ export default function ProductsTable({
               </div>
             )}
           </div>
-          <span className="text-sm font-medium text-foreground truncate">
-            {row.name}
-          </span>
+          <button
+            type="button"
+            className="flex items-center gap-3 cursor-pointer bg-transparent p-0"
+            onClick={() => onOpen(row.id as string)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') onOpen(row.id as string);
+            }}
+          >
+            <span className="text-sm font-medium text-foreground truncate">
+              {row.name as string}
+            </span>
+          </button>
         </div>
       ),
     },
