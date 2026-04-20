@@ -5,6 +5,7 @@ import {
   globalRouteErrorElement,
 } from "@/core/routing/globalDataRouteUi";
 import { authRoutes } from "@/feature/auth/routes";
+import { chatbotRoutes } from "@/feature/chatbot/routes";
 import { organizationRoutes } from "@/feature/organization/routes";
 import { profileRoutes } from "@/feature/profile/routes";
 import { storeRoutes } from "@/feature/store/routes";
@@ -14,6 +15,7 @@ const childRoutes = [
   ...profileRoutes,
   ...organizationRoutes,
   ...storeRoutes,
+  ...chatbotRoutes,
   { path: "*", element: <NotFound /> },
 ];
 

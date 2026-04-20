@@ -1,8 +1,9 @@
-import { BarChart3, Box, Code2, FolderTree, LayoutDashboard, PenLine, Settings, ShoppingBag, UserRoundSearch } from 'lucide-react';
+import { BarChart3, Box, Code2, FolderTree, LayoutDashboard, MessagesSquare, PenLine, Settings, ShoppingBag, UserRoundSearch } from 'lucide-react';
 import { Outlet, useParams } from 'react-router-dom';
 import AppSidebar from '@/core/components/layout/AppSideBar';
 import { TopNav } from '@/core/components/layout/TopNav';
 import { SidebarProvider } from '@/core/components/ui/sidebar';
+import QuickChatFloatingButton from '@/feature/chatbot/components/QuickChatFloatingButton';
 
 export default function StoreLayout() {
   const { storeId } = useParams();
@@ -13,6 +14,11 @@ export default function StoreLayout() {
       title: 'Dashboard',
       url: `/stores/${storeId}/dashboard`,
       icon: LayoutDashboard,
+    },
+    {
+      title: 'Chatbot',
+      url: `/stores/${storeId}/chatbot`,
+      icon: MessagesSquare,
     },
     {
       title: 'Products',
@@ -58,9 +64,10 @@ export default function StoreLayout() {
   return (
     <SidebarProvider>
       <AppSidebar items={items} />
-      <main className="flex-1 min-w-0">
+      <main className="flex-1 min-w-0 relative">
         <TopNav />
         <Outlet />
+        <QuickChatFloatingButton />
       </main>
     </SidebarProvider>
   );
