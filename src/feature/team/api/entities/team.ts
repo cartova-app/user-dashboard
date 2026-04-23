@@ -53,19 +53,19 @@ const buildListMembersParams = (
     query.searchValue = params.search.trim();
   }
 
-  if (params.status !== "all") {
+  if (params.status && params.status !== "all") {
     query.status = params.status;
   }
 
-  if (params.role !== "all") {
+  if (params.role && params.role !== "all") {
     query.role = params.role;
   }
 
-  if (params.mfa !== "all") {
+  if (params.mfa && params.mfa !== "all") {
     query.mfaEnabled = params.mfa === "enabled" ? "true" : "false";
   }
 
-  if (params.sort !== "recent") {
+  if (params.sort && params.sort !== "recent") {
     const [sortBy, sortDirection] = params.sort.split("-");
     query.sortBy = sortBy;
     query.sortDirection = sortDirection;
@@ -86,7 +86,7 @@ const buildListInvitationsParams = (
     query.searchValue = params.search.trim();
   }
 
-  if (params.role !== "all") {
+  if (params.role && params.role !== "all") {
     query.role = params.role;
   }
 

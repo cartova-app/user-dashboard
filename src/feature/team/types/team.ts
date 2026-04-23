@@ -81,10 +81,10 @@ export type TeamSortFilter =
 
 export interface TeamMemberQueryParams {
   search: string;
-  status: TeamStatusFilter;
+  status: TeamStatusFilter | "";
   role: string;
-  mfa: TeamMfaFilter;
-  sort: TeamSortFilter;
+  mfa?: TeamMfaFilter | "";
+  sort?: TeamSortFilter | "";
 }
 
 export type TeamRowKind = "member" | "invitation";

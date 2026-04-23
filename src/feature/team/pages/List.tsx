@@ -32,6 +32,7 @@ import {
 import ConfirmTeamActionModal, { type TeamConfirmAction } from '@/feature/team/components/ConfirmTeamActionModal';
 import InviteMemberModal from '@/feature/team/components/InviteMemberModal';
 import ManageAccessModal from '@/feature/team/components/ManageAccessModal';
+import TeamLoadErrorState from '@/feature/team/components/TeamLoadErrorState';
 import TeamRowActionsDropdown from '@/feature/team/components/TeamRowActionsDropdown';
 import type {
     TeamInvitationSource,
@@ -42,15 +43,27 @@ import type {
 
 const DEFAULT_FILTERS: TeamMemberQueryParams = {
     search: '',
-    status: 'all',
-    role: 'all',
-    mfa: 'all',
-    sort: 'name-asc',
+    status: '',
+    role: '',
+    mfa: '',
+    sort: '',
 };
 
 const PAGE_SIZE = 10;
 
 type TeamTableRow = TeamRowModel & Record<string, unknown>;
+
+const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
+
+const readString = (value: Record<string, unknown>, key: string): string | undefined => {
+    const rawValue = value[key];
+    return typeof rawValue === 'string' ? rawValue : undefined;
+};
+
+const readBoolean = (value: Record<string, unknown>, key: string): boolean | undefined => {
+    const rawValue = value[key];
+    return typeof rawValue === 'boolean' ? rawValue : undefined;
+};
 
 const getRoleText = (value: string) =>
     value.trim() ? value[0].toUpperCase() + value.slice(1).toLowerCase() : 'Member';
@@ -69,42 +82,53 @@ const parseCreatedAt = (value: unknown): number | undefined => {
 };
 
 const buildMemberRow = (
-    member: any,
+    member: TeamMemberSource,
     sessionUserId: string | undefined,
     sessionEmail: string | undefined,
 ): TeamRowModel | null => {
-    if (!member?.id) return null;
+    if (!isRecord(member)) return null;
 
-    const email = member.user?.email ?? '';
-    const name = member.user?.name ?? (email ? email.split('@')[0] : 'Member');
+    const user = isRecord(member.user) ? member.user : undefined;
+    const id = readString(member, 'id');
+    const userId = readString(member, 'userId');
+    const roleValue = readString(member, 'role');
+    const email = (user ? readString(user, 'email') : undefined) ?? '';
+    const name = (user ? readString(user, 'name') : undefined) ?? (email ? email.split('@')[0] : 'Member');
+
+    if (!id || !roleValue) return null;
+
     const isYou =
-        (sessionUserId !== undefined && member.userId === sessionUserId) ||
+        (sessionUserId !== undefined && userId === sessionUserId) ||
         (sessionEmail !== undefined && email.length > 0 && email.toLowerCase() === sessionEmail.toLowerCase());
 
     return {
-        id: member.id,
+        id,
         kind: 'member',
         name,
         email,
-        role: member.role.toLowerCase(),
+        role: roleValue.toLowerCase(),
         status: 'active',
-        mfaEnabled: member.user?.twoFactorEnabled ?? false,
+        mfaEnabled: (user ? readBoolean(user, 'twoFactorEnabled') : undefined) ?? false,
         isYou,
         createdAt: parseCreatedAt(member.createdAt),
     };
 };
 
-const buildInvitationRow = (invitation: any): TeamRowModel | null => {
-    if (!invitation?.id) return null;
+const buildInvitationRow = (invitation: TeamInvitationSource): TeamRowModel | null => {
+    if (!isRecord(invitation)) return null;
 
-    const email = invitation.email ?? '';
+    const id = readString(invitation, 'id');
+    const email = readString(invitation, 'email') ?? '';
+    const roleValue = readString(invitation, 'role');
+
+    if (!id || !roleValue) return null;
 
     return {
-        id: invitation.id,
+        id,
         kind: 'invitation',
         name: email ? email.split('@')[0] : 'Pending invite',
         email,
-        role: invitation.role.toLowerCase(),
+        role: roleValue.toLowerCase(),
         status: 'invited',
         mfaEnabled: false,
         isYou: false,
@@ -125,8 +149,8 @@ const filterRows = (rows: TeamRowModel[], filters: TeamMemberQueryParams) => {
                 return false;
             }
 
-            if (filters.status !== 'all' && row.status !== filters.status) return false;
-            if (filters.role !== 'all' && row.role !== filters.role) return false;
+            if (filters.status && filters.status !== 'all' && row.status !== filters.status) return false;
+            if (filters.role && filters.role !== 'all' && row.role !== filters.role) return false;
             if (filters.mfa === 'enabled' && !row.mfaEnabled) return false;
             if (filters.mfa === 'disabled' && row.mfaEnabled) return false;
 
@@ -169,35 +193,45 @@ const List = () => {
         refetch: refetchInvitations,
     } = useQuery(teamInvitationsQueryOptions(filters, organizationId || ''));
 
-    const {
-        error: activeMemberError,
-        refetch: refetchActiveMember,
-    } = useQuery(teamActiveMemberQueryOptions());
+    const { error: activeMemberError, refetch: refetchActiveMember } = useQuery(teamActiveMemberQueryOptions());
 
     const {
         data: activeRoleData,
         error: activeRoleError,
         refetch: refetchActiveRole,
     } = useQuery(teamActiveMemberRoleQueryOptions());
-
+    console.log(activeRoleData);
     const { mutateAsync: inviteMember, isPending: isInvitePending } = useMutation(
         inviteMemberMutationOptions(queryClient),
     );
 
-    const members = useMemo(() => membersData?.data?.members ?? [], [membersData]);
-    const invitations = useMemo(() => invitationsData?.data?.invitations ?? [], [invitationsData]);
+    const members = useMemo<TeamMemberSource[]>(() => {
+        if (!membersData?.data || !isRecord(membersData.data) || !Array.isArray(membersData.data.members)) {
+            return [];
+        }
+
+        return membersData.data.members as TeamMemberSource[];
+    }, [membersData]);
+
+    const invitations = useMemo<TeamInvitationSource[]>(() => {
+        if (!invitationsData?.data || !isRecord(invitationsData.data) || !Array.isArray(invitationsData.data.invitations)) {
+            return [];
+        }
+
+        return invitationsData.data.invitations as TeamInvitationSource[];
+    }, [invitationsData]);
 
     const sessionUserId = sessionData?.session?.userId;
     const sessionEmail = sessionData?.user?.email;
 
     const rowModels = useMemo(() => {
         const memberRows = members
-            .map((member: any) => buildMemberRow(member, sessionUserId, sessionEmail))
-            .filter((row: any): row is TeamRowModel => row !== null);
+            .map((member: TeamMemberSource) => buildMemberRow(member, sessionUserId, sessionEmail))
+            .filter((row: TeamRowModel | null): row is TeamRowModel => row !== null);
 
         const invitationRows = invitations
-            .map((invitation: any) => buildInvitationRow(invitation))
-            .filter((row: any): row is TeamRowModel => row !== null);
+            .map((invitation: TeamInvitationSource) => buildInvitationRow(invitation))
+            .filter((row: TeamRowModel | null): row is TeamRowModel => row !== null);
 
         return [...memberRows, ...invitationRows];
     }, [members, invitations, sessionUserId, sessionEmail]);
@@ -210,10 +244,7 @@ const List = () => {
         return Array.from(merged.values());
     }, [rowModels]);
 
-    const currentRole = useMemo(
-        () => activeRoleData?.data?.toLowerCase() ?? 'member',
-        [activeRoleData],
-    );
+    const currentRole = useMemo(() => activeRoleData?.data?.role?.toLowerCase() ?? 'member', [activeRoleData]);
 
     const canManageMembers = hasManagementAccess(currentRole);
     const hasError = membersError || invitationsError || activeMemberError || activeRoleError;
@@ -340,17 +371,7 @@ const List = () => {
     }
 
     if (hasError) {
-        return (
-            <div className="space-y-8 text-start">
-                <PageHeading heading="Team" description="Manage organization access, roles, and invitations." />
-                <div className="min-h-80 rounded-2xl border border-destructive/30 bg-destructive/5 p-8 text-center">
-                    <p className="font-medium text-destructive">Failed to load team data.</p>
-                    <Button onClick={onRetry} variant="outline" className="mt-4">
-                        Retry
-                    </Button>
-                </div>
-            </div>
-        );
+        return <TeamLoadErrorState onRetry={onRetry} />;
     }
 
     return (

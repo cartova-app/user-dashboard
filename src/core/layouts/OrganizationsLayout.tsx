@@ -26,9 +26,11 @@ export default function OrganizationsLayout() {
   return (
     <SidebarProvider>
       <AppSidebar items={items} />
-      <main className="flex-1 min-w-0 bg-background">
+      <main className="flex-1 min-w-0 bg-background px-6">
         <TopNav />
-        <Outlet />
+        <div className="py-6">
+          <Outlet />
+        </div>
       </main>
     </SidebarProvider>
   );
