@@ -30,10 +30,6 @@ const Categories = () => {
   const [deleteCategory, setDeleteCategory] = useState<Category | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  if (!storeId) {
-    return null;
-  }
-
   const { data } = useSuspenseQuery({
     ...categoryListQueryOptions(storeId, {
       page,

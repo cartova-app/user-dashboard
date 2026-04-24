@@ -3,7 +3,7 @@ import {
   queryOptions,
   type QueryClient,
 } from "@tanstack/react-query";
-import { del, get, patch, post, sendForm } from "@/core/config/axiosInstance";
+import { del, get, post, put, sendForm } from "@/core/config/axiosInstance";
 import { productDefinitions } from "@/feature/store/api/constants";
 import type {
   CreateProductData,
@@ -20,12 +20,13 @@ const invalidateProductAll = (queryClient: QueryClient, storeId: string) => () =
 export const productDefs = productDefinitions;
 
 export const productListQueryOptions = (
-  storeId: string,
+  storeId: string | undefined,
   params?: ProductsParams,
 ) =>
   queryOptions({
-    queryKey: productDefs.list.key(storeId, params),
-    queryFn: () => get<ProductsResponse>(productDefs.list.url(storeId), { params }),
+    queryKey: productDefs.list.key(storeId ?? ""),
+    queryFn: () => get<ProductsResponse>(productDefs.list.url(storeId ?? ""), { params }),
+    enabled: !!storeId,
   });
 
 export const createProductMutationOptions = (
@@ -51,7 +52,7 @@ export const updateProductMutationOptions = (
     }: {
       productId: string;
       data: UpdateProductData;
-    }) => patch<Product>(productDefs.update.url(storeId, productId), data),
+    }) => put<Product>(productDefs.update.url(storeId, productId), data),
     onSuccess: invalidateProductAll(queryClient, storeId),
   });
 
@@ -96,7 +97,7 @@ export const removeProductImageMutationOptions = (
       key: string;
     }) =>
       del<Product>(productDefs.removeImage.url(storeId, productId), {
-        data: { key },
+        data: { imageKey: key },
       }),
     onSuccess: invalidateProductAll(queryClient, storeId),
   });

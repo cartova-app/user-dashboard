@@ -20,7 +20,9 @@ export const API_END_POINTS = {
 
 export type QueryDefinitions = {
   [key: string]: {
+    // biome-ignore lint/suspicious/noExplicitAny: required for contravariance in api definitions
     key: readonly unknown[] | ((...args: any[]) => readonly unknown[]);
+    // biome-ignore lint/suspicious/noExplicitAny: required for contravariance in api definitions
     url: string | ((...args: any[]) => string);
   };
 };

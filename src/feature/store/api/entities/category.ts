@@ -20,13 +20,14 @@ const invalidateCategoryAll = (queryClient: QueryClient, storeId: string) => () 
 export const categoryDefs = categoryDefinitions;
 
 export const categoryListQueryOptions = (
-  storeId: string,
+  storeId: string | undefined,
   params?: CategoriesParams,
 ) =>
   queryOptions({
-    queryKey: categoryDefs.list.key(storeId, params),
+    queryKey: categoryDefs.list.key(storeId ?? "", params),
     queryFn: () =>
-      get<CategoriesResponse>(categoryDefs.list.url(storeId), { params }),
+      get<CategoriesResponse>(categoryDefs.list.url(storeId ?? ""), { params }),
+    enabled: !!storeId,
   });
 
 export const createCategoryMutationOptions = (

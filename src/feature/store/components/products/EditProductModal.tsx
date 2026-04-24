@@ -45,7 +45,7 @@ export default function EditProductModal({
   const { storeId } = useParams<{ storeId: string }>();
   const queryClient = useQueryClient();
   const { data: categoriesData } = useQuery({
-    ...categoryListQueryOptions(storeId ?? "", { limit: 100 }),
+    ...categoryListQueryOptions(storeId, { limit: 100 }),
     enabled: Boolean(storeId),
   });
   const { mutateAsync: updateProduct, isPending: isUpdating } = useMutation(
