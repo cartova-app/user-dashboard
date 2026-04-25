@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 import { toast } from 'sonner';
 import Modal from '@/core/components/common/Modal';
 import { Button } from '@/core/components/ui/button';
@@ -33,36 +32,30 @@ export default function ConfirmTeamActionModal({ action, onOpenChange }: Confirm
         cancelInvitationMutationOptions(queryClient),
     );
 
-    const [internalAction, setInternalAction] = useState<TeamConfirmAction | null>(null);
-
     const isPending = isLeavePending || isRemovePending || isCancelPending;
 
     const handleOpen = (open: boolean) => {
-        if (!open) {
-            setInternalAction(null);
-        }
         onOpenChange(open);
     };
 
     const handleSubmit = async () => {
-        const currentAction = action || internalAction;
-        if (!currentAction) {
+        if (!action) {
             return;
         }
 
         try {
-            if (currentAction.type === 'leave') {
+            if (action.type === 'leave') {
                 await leaveOrganization();
                 toast.success('You left the organization');
             }
 
-            if (currentAction.type === 'remove') {
-                await removeMember({ memberId: currentAction.row.id });
+            if (action.type === 'remove') {
+                await removeMember({ memberId: action.row.id });
                 toast.success('Member removed successfully');
             }
 
-            if (currentAction.type === 'cancel') {
-                await cancelInvitation({ invitationId: currentAction.row.id });
+            if (action.type === 'cancel') {
+                await cancelInvitation({ invitationId: action.row.id });
                 toast.success('Invitation canceled successfully');
             }
 

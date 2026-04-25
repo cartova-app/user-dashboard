@@ -3,12 +3,11 @@ import {
     CheckCircle2,
     Edit3,
     MailPlus,
-    MoreHorizontal,
-    SearchX,
     ShieldCheck,
     User,
     UserRoundPlus,
     Users,
+    SearchX,
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
@@ -40,13 +39,13 @@ import type {
     TeamMemberSource,
     TeamRowModel,
 } from '@/feature/team/types/team';
+import { getRoleText } from '@/feature/team/utils/team';
 
 const DEFAULT_FILTERS: TeamMemberQueryParams = {
     search: '',
     status: '',
     role: '',
     mfa: '',
-    sort: '',
 };
 
 const PAGE_SIZE = 10;
@@ -65,19 +64,12 @@ const readBoolean = (value: Record<string, unknown>, key: string): boolean | und
     return typeof rawValue === 'boolean' ? rawValue : undefined;
 };
 
-const getRoleText = (value: string) =>
-    value.trim() ? value[0].toUpperCase() + value.slice(1).toLowerCase() : 'Member';
-
 const hasManagementAccess = (role: string) => role === 'owner' || role === 'admin';
 
 const parseCreatedAt = (value: unknown): number | undefined => {
     if (!value) return undefined;
-    if (typeof value === 'string' || typeof value === 'number') {
-        return new Date(value).getTime();
-    }
-    if (value instanceof Date) {
-        return value.getTime();
-    }
+    if (typeof value === 'string' || typeof value === 'number') return new Date(value).getTime();
+    if (value instanceof Date) return value.getTime();
     return undefined;
 };
 
@@ -139,30 +131,22 @@ const buildInvitationRow = (invitation: TeamInvitationSource): TeamRowModel | nu
 const filterRows = (rows: TeamRowModel[], filters: TeamMemberQueryParams) => {
     const searchLower = filters.search.trim().toLowerCase();
 
-    return rows
-        .filter((row) => {
-            if (
-                searchLower.length > 0 &&
-                !row.name.toLowerCase().includes(searchLower) &&
-                !row.email.toLowerCase().includes(searchLower)
-            ) {
-                return false;
-            }
+    return rows.filter((row) => {
+        if (
+            searchLower.length > 0 &&
+            !row.name.toLowerCase().includes(searchLower) &&
+            !row.email.toLowerCase().includes(searchLower)
+        ) {
+            return false;
+        }
 
-            if (filters.status && filters.status !== 'all' && row.status !== filters.status) return false;
-            if (filters.role && filters.role !== 'all' && row.role !== filters.role) return false;
-            if (filters.mfa === 'enabled' && !row.mfaEnabled) return false;
-            if (filters.mfa === 'disabled' && row.mfaEnabled) return false;
+        if (filters.status && filters.status !== 'all' && row.status !== filters.status) return false;
+        if (filters.role && filters.role !== 'all' && row.role !== filters.role) return false;
+        if (filters.mfa === 'enabled' && !row.mfaEnabled) return false;
+        if (filters.mfa === 'disabled' && row.mfaEnabled) return false;
 
-            return true;
-        })
-        .sort((left, right) => {
-            if (filters.sort === 'recent') return (right.createdAt ?? 0) - (left.createdAt ?? 0);
-            if (filters.sort === 'name-desc') return right.name.localeCompare(left.name);
-            if (filters.sort === 'role-asc') return left.role.localeCompare(right.role);
-            if (filters.sort === 'role-desc') return right.role.localeCompare(left.role);
-            return left.name.localeCompare(right.name);
-        });
+        return true;
+    });
 };
 
 const List = () => {
@@ -170,7 +154,6 @@ const List = () => {
     const { data: sessionData } = authClient.useSession();
 
     const [filters, setFilters] = useState<TeamMemberQueryParams>(DEFAULT_FILTERS);
-    const [page, setPage] = useState(1);
     const [inviteModalOpen, setInviteModalOpen] = useState(false);
     const [roleModalRow, setRoleModalRow] = useState<TeamRowModel | null>(null);
     const [confirmAction, setConfirmAction] = useState<TeamConfirmAction | null>(null);
@@ -200,7 +183,7 @@ const List = () => {
         error: activeRoleError,
         refetch: refetchActiveRole,
     } = useQuery(teamActiveMemberRoleQueryOptions());
-    console.log(activeRoleData);
+
     const { mutateAsync: inviteMember, isPending: isInvitePending } = useMutation(
         inviteMemberMutationOptions(queryClient),
     );
@@ -209,7 +192,6 @@ const List = () => {
         if (!membersData?.data || !isRecord(membersData.data) || !Array.isArray(membersData.data.members)) {
             return [];
         }
-
         return membersData.data.members as TeamMemberSource[];
     }, [membersData]);
 
@@ -217,7 +199,6 @@ const List = () => {
         if (!invitationsData?.data || !isRecord(invitationsData.data) || !Array.isArray(invitationsData.data.invitations)) {
             return [];
         }
-
         return invitationsData.data.invitations as TeamInvitationSource[];
     }, [invitationsData]);
 
@@ -226,12 +207,12 @@ const List = () => {
 
     const rowModels = useMemo(() => {
         const memberRows = members
-            .map((member: TeamMemberSource) => buildMemberRow(member, sessionUserId, sessionEmail))
-            .filter((row: TeamRowModel | null): row is TeamRowModel => row !== null);
+            .map((member) => buildMemberRow(member, sessionUserId, sessionEmail))
+            .filter((row): row is TeamRowModel => row !== null);
 
         const invitationRows = invitations
-            .map((invitation: TeamInvitationSource) => buildInvitationRow(invitation))
-            .filter((row: TeamRowModel | null): row is TeamRowModel => row !== null);
+            .map((invitation) => buildInvitationRow(invitation))
+            .filter((row): row is TeamRowModel => row !== null);
 
         return [...memberRows, ...invitationRows];
     }, [members, invitations, sessionUserId, sessionEmail]);
@@ -251,27 +232,11 @@ const List = () => {
     const isInitialLoading = isMembersPending || isInvitationsPending;
     const isRefreshing = isMembersRefetching || isInvitationsRefetching;
 
-    const pagedRows = useMemo(() => {
-        const start = (page - 1) * PAGE_SIZE;
-        return filteredRows.slice(start, start + PAGE_SIZE);
-    }, [filteredRows, page]);
-
     const updateFilters = (updater: (current: TeamMemberQueryParams) => TeamMemberQueryParams) => {
         setFilters((current) => updater(current));
-        setPage(1);
     };
 
-    useEffect(() => {
-        const maxPage = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE));
-        if (page > maxPage) {
-            setPage(maxPage);
-        }
-    }, [filteredRows.length, page]);
-
-    const resetFilters = () => {
-        setFilters(DEFAULT_FILTERS);
-        setPage(1);
-    };
+    const resetFilters = () => setFilters(DEFAULT_FILTERS);
 
     const onRetry = async () => {
         await Promise.allSettled([refetchMembers(), refetchInvitations(), refetchActiveMember(), refetchActiveRole()]);
@@ -351,7 +316,6 @@ const List = () => {
                             Resend
                         </Button>
                     )}
-
                     <TeamRowActionsDropdown
                         row={row}
                         currentRole={currentRole}
@@ -405,7 +369,7 @@ const List = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                     <SelectWithIcon
                         value={filters.status}
                         onValueChange={(status) =>
@@ -442,21 +406,6 @@ const List = () => {
                             { value: 'disabled', label: 'MFA disabled' },
                         ]}
                     />
-                    <SelectWithIcon
-                        value={filters.sort}
-                        onValueChange={(sort) =>
-                            updateFilters((current) => ({ ...current, sort: sort as TeamMemberQueryParams['sort'] }))
-                        }
-                        placeholder="Sort"
-                        icon={<MoreHorizontal className="size-4" />}
-                        options={[
-                            { value: 'name-asc', label: 'Name A-Z' },
-                            { value: 'name-desc', label: 'Name Z-A' },
-                            { value: 'role-asc', label: 'Role A-Z' },
-                            { value: 'role-desc', label: 'Role Z-A' },
-                            { value: 'recent', label: 'Most recent' },
-                        ]}
-                    />
                 </div>
 
                 {rowModels.length === 0 ? (
@@ -476,11 +425,8 @@ const List = () => {
                 ) : (
                     <DataTable
                         columns={columns}
-                        rows={pagedRows as TeamTableRow[]}
-                        total={filteredRows.length}
-                        page={page}
+                        rows={filteredRows as TeamTableRow[]}
                         pageSize={PAGE_SIZE}
-                        handlePageChange={setPage}
                     />
                 )}
             </div>
@@ -491,18 +437,14 @@ const List = () => {
                 row={roleModalRow}
                 availableRoles={availableRoles}
                 onOpenChange={(open) => {
-                    if (!open) {
-                        setRoleModalRow(null);
-                    }
+                    if (!open) setRoleModalRow(null);
                 }}
             />
 
             <ConfirmTeamActionModal
                 action={confirmAction}
                 onOpenChange={(open) => {
-                    if (!open) {
-                        setConfirmAction(null);
-                    }
+                    if (!open) setConfirmAction(null);
                 }}
             />
 
