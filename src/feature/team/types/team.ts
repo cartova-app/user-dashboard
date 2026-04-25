@@ -72,19 +72,12 @@ export type TeamActiveMemberRoleSource = TeamActiveMemberRoleData extends string
 
 export type TeamStatusFilter = "all" | "active" | "invited";
 export type TeamMfaFilter = "all" | "enabled" | "disabled";
-export type TeamSortFilter =
-  | "name-asc"
-  | "name-desc"
-  | "role-asc"
-  | "role-desc"
-  | "recent";
 
 export interface TeamMemberQueryParams {
   search: string;
   status: TeamStatusFilter | "";
   role: string;
   mfa?: TeamMfaFilter | "";
-  sort?: TeamSortFilter | "";
 }
 
 export type TeamRowKind = "member" | "invitation";

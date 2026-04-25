@@ -7,13 +7,7 @@ import { SelectWithIcon } from '@/core/components/common/Select';
 import { Button } from '@/core/components/ui/button';
 import { updateMemberRoleMutationOptions } from '@/feature/team/api/teamQueryDefinitions';
 import type { TeamRowModel } from '@/feature/team/types/team';
-
-const getRoleText = (value: string) => {
-    if (!value.trim()) {
-        return 'Member';
-    }
-    return value[0].toUpperCase() + value.slice(1).toLowerCase();
-};
+import { getRoleText } from '@/feature/team/utils/team';
 
 interface ManageAccessModalProps {
     row: TeamRowModel | null;
