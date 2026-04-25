@@ -3,19 +3,12 @@ import { useState } from 'react';
 import DataTable, { type DataTableColumn } from '@/core/components/common/DataTable';
 import StatusCell from '@/core/components/common/StatusCell';
 
-interface Store {
-  id: string;
-  name: string;
-  status: string;
-  products: number;
-  orders: number;
-  createdAt: string;
-}
+import type { Store } from '../types';
 
 interface StoresDataTableProps {
   data?: {
     items: Store[];
-    total: number;
+    total?: number;
   };
 }
 
@@ -27,7 +20,7 @@ export default function StoresDataTable({ data }: StoresDataTableProps) {
       headerName: 'Store Name',
       flex: 2,
       headerIcon: <Home className="size-4 text-muted-foreground" />,
-      renderCell: ({ row }: { row: Store }) => (
+      renderCell: (row) => (
         <div className="flex items-center gap-2 font-semibold text-foreground uppercase">
           {row.name}
           <ChevronRight className="size-4 text-muted-foreground" />
@@ -39,8 +32,8 @@ export default function StoresDataTable({ data }: StoresDataTableProps) {
       headerName: 'Status',
       flex: 1,
       headerIcon: <Clock className="size-4 text-muted-foreground" />,
-      renderCell: ({ value }: { value: string }) => (
-        <StatusCell status={value} /> // This handles the "Active" or "Paused" badges
+      renderCell: (row) => (
+        <StatusCell status={String(row.status)} /> // This handles the "Active" or "Paused" badges
       ),
     },
     {
@@ -56,14 +49,12 @@ export default function StoresDataTable({ data }: StoresDataTableProps) {
       headerIcon: <Package className="size-4 text-muted-foreground" />,
     },
     {
-      field: 'date',
       headerName: 'Created At',
       flex: 1.5,
       headerIcon: <Clock className="size-4 text-muted-foreground" />,
-      renderCell: ({ row }: { row: Store }) => <span>{new Date(row?.createdAt).toUTCString().slice(0, 16)}</span>,
+      renderCell: (row) => <span>{new Date(row.createdAt).toLocaleDateString()}</span>,
     },
     {
-      field: 'actions',
       headerName: 'Action',
       flex: 1,
       headerIcon: <Edit3 className="size-4 text-muted-foreground" />,
@@ -84,13 +75,12 @@ export default function StoresDataTable({ data }: StoresDataTableProps) {
       </div>
 
       <DataTable
-        columns={columns}
         rows={data?.items || []}
+        columns={columns}
         total={data?.total || 0}
         page={page}
-        handlePageChange={(page: number) => setPage(page)}
+        handlePageChange={setPage}
         pageSize={10}
-        onRowClick={(row: Store) => console.log('Clicked row:', row)}
       />
     </div>
   );

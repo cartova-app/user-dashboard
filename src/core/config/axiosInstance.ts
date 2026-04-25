@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { type AxiosRequestConfig } from "axios";
 import i18next from "i18next";
 
 type MultipartValue = string | number | boolean | Blob | File;

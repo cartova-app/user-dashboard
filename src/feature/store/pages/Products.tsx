@@ -23,10 +23,6 @@ const PAGE_SIZE = 8;
 const Products = () => {
   const { storeId } = useParams<{ storeId: string }>();
 
-  if (!storeId) {
-    return null;
-  }
-
   const [pageView, setPageView] = useState<PageView>("list");
   const [view, setView] = useState<ViewType>("list");
   const [page, setPage] = useState(1);

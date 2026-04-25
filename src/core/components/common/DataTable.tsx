@@ -49,8 +49,7 @@ export const DefaultCell: React.FC<DefaultCellProps> = ({ value, icon = null, ma
   </div>
 );
 
-export interface DataTableColumn<R = Record<string, unknown>> {
-  field: keyof R & string;
+type BaseDataTableColumn = {
   headerName: string;
   headerIcon?: ReactNode;
   width?: string;
@@ -59,12 +58,23 @@ export interface DataTableColumn<R = Record<string, unknown>> {
   align?: 'left' | 'center' | 'right';
   headerAlign?: 'left' | 'center' | 'right';
   sortable?: boolean;
-  renderCell?: (params: { row: R; value: R[keyof R] }) => ReactNode;
-}
+};
+
+type FieldBasedColumn<R> = BaseDataTableColumn & {
+  field: keyof R & string;
+  renderCell?: (row: R) => ReactNode;
+};
+
+type RenderCellBasedColumn<R> = BaseDataTableColumn & {
+  renderCell: (row: R) => ReactNode;
+  field?: keyof R & string;
+};
+
+export type DataTableColumn<R> = FieldBasedColumn<R> | RenderCellBasedColumn<R>;
 
 // Reuse your existing calculateColumnWidths function
 const calculateColumnWidths = (
-  columns: Pick<DataTableColumn, 'width' | 'flex' | 'minWidth'>[],
+  columns: Pick<BaseDataTableColumn, 'width' | 'flex' | 'minWidth'>[],
   containerWidth: number,
 ): string[] => {
   const totalFlex = columns.reduce((sum, col) => sum + (col.flex || 0), 0);
@@ -84,7 +94,7 @@ const calculateColumnWidths = (
   });
 };
 
-interface DataTableProps<R = Record<string, unknown>> {
+interface DataTableProps<R> {
   columns: DataTableColumn<R>[];
   rows: R[];
   total?: number;
@@ -96,9 +106,9 @@ interface DataTableProps<R = Record<string, unknown>> {
   onPageSizeChange?: (pageSize: number) => void;
   onSortChange?: (field: string | null, direction: 'asc' | 'desc' | null) => void;
 }
-export default function DataTable<R extends Record<string, unknown>>({
-  columns = [],
-  rows = [],
+export default function DataTable<R>({
+  columns,
+  rows,
   total = 0,
   page = 1,
   handlePageChange,
@@ -158,10 +168,10 @@ export default function DataTable<R extends Record<string, unknown>>({
                         <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
                           {column.headerName}
                         </span>
-                        {column.sortable === true && (
+                        {column.sortable && column.field && (
                           <button
                             type="button"
-                            onClick={() => handleSort(column.field)}
+                            onClick={() => column.field && handleSort(column.field)}
                             className="text-muted-foreground/50 hover:text-foreground"
                           >
                             {sortConfig.field === column.field ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '⇅'}
@@ -184,7 +194,7 @@ export default function DataTable<R extends Record<string, unknown>>({
               ) : (
                 rows.map((row, rowIndex) => (
                   <tr
-                    key={(row.id as string | number) || rowIndex}
+                    key={((row as { id?: string | number }).id) || rowIndex}
                     onClick={() => onRowClick?.(row)}
                     className="bg-card hover:bg-muted/50 transition-all cursor-pointer group shadow-sm first:rounded-t-xl last:rounded-b-xl"
                   >
@@ -198,11 +208,8 @@ export default function DataTable<R extends Record<string, unknown>>({
                           className={`px-6 py-4 text-sm first:rounded-l-2xl last:rounded-r-2xl border-none ${textAlign}`}
                         >
                           {column.renderCell ? (
-                            column.renderCell({
-                              row,
-                              value: row[column.field],
-                            })
-                          ) : (
+                            column.renderCell(row)
+                          ) : column.field && (
                             <DefaultCell value={row[column.field] as string | number | null | undefined} />
                           )}
                         </td>

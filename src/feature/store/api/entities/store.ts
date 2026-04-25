@@ -19,10 +19,11 @@ export const storeListQueryOptions = () =>
     queryFn: () => get<StoreListResponse>(storeDefs.list.url),
   });
 
-export const storeDetailQueryOptions = (storeId: string) =>
+export const storeDetailQueryOptions = (storeId: string | undefined) =>
   queryOptions({
-    queryKey: storeDefs.detail.key(storeId),
-    queryFn: () => get<StoreDetail>(storeDefs.detail.url(storeId)),
+    queryKey: storeDefs.detail.key(storeId ?? ""),
+    queryFn: () => get<StoreDetail>(storeDefs.detail.url(storeId ?? "")),
+    enabled: !!storeId,
   });
 
 export const storeCreateMutationOptions = (queryClient: QueryClient) =>

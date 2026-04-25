@@ -55,7 +55,7 @@ export default function CategoriesTable({ categories, total, page, onPageChange,
       flex: 2,
       sortable: true,
       headerIcon: <FolderTree className="size-4 text-muted-foreground" />,
-      renderCell: ({ row }) => (
+      renderCell: (row) => (
         <div className="flex items-center gap-3">
           {row.icon?.url ? (
             <img src={row.icon.url} alt="" className="size-8 rounded-lg object-cover" />
@@ -64,7 +64,7 @@ export default function CategoriesTable({ categories, total, page, onPageChange,
               <FolderTree className="size-4 text-muted-foreground" />
             </div>
           )}
-          <span className="text-sm font-medium text-foreground">{row.name as string}</span>
+          <span className="text-sm font-medium text-foreground">{row.name}</span>
         </div>
       ),
     },
@@ -77,7 +77,7 @@ export default function CategoriesTable({ categories, total, page, onPageChange,
       field: 'visible',
       headerName: 'Visible',
       flex: 0.8,
-      renderCell: ({ row }) =>
+      renderCell: (row) =>
         row.visible ? (
           <span className="inline-flex items-center gap-1 text-green-600 text-sm">
             <Check className="size-4" /> Yes
@@ -92,7 +92,7 @@ export default function CategoriesTable({ categories, total, page, onPageChange,
       field: 'isMain',
       headerName: 'Main',
       flex: 0.8,
-      renderCell: ({ row }) =>
+      renderCell: (row) =>
         row.isMain ? (
           <span className="inline-flex items-center gap-1 text-green-600 text-sm">
             <Check className="size-4" /> Yes
@@ -107,9 +107,9 @@ export default function CategoriesTable({ categories, total, page, onPageChange,
       flex: 1.2,
       sortable: true,
       headerIcon: <Clock className="size-4 text-muted-foreground" />,
-      renderCell: ({ row }) => (
+      renderCell: (row) => (
         <span className="text-sm text-muted-foreground">
-          {new Date(row.createdAt as string).toLocaleDateString()}
+          {new Date(row.createdAt).toLocaleDateString()}
         </span>
       ),
     },
@@ -120,7 +120,7 @@ export default function CategoriesTable({ categories, total, page, onPageChange,
       headerIcon: <Edit3 className="size-4 text-muted-foreground" />,
       align: 'right',
       sortable: false,
-      renderCell: ({ row }) => {
+      renderCell: (row) => {
         const category = categories.find((c) => c.id === row.id);
         if (!category) return null;
         return (

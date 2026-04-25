@@ -8,7 +8,6 @@ import { storeListQueryOptions } from "../api/storeQueryDefinitions";
 import CreateStoreModal from "../components/CreateStoreModal";
 import StoreCard from "../components/StoreCard";
 import StoresDataTable from "../components/StoresDataTable";
-import type { StoreListItem } from "../types";
 
 const List = () => {
   const [view, setView] = useState<ViewType>("grid");
@@ -37,7 +36,7 @@ const List = () => {
       </div>
       {view === "grid" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {data?.items?.map((store: StoreListItem) => (
+          {data?.items?.map((store) => (
             <StoreCard key={store.id} store={store} />
           ))}
         </div>
