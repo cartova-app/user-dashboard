@@ -3,7 +3,7 @@ import {
   queryOptions,
   type QueryClient,
 } from "@tanstack/react-query";
-import { del, get, patch, post, sendForm } from "@/core/config/axiosInstance";
+import { del, get, put, post, sendForm } from "@/core/config/axiosInstance";
 import { categoryDefinitions } from "@/feature/store/api/constants";
 import type {
   CategoriesParams,
@@ -44,17 +44,31 @@ export const createCategoryMutationOptions = (
 export const updateCategoryMutationOptions = (
   queryClient: QueryClient,
   storeId: string,
+  params?: CategoriesParams,
+  
 ) =>
   mutationOptions({
     mutationKey: categoryDefs.update.key(storeId),
+
     mutationFn: ({
       categoryId,
       data,
     }: {
       categoryId: string;
       data: UpdateCategoryData;
-    }) => patch<Category>(categoryDefs.update.url(storeId, categoryId), data),
-    onSuccess: invalidateCategoryAll(queryClient, storeId),
+    }) => {
+      const payload = {
+        name: data.name,
+        description: data.description,
+        rank: data.rank,
+      };
+
+      return put(
+        categoryDefs.update.url(storeId, categoryId),
+        payload
+      );
+    },
+onSuccess: invalidateCategoryAll(queryClient, storeId)
   });
 
 export const deleteCategoryMutationOptions = (

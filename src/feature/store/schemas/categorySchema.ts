@@ -5,6 +5,7 @@ export const categorySchema = z.object({
   description: z.string().max(500).optional(),
   visible: z.boolean().default(true),
   isMain: z.boolean().default(false),
+  rank: z.number().int().min(0).default(0),
 });
 
 export type CategoryFormData = z.infer<typeof categorySchema>;

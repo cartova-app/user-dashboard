@@ -62,7 +62,14 @@ export default function CategoryFormModal({ open, onOpenChange, category }: Cate
   const onSubmit = async (data: CategoryFormData) => {
     try {
       if (isEditing) {
-        await updateCategory({ categoryId: category.id, data });
+        await updateCategory({
+  categoryId: category.id,
+  data: {
+    name: data.name,
+    description: data.description,
+    rank: data.rank,
+  },
+});
         toast.success('Category updated successfully');
       } else {
         await createCategory(data);
