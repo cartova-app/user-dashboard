@@ -44,7 +44,7 @@ export const createCategoryMutationOptions = (
 export const updateCategoryMutationOptions = (
   queryClient: QueryClient,
   storeId: string,
-  params?: CategoriesParams,
+  
   
 ) =>
   mutationOptions({
