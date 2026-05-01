@@ -45,16 +45,7 @@ function mapToRow(category: Category): CategoryRow {
   };
 }
 
-export default function CategoriesTable({
-  categories,
-  total,
-  page,
-  onPageChange,
-  pageSize,
-  onEdit,
-  onDelete,
-  onSortChange,
-}: CategoriesTableProps) {
+export default function CategoriesTable({ categories, total, page, onPageChange, pageSize, onEdit, onDelete, onSortChange }: CategoriesTableProps) {
   const rows = categories.map(mapToRow);
 
   const columns: DataTableColumn<CategoryRow>[] = [
@@ -117,7 +108,9 @@ export default function CategoriesTable({
       sortable: true,
       headerIcon: <Clock className="size-4 text-muted-foreground" />,
       renderCell: ({ row }) => (
-        <span className="text-sm text-muted-foreground">{new Date(row.createdAt as string).toLocaleDateString()}</span>
+        <span className="text-sm text-muted-foreground">
+          {new Date(row.createdAt as string).toLocaleDateString()}
+        </span>
       ),
     },
     {
@@ -133,10 +126,7 @@ export default function CategoriesTable({
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted"
-              >
+              <button type="button" className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
                 <Ellipsis className="size-4" />
               </button>
             </DropdownMenuTrigger>
@@ -145,10 +135,7 @@ export default function CategoriesTable({
                 <Pencil className="size-4" />
                 Edit
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => onDelete(category)}
-                className="cursor-pointer text-destructive focus:text-destructive"
-              >
+              <DropdownMenuItem onClick={() => onDelete(category)} className="cursor-pointer text-destructive focus:text-destructive">
                 <Trash2 className="size-4" />
                 Delete
               </DropdownMenuItem>

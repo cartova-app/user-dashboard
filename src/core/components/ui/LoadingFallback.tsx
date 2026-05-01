@@ -33,7 +33,11 @@ const modeClassName: Record<LoaderMode, string> = {
   inline: 'inline-flex items-center justify-center',
 };
 
-export const GameLoader = ({ mode = 'fullscreen', className, dotClassName }: GameLoaderProps) => {
+export const GameLoader = ({
+  mode = 'fullscreen',
+  className,
+  dotClassName,
+}: GameLoaderProps) => {
   return (
     <div role="status" aria-live="polite" className={cn(modeClassName[mode], className)}>
       <DotLoader
@@ -46,8 +50,14 @@ export const GameLoader = ({ mode = 'fullscreen', className, dotClassName }: Gam
   );
 };
 
-export const FullScreenLoader = (props: Omit<GameLoaderProps, 'mode'>) => <GameLoader mode="fullscreen" {...props} />;
+export const FullScreenLoader = (props: Omit<GameLoaderProps, 'mode'>) => (
+  <GameLoader mode="fullscreen" {...props} />
+);
 
-export const SectionLoader = (props: Omit<GameLoaderProps, 'mode'>) => <GameLoader mode="section" {...props} />;
+export const SectionLoader = (props: Omit<GameLoaderProps, 'mode'>) => (
+  <GameLoader mode="section" {...props} />
+);
 
-export const InlineLoader = (props: Omit<GameLoaderProps, 'mode'>) => <GameLoader mode="inline" {...props} />;
+export const InlineLoader = (props: Omit<GameLoaderProps, 'mode'>) => (
+  <GameLoader mode="inline" {...props} />
+);

@@ -5,7 +5,9 @@ import { Badge } from '@/core/components/ui/badge';
 import { authClient } from '@/core/config/auth-client';
 import { cn } from '@/core/lib/utils';
 
-type Organization = NonNullable<ReturnType<typeof authClient.useListOrganizations>['data']>[number];
+type Organization = NonNullable<
+  ReturnType<typeof authClient.useListOrganizations>['data']
+>[number];
 
 interface OrganizationCardProps {
   organization: Organization;

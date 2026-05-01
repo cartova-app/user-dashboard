@@ -15,7 +15,8 @@ const List = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openOnBoarding, setOpenOnBoarding] = useState(false);
 
-  const { data: organizationsData, isPending, error, refetch } = authClient.useListOrganizations();
+  const { data: organizationsData, isPending, error, refetch } =
+    authClient.useListOrganizations();
   const organizations = organizationsData ?? [];
 
   const filteredOrganizations = useMemo(() => {

@@ -1,14 +1,4 @@
-import {
-  BarChart3,
-  Box,
-  Code2,
-  FolderTree,
-  LayoutDashboard,
-  PenLine,
-  Settings,
-  ShoppingBag,
-  UserRoundSearch,
-} from 'lucide-react';
+import { BarChart3, Box, Code2, FolderTree, LayoutDashboard, PenLine, Settings, ShoppingBag, UserRoundSearch } from 'lucide-react';
 import { Outlet, useParams } from 'react-router-dom';
 import AppSidebar from '@/core/components/layout/AppSideBar';
 import { TopNav } from '@/core/components/layout/TopNav';
