@@ -1,39 +1,17 @@
-import type authClient from "@/core/config/auth-client";
+import type authClient from '@/core/config/auth-client';
 
 type ResponseData<T> = T extends { data: infer D } ? D : never;
-type ArrayItem<T> = T extends readonly (infer U)[]
-  ? U
-  : T extends (infer U)[]
-    ? U
-    : never;
+type ArrayItem<T> = T extends readonly (infer U)[] ? U : T extends (infer U)[] ? U : never;
 
-export type TeamListMembersResponse = Awaited<
-  ReturnType<typeof authClient.organization.listMembers>
->;
-export type TeamListInvitationsResponse = Awaited<
-  ReturnType<typeof authClient.organization.listInvitations>
->;
-export type TeamInviteMemberResponse = Awaited<
-  ReturnType<typeof authClient.organization.inviteMember>
->;
-export type TeamCancelInvitationResponse = Awaited<
-  ReturnType<typeof authClient.organization.cancelInvitation>
->;
-export type TeamUpdateMemberRoleResponse = Awaited<
-  ReturnType<typeof authClient.organization.updateMemberRole>
->;
-export type TeamRemoveMemberResponse = Awaited<
-  ReturnType<typeof authClient.organization.removeMember>
->;
-export type TeamLeaveOrganizationResponse = Awaited<
-  ReturnType<typeof authClient.organization.leave>
->;
-export type TeamActiveMemberResponse = Awaited<
-  ReturnType<typeof authClient.organization.getActiveMember>
->;
-export type TeamActiveMemberRoleResponse = Awaited<
-  ReturnType<typeof authClient.organization.getActiveMemberRole>
->;
+export type TeamListMembersResponse = Awaited<ReturnType<typeof authClient.organization.listMembers>>;
+export type TeamListInvitationsResponse = Awaited<ReturnType<typeof authClient.organization.listInvitations>>;
+export type TeamInviteMemberResponse = Awaited<ReturnType<typeof authClient.organization.inviteMember>>;
+export type TeamCancelInvitationResponse = Awaited<ReturnType<typeof authClient.organization.cancelInvitation>>;
+export type TeamUpdateMemberRoleResponse = Awaited<ReturnType<typeof authClient.organization.updateMemberRole>>;
+export type TeamRemoveMemberResponse = Awaited<ReturnType<typeof authClient.organization.removeMember>>;
+export type TeamLeaveOrganizationResponse = Awaited<ReturnType<typeof authClient.organization.leave>>;
+export type TeamActiveMemberResponse = Awaited<ReturnType<typeof authClient.organization.getActiveMember>>;
+export type TeamActiveMemberRoleResponse = Awaited<ReturnType<typeof authClient.organization.getActiveMemberRole>>;
 
 type TeamMembersData = ResponseData<TeamListMembersResponse>;
 type TeamInvitationsData = ResponseData<TeamListInvitationsResponse>;
@@ -70,17 +48,17 @@ export type TeamActiveMemberRoleSource = TeamActiveMemberRoleData extends string
     ? T
     : string;
 
-export type TeamStatusFilter = "all" | "active" | "invited";
-export type TeamMfaFilter = "all" | "enabled" | "disabled";
+export type TeamStatusFilter = 'all' | 'active' | 'invited';
+export type TeamMfaFilter = 'all' | 'enabled' | 'disabled';
 
 export interface TeamMemberQueryParams {
   search: string;
-  status: TeamStatusFilter | "";
+  status: TeamStatusFilter | '';
   role: string;
-  mfa?: TeamMfaFilter | "";
+  mfa?: TeamMfaFilter | '';
 }
 
-export type TeamRowKind = "member" | "invitation";
+export type TeamRowKind = 'member' | 'invitation';
 
 export interface TeamRowModel {
   id: string;
@@ -88,7 +66,7 @@ export interface TeamRowModel {
   name: string;
   email: string;
   role: string;
-  status: "active" | "invited";
+  status: 'active' | 'invited';
   mfaEnabled: boolean;
   isYou: boolean;
   createdAt?: number;
