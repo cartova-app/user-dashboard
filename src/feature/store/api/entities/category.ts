@@ -57,15 +57,9 @@ export const updateCategoryMutationOptions = (
       categoryId: string;
       data: UpdateCategoryData;
     }) => {
-      const payload = {
-        name: data.name,
-        description: data.description,
-        rank: data.rank,
-      };
-
       return put(
         categoryDefs.update.url(storeId, categoryId),
-        payload
+        data
       );
     },
 onSuccess: invalidateCategoryAll(queryClient, storeId)
