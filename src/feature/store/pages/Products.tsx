@@ -23,10 +23,6 @@ const PAGE_SIZE = 8;
 const Products = () => {
   const { storeId } = useParams<{ storeId: string }>();
 
-  if (!storeId) {
-    return null;
-  }
-
   const [pageView, setPageView] = useState<PageView>("list");
   const [view, setView] = useState<ViewType>("list");
   const [page, setPage] = useState(1);
@@ -44,7 +40,7 @@ const Products = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const { data } = useSuspenseQuery({
-    ...productListQueryOptions(storeId, {
+    ...productListQueryOptions(storeId || "", {
       page,
       limit: PAGE_SIZE,
       q: search || undefined,
@@ -52,6 +48,10 @@ const Products = () => {
       sort,
     }),
   });
+
+  if (!storeId) {
+    return null;
+  }
 
   const handleSearchChange = (value: string) => {
     setSearch(value);

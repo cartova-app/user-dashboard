@@ -9,7 +9,7 @@ import {
     Users,
     SearchX,
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import DataTable, { type DataTableColumn } from '@/core/components/common/DataTable';
 import EmptyState from '@/core/components/common/EmptyState';
