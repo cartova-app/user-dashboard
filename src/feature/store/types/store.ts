@@ -8,15 +8,30 @@ export interface StoreData {
   allowedCurrencies?: string[];
 }
 
-export type StoreListItem = {
+export interface Store extends Record<string, unknown> {
   id: string;
   name: string;
-  [key: string]: unknown;
-};
+  logo: string | null;
+  description: string | null;
+  domain: string | null;
+  theme: string;
+  type: string;
+  defaultCurrency: string;
+  allowedCurrencies: string[];
+  createdAt: string;
+  updatedAt: string;
+  organizationId: string;
+
+  // UI Specific properties (currently not returned by API)
+  status?: string;
+  products?: number;
+  orders?: number;
+}
+
 
 export interface StoreListResponse {
-  items: StoreListItem[];
-  meta?: {
+  items: Store[];
+  meta: {
     total: number;
     page: number;
     limit: number;
@@ -24,9 +39,5 @@ export interface StoreListResponse {
   };
 }
 
-/** Shape returned by GET /stores/:id — extend when the API exposes more fields. */
-export type StoreDetail = {
-  id: string;
-  name: string;
-  [key: string]: unknown;
-};
+/** Shape returned by GET /stores/:id */
+export type StoreDetail = Store;

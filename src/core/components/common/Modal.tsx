@@ -39,6 +39,7 @@ function Modal({
             e.preventDefault();
           }
         }}
+        aria-describedby={description}
       >
         {/* Header Section */}
         {showHeader && (title || showCloseButton) && (

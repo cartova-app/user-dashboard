@@ -588,8 +588,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               />
                             )}
                             <span className={cn(screenSize === 'mobile' && 'truncate')}>{option.label}</span>
-                            <button
-                              type="button"
+                            <div
+                              role="button"
                               tabIndex={0}
                               onClick={(event) => {
                                 event.stopPropagation();
@@ -603,10 +603,10 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 }
                               }}
                               aria-label={`Remove ${option.label} from selection`}
-                              className="ml-2 h-4 w-4 cursor-pointer hover:bg-white/20 rounded-sm p-0.5 -m-0.5 focus:outline-none focus:ring-1 focus:ring-white/50"
+                              className="ml-2 flex items-center justify-center h-4 w-4 cursor-pointer hover:bg-white/20 rounded-sm p-0.5 -m-0.5 focus:outline-none focus:ring-1 focus:ring-white/50"
                             >
                               <XCircle className={cn('h-3 w-3', responsiveSettings.compactMode && 'h-2.5 w-2.5')} />
-                            </button>
+                            </div>
                           </Badge>
                         );
                       })
@@ -636,8 +636,8 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                     )}
                   </div>
                   <div className="flex items-center justify-between">
-                    <button
-                      type="button"
+                    <div
+                      role="button"
                       tabIndex={0}
                       onClick={(event) => {
                         event.stopPropagation();
@@ -654,7 +654,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                       className="flex items-center justify-center h-4 w-4 mx-2 cursor-pointer text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 rounded-sm"
                     >
                       <XIcon className="h-4 w-4" />
-                    </button>
+                    </div>
                     <Separator orientation="vertical" className="flex min-h-6 h-full" />
                     <ChevronDown className="h-4 mx-2 cursor-pointer text-muted-foreground" aria-hidden="true" />
                   </div>

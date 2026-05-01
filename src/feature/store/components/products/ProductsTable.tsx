@@ -89,7 +89,7 @@ export default function ProductsTable({
             )}
           </div>
           <span className="text-sm font-medium text-foreground truncate">
-            {row.name as string}
+            {row.name}
           </span>
         </div>
       ),
@@ -99,7 +99,7 @@ export default function ProductsTable({
       headerName: 'Status',
       flex: 1,
       headerIcon: <Tag className="size-4 text-muted-foreground" />,
-      renderCell: ({ row }) => <StatusCell status={row.status as string} />,
+      renderCell: ({ row }) => <StatusCell status={row.status} />,
     },
     {
       field: 'category',

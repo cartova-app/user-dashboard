@@ -64,7 +64,7 @@ export default function CategoriesTable({ categories, total, page, onPageChange,
               <FolderTree className="size-4 text-muted-foreground" />
             </div>
           )}
-          <span className="text-sm font-medium text-foreground">{row.name as string}</span>
+          <span className="text-sm font-medium text-foreground">{row.name}</span>
         </div>
       ),
     },
@@ -109,7 +109,7 @@ export default function CategoriesTable({ categories, total, page, onPageChange,
       headerIcon: <Clock className="size-4 text-muted-foreground" />,
       renderCell: ({ row }) => (
         <span className="text-sm text-muted-foreground">
-          {new Date(row.createdAt as string).toLocaleDateString()}
+          {new Date(row.createdAt).toLocaleDateString()}
         </span>
       ),
     },

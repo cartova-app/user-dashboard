@@ -20,6 +20,7 @@ export interface CategoriesResponse {
     page: number;
     limit: number;
     totalPages: number;
+
   };
 }
 
@@ -43,4 +44,5 @@ export interface UpdateCategoryData {
   description?: string;
   visible?: boolean;
   isMain?: boolean;
+  rank?: number;
 }
