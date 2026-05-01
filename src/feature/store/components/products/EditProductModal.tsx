@@ -1,27 +1,24 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Package, Tag, Upload, X } from "lucide-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Controller, useForm, type Resolver } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import { toast } from "sonner";
-import { InputWithIcon } from "@/core/components/common/InputWithIcon";
-import Modal from "@/core/components/common/Modal";
-import { MultiSelect } from "@/core/components/common/MultiSelect";
-import { SelectWithIcon } from "@/core/components/common/Select";
-import { Button } from "@/core/components/ui/button";
-import { InlineLoader } from "@/core/components/ui/LoadingFallback";
-import { Label } from "@/core/components/ui/label";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Package, Tag, Upload, X } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Controller, type Resolver, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import { toast } from 'sonner';
+import { InputWithIcon } from '@/core/components/common/InputWithIcon';
+import Modal from '@/core/components/common/Modal';
+import { MultiSelect } from '@/core/components/common/MultiSelect';
+import { SelectWithIcon } from '@/core/components/common/Select';
+import { Button } from '@/core/components/ui/button';
+import { InlineLoader } from '@/core/components/ui/LoadingFallback';
+import { Label } from '@/core/components/ui/label';
 import {
   addProductImageMutationOptions,
   categoryListQueryOptions,
   removeProductImageMutationOptions,
   updateProductMutationOptions,
-} from "@/feature/store/api/storeQueryDefinitions";
-import {
-  createProductSchema,
-  type CreateProductFormData,
-} from "../../schemas/productSchema";
+} from '@/feature/store/api/storeQueryDefinitions';
+import { type CreateProductFormData, createProductSchema } from '../../schemas/productSchema';
 import type { Product } from '../../types';
 
 type ProductImage = Product['images'][number];
@@ -37,26 +34,18 @@ interface EditProductModalProps {
   product: Product | null;
 }
 
-export default function EditProductModal({
-  open,
-  onOpenChange,
-  product,
-}: EditProductModalProps) {
+export default function EditProductModal({ open, onOpenChange, product }: EditProductModalProps) {
   const { storeId } = useParams<{ storeId: string }>();
   const queryClient = useQueryClient();
   const { data: categoriesData } = useQuery({
-    ...categoryListQueryOptions(storeId ?? "", { limit: 100 }),
+    ...categoryListQueryOptions(storeId ?? '', { limit: 100 }),
     enabled: Boolean(storeId),
   });
   const { mutateAsync: updateProduct, isPending: isUpdating } = useMutation(
-    updateProductMutationOptions(queryClient, storeId ?? ""),
+    updateProductMutationOptions(queryClient, storeId ?? ''),
   );
-  const { mutateAsync: addImage } = useMutation(
-    addProductImageMutationOptions(queryClient, storeId ?? ""),
-  );
-  const { mutateAsync: removeImage } = useMutation(
-    removeProductImageMutationOptions(queryClient, storeId ?? ""),
-  );
+  const { mutateAsync: addImage } = useMutation(addProductImageMutationOptions(queryClient, storeId ?? ''));
+  const { mutateAsync: removeImage } = useMutation(removeProductImageMutationOptions(queryClient, storeId ?? ''));
 
   const [existingImages, setExistingImages] = useState<ProductImage[]>([]);
   const [newImageFiles, setNewImageFiles] = useState<FilePreview[]>([]);
@@ -64,12 +53,10 @@ export default function EditProductModal({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { control, handleSubmit, reset } = useForm<CreateProductFormData>({
-    resolver: zodResolver(
-      createProductSchema,
-    ) as Resolver<CreateProductFormData>,
+    resolver: zodResolver(createProductSchema) as Resolver<CreateProductFormData>,
     defaultValues: {
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       price: 0,
       quantity: 0,
       categories: [],
@@ -86,7 +73,7 @@ export default function EditProductModal({
     if (open && product) {
       reset({
         name: product.name,
-        description: product.description ?? "",
+        description: product.description ?? '',
         price: product.price,
         quantity: product.quantity,
         categories: product.categories?.map((c) => c.id) ?? [],
@@ -97,8 +84,8 @@ export default function EditProductModal({
       setRemovedImageKeys([]);
     } else if (open) {
       reset({
-        name: "",
-        description: "",
+        name: '',
+        description: '',
         price: 0,
         quantity: 0,
         categories: [],
@@ -159,7 +146,7 @@ export default function EditProductModal({
         try {
           await removeImage({ productId: product.id, key });
         } catch {
-          toast.error("Failed to remove an image");
+          toast.error('Failed to remove an image');
         }
       }
 
@@ -171,11 +158,10 @@ export default function EditProductModal({
         }
       }
 
-      toast.success("Product updated successfully");
+      toast.success('Product updated successfully');
       onOpenChange(false);
     } catch (error) {
-      const msg =
-        error instanceof Error ? error.message : "Failed to update product";
+      const msg = error instanceof Error ? error.message : 'Failed to update product';
       toast.error(msg);
     }
   };
@@ -189,12 +175,7 @@ export default function EditProductModal({
   };
 
   return (
-    <Modal
-      open={open}
-      onOpenChange={handleClose}
-      title="Edit Product"
-      width="700px"
-    >
+    <Modal open={open} onOpenChange={handleClose} title="Edit Product" width="700px">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Controller
@@ -269,11 +250,11 @@ export default function EditProductModal({
                 label="Visibility"
                 placeholder="Select visibility"
                 options={[
-                  { value: "true", label: "Published" },
-                  { value: "false", label: "Hidden" },
+                  { value: 'true', label: 'Published' },
+                  { value: 'false', label: 'Hidden' },
                 ]}
                 value={String(field.value)}
-                onValueChange={(val) => field.onChange(val === "true")}
+                onValueChange={(val) => field.onChange(val === 'true')}
               />
             )}
           />
@@ -284,32 +265,23 @@ export default function EditProductModal({
           control={control}
           render={({ field, fieldState: { error } }) => (
             <div className="space-y-1">
-              <Label className="text-sm font-medium text-foreground">
-                Description
-              </Label>
+              <Label className="text-sm font-medium text-foreground">Description</Label>
               <textarea
                 placeholder="Product description"
                 className="w-full min-h-[80px] rounded-xl border-2 border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:border-ring outline-none resize-none"
                 {...field}
               />
-              {error?.message && (
-                <p className="text-sm text-destructive">{error.message}</p>
-              )}
+              {error?.message && <p className="text-sm text-destructive">{error.message}</p>}
             </div>
           )}
         />
 
         {/* Images */}
         <div className="space-y-2">
-          <Label className="text-sm font-medium text-foreground">
-            Product images
-          </Label>
+          <Label className="text-sm font-medium text-foreground">Product images</Label>
           <div className="flex flex-wrap gap-3">
             {existingImages.map((img) => (
-              <div
-                key={img.key}
-                className="relative size-20 rounded-xl overflow-hidden border border-border group"
-              >
+              <div key={img.key} className="relative size-20 rounded-xl overflow-hidden border border-border group">
                 <img src={img.url} alt="" className="size-full object-cover" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button
@@ -324,15 +296,8 @@ export default function EditProductModal({
             ))}
 
             {newImageFiles.map((img, index) => (
-              <div
-                key={img.preview}
-                className="relative size-20 rounded-xl overflow-hidden border border-border group"
-              >
-                <img
-                  src={img.preview}
-                  alt=""
-                  className="size-full object-cover"
-                />
+              <div key={img.preview} className="relative size-20 rounded-xl overflow-hidden border border-border group">
+                <img src={img.preview} alt="" className="size-full object-cover" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button
                     type="button"
@@ -367,12 +332,7 @@ export default function EditProductModal({
         </div>
 
         <div className="flex justify-end gap-3 pt-2">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => handleClose(false)}
-            disabled={isUpdating}
-          >
+          <Button type="button" variant="outline" onClick={() => handleClose(false)} disabled={isUpdating}>
             Cancel
           </Button>
           <Button type="submit" variant="primary" disabled={isUpdating}>

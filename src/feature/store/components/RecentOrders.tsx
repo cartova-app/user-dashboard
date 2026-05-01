@@ -111,14 +111,18 @@ export default function RecentOrdersTable({ ordersData }: RecentOrdersTableProps
       headerName: 'Date',
       flex: 1.5,
       headerIcon: <Calendar className="size-4 text-muted-foreground" />,
-      renderCell: ({ value }: { value: unknown }) => <span className="text-muted-foreground font-medium">{String(value)}</span>,
+      renderCell: ({ value }: { value: unknown }) => (
+        <span className="text-muted-foreground font-medium">{String(value)}</span>
+      ),
     },
     {
       field: 'category',
       headerName: 'Category',
       flex: 1.5,
       headerIcon: <Folder className="size-4 text-muted-foreground" />,
-      renderCell: ({ value }: { value: unknown }) => <span className="text-foreground font-semibold">{String(value)}</span>,
+      renderCell: ({ value }: { value: unknown }) => (
+        <span className="text-foreground font-semibold">{String(value)}</span>
+      ),
     },
     {
       field: 'status',

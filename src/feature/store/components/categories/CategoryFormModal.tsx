@@ -1,8 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FolderTree } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { FolderTree } from 'lucide-react';
 import { useEffect } from 'react';
-import { Controller, useForm, type Resolver } from 'react-hook-form';
+import { Controller, type Resolver, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { InputWithIcon } from '@/core/components/common/InputWithIcon';
@@ -14,7 +14,7 @@ import {
   createCategoryMutationOptions,
   updateCategoryMutationOptions,
 } from '@/feature/store/api/storeQueryDefinitions';
-import { categorySchema, type CategoryFormData } from '../../schemas/categorySchema';
+import { type CategoryFormData, categorySchema } from '../../schemas/categorySchema';
 import type { Category } from '../../types';
 
 interface CategoryFormModalProps {
@@ -81,12 +81,7 @@ export default function CategoryFormModal({ open, onOpenChange, category }: Cate
   };
 
   return (
-    <Modal
-      open={open}
-      onOpenChange={handleClose}
-      title={isEditing ? 'Edit Category' : 'Create Category'}
-      width="500px"
-    >
+    <Modal open={open} onOpenChange={handleClose} title={isEditing ? 'Edit Category' : 'Create Category'} width="500px">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <Controller
           name="name"

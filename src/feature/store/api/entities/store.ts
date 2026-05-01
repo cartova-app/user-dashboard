@@ -1,15 +1,7 @@
-import {
-  mutationOptions,
-  queryOptions,
-  type QueryClient,
-} from "@tanstack/react-query";
-import { get, post } from "@/core/config/axiosInstance";
-import { storeDefinitions } from "@/feature/store/api/constants";
-import type {
-  StoreData,
-  StoreDetail,
-  StoreListResponse,
-} from "@/feature/store/types";
+import { mutationOptions, type QueryClient, queryOptions } from '@tanstack/react-query';
+import { get, post } from '@/core/config/axiosInstance';
+import { storeDefinitions } from '@/feature/store/api/constants';
+import type { StoreData, StoreDetail, StoreListResponse } from '@/feature/store/types';
 
 export const storeDefs = storeDefinitions;
 

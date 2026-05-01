@@ -25,11 +25,7 @@ interface ProductCardProps {
   onDelete: (product: Product) => void;
 }
 
-function ProductCard({
-  product,
-  onEdit,
-  onDelete,
-}: ProductCardProps) {
+function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
   const status = product.visible ? 'active' : 'inactive';
 
   return (
@@ -96,7 +92,15 @@ function ProductCard({
   );
 }
 
-export default function ProductsGrid({ products, total, page, onPageChange, pageSize, onEdit, onDelete }: ProductsGridProps) {
+export default function ProductsGrid({
+  products,
+  total,
+  page,
+  onPageChange,
+  pageSize,
+  onEdit,
+  onDelete,
+}: ProductsGridProps) {
   const pageCount = Math.ceil(total / pageSize);
 
   return (

@@ -1,15 +1,5 @@
-import {
-  Edit3,
-  Ellipsis,
-  Package,
-  Pencil,
-  ShoppingBag,
-  Tag,
-  Trash2,
-} from 'lucide-react';
-import DataTable, {
-  type DataTableColumn,
-} from '@/core/components/common/DataTable';
+import { Edit3, Ellipsis, Package, Pencil, ShoppingBag, Tag, Trash2 } from 'lucide-react';
+import DataTable, { type DataTableColumn } from '@/core/components/common/DataTable';
 import StatusCell from '@/core/components/common/StatusCell';
 import {
   DropdownMenu,
@@ -77,20 +67,14 @@ export default function ProductsTable({
         <div className="flex items-center gap-3">
           <div className="size-10 rounded-lg bg-muted overflow-hidden flex-shrink-0">
             {row.image ? (
-              <img
-                src={row.image}
-                alt={row.name}
-                className="size-full object-cover"
-              />
+              <img src={row.image} alt={row.name} className="size-full object-cover" />
             ) : (
               <div className="size-full flex items-center justify-center">
                 <Package className="size-5 text-muted-foreground" />
               </div>
             )}
           </div>
-          <span className="text-sm font-medium text-foreground truncate">
-            {row.name as string}
-          </span>
+          <span className="text-sm font-medium text-foreground truncate">{row.name as string}</span>
         </div>
       ),
     },
@@ -119,11 +103,7 @@ export default function ProductsTable({
       flex: 1,
       sortable: true,
       headerIcon: <Tag className="size-4 text-muted-foreground" />,
-      renderCell: ({ row }) => (
-        <span className="text-sm font-medium">
-          {Number(row.price).toLocaleString()}
-        </span>
-      ),
+      renderCell: ({ row }) => <span className="text-sm font-medium">{Number(row.price).toLocaleString()}</span>,
     },
     {
       field: 'id',
@@ -146,10 +126,7 @@ export default function ProductsTable({
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => onEdit(product)}
-                className="cursor-pointer"
-              >
+              <DropdownMenuItem onClick={() => onEdit(product)} className="cursor-pointer">
                 <Pencil className="size-4" />
                 Edit
               </DropdownMenuItem>

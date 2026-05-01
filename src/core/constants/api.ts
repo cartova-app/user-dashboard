@@ -20,7 +20,7 @@ export const API_END_POINTS = {
 
 export type QueryDefinitions = {
   [key: string]: {
-    key: readonly unknown[] | ((...args: any[]) => readonly unknown[]);
-    url: string | ((...args: any[]) => string);
+    key: readonly unknown[] | ((...args: unknown[]) => readonly unknown[]);
+    url: string | ((...args: unknown[]) => string);
   };
 };

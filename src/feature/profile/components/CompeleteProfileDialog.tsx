@@ -22,9 +22,7 @@ function CompeleteProfileDialog({ isOpen, setIsOpen }: CompeleteProfileDialogPro
   const queryClient = useQueryClient();
   const { currentStep, resetForm } = useProfileStore();
   const { generateSlug } = useGenerateSlug();
-  const { mutateAsync: createStore } = useMutation(
-    createStoreMutationOptions(queryClient),
-  );
+  const { mutateAsync: createStore } = useMutation(createStoreMutationOptions(queryClient));
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleComplete = async (formData: ProfileFormData) => {
