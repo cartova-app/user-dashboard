@@ -20,7 +20,9 @@ export const API_END_POINTS = {
 
 export type QueryDefinitions = {
   [key: string]: {
-    key: readonly unknown[] | ((...args: unknown[]) => readonly unknown[]);
-    url: string | ((...args: unknown[]) => string);
+    // biome-ignore lint/suspicious/noExplicitAny: generic function arguments
+    key: readonly unknown[] | ((...args: any[]) => readonly unknown[]);
+    // biome-ignore lint/suspicious/noExplicitAny: generic function arguments
+    url: string | ((...args: any[]) => string);
   };
 };
