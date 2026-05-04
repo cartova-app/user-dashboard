@@ -38,7 +38,7 @@ interface ProductsTableProps {
   pageSize: number;
   onEdit: (product: Product) => void;
   onDelete: (product: Product) => void;
-  onOpen: (productId: string) => void; 
+  onOpen: (productId: string) => void;
   onSortChange?: (sortBy: string | null, sort: 'asc' | 'desc' | null) => void;
 }
 
@@ -48,7 +48,7 @@ function mapProductToRow(product: Product): ProductRow {
     name: product.name,
     image: product.images?.[0]?.url ?? null,
     status: product.visible ? 'active' : 'inactive',
-    category: product.categories.map((category) => category.name).join(', '),
+    category: product.categories.map((c) => c.name).join(', '),
     quantity: product.quantity,
     price: product.price,
     visible: product.visible,
@@ -64,7 +64,7 @@ export default function ProductsTable({
   onEdit,
   onDelete,
   onSortChange,
-  onOpen
+  onOpen,
 }: ProductsTableProps) {
   const rows = products.map(mapProductToRow);
 
@@ -146,6 +146,7 @@ export default function ProductsTable({
       renderCell: (row) => {
         const product = products.find((p) => p.id === row.id);
         if (!product) return null;
+
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -156,6 +157,7 @@ export default function ProductsTable({
                 <Ellipsis className="size-4" />
               </button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 onClick={() => onEdit(product)}
@@ -164,6 +166,7 @@ export default function ProductsTable({
                 <Pencil className="size-4" />
                 Edit
               </DropdownMenuItem>
+
               <DropdownMenuItem
                 onClick={() => onDelete(product)}
                 className="cursor-pointer text-destructive focus:text-destructive"

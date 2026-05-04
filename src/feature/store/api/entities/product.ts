@@ -32,6 +32,7 @@ export const productListQueryOptions = (
 export const productDetailQueryOptions = (
   storeId: string,
   productId: string,
+  
 ) =>
   queryOptions({
     queryKey: productDefs.detail.key(storeId, productId),
