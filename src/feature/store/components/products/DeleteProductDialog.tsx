@@ -12,9 +12,10 @@ interface DeleteProductDialogProps {
   product: Product | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onDeleted?: () => void;
 }
 
-export default function DeleteProductDialog({ product, open, onOpenChange }: DeleteProductDialogProps) {
+export default function DeleteProductDialog({ product, open, onOpenChange, onDeleted }: DeleteProductDialogProps) {
   const { storeId } = useParams<{ storeId: string }>();
   const queryClient = useQueryClient();
   const { mutateAsync: deleteProduct, isPending } = useMutation(
@@ -27,6 +28,7 @@ export default function DeleteProductDialog({ product, open, onOpenChange }: Del
       await deleteProduct(product.id);
       toast.success('Product deleted successfully');
       onOpenChange(false);
+      if (typeof onDeleted === 'function') onDeleted();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to delete product';
       toast.error(errorMessage);

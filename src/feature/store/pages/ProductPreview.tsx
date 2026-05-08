@@ -28,6 +28,8 @@ import { Card } from "@/core/components/ui/card";
 
 import PageHeading from "@/core/components/common/PageHeading";
 import { productDetailQueryOptions } from "../api/storeQueryDefinitions";
+import EditProductModal from "@/feature/store/components/products/EditProductModal";
+import DeleteProductDialog from "@/feature/store/components/products/DeleteProductDialog";
 
 // ─── Image Gallery Card ───────────────────────────────────────────────────────
 // Handles 1–4+ images dynamically:
@@ -136,6 +138,9 @@ const ProductPreview = () => {
     navigate(`/stores/${storeId ?? ''}/products`);
   };
 
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
   const query = useSuspenseQuery(
     productDetailQueryOptions(storeId ?? '', productId ?? '')
   );
@@ -204,10 +209,10 @@ const ProductPreview = () => {
         </div>
 
         <div className="flex gap-2">
-          <Button className="bg-[#ecff77] hover:bg-[#e4ff5f] text-black rounded-xl">
+          <Button onClick={() => setIsEditOpen(true)} className="bg-[#ecff77] hover:bg-[#e4ff5f] text-black rounded-xl">
             Edit product <Pencil className="ml-2 size-4" />
           </Button>
-          <Button variant="destructive" className="rounded-xl bg-red-500 hover:bg-red-600">
+          <Button onClick={() => setIsDeleteOpen(true)} variant="destructive" className="rounded-xl bg-red-500 hover:bg-red-600">
             Delete <Trash2 className="ml-2 size-4" />
           </Button>
         </div>
@@ -551,6 +556,20 @@ const ProductPreview = () => {
           </Button>
         </div>
       </Card>
+
+      {/* Modals */}
+      <EditProductModal
+        open={isEditOpen}
+        onOpenChange={setIsEditOpen}
+        product={product ?? null}
+      />
+
+      <DeleteProductDialog
+        open={isDeleteOpen}
+        onOpenChange={setIsDeleteOpen}
+        product={product ?? null}
+        onDeleted={() => navigate(`/stores/${storeId ?? ''}/products`)}
+      />
     </div>
   );
 };

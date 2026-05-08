@@ -3,7 +3,7 @@ import {
   queryOptions,
   type QueryClient,
 } from "@tanstack/react-query";
-import { del, get, post, patch, sendForm } from "@/core/config/axiosInstance";
+import { del, get, post, put, sendForm } from "@/core/config/axiosInstance";
 import { productDefinitions } from "@/feature/store/api/constants";
 import type {
   CreateProductData,
@@ -64,7 +64,7 @@ export const updateProductMutationOptions = (
       productId: string;
       data: UpdateProductData;
     }) =>
-      patch<Product>(productDefs.update.url(storeId, productId), data),
+      put<Product>(productDefs.update.url(storeId, productId), data),
     onSuccess: invalidateProductAll(queryClient, storeId),
   });
 
