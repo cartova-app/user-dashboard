@@ -1,7 +1,7 @@
 import { Plus, Settings } from "lucide-react";
 import { useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import EmptyState from "@/core/components/common/EmptyState";
 import PageHeading from "@/core/components/common/PageHeading";
 import type { ViewType } from "@/core/components/common/ViewToggle";
@@ -15,6 +15,8 @@ import ProductsGrid from "../components/products/ProductsGrid";
 import ProductsTable from "../components/products/ProductsTable";
 import ProductsToolbar from "../components/products/ProductsToolbar";
 
+
+
 type PageView = "list" | "add";
 type FilterTab = "all" | "status" | "inventory" | "price";
 
@@ -22,6 +24,7 @@ const PAGE_SIZE = 8;
 
 const Products = () => {
   const { storeId } = useParams<{ storeId: string }>();
+  const navigate = useNavigate();
 
   const [pageView, setPageView] = useState<PageView>("list");
   const [view, setView] = useState<ViewType>("list");
@@ -40,7 +43,7 @@ const Products = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const { data } = useSuspenseQuery({
-    ...productListQueryOptions(storeId, {
+    ...productListQueryOptions(storeId!, {
       page,
       limit: PAGE_SIZE,
       q: search || undefined,
@@ -92,6 +95,10 @@ const Products = () => {
   const handleDelete = (product: Product) => {
     setDeleteProduct(product);
     setDeleteDialogOpen(true);
+  };
+
+  const handleOpen = (productId: string) => {
+    navigate(`/stores/${storeId}/products/${productId}`);
   };
 
   const handleAddSuccess = () => {
@@ -179,6 +186,7 @@ const Products = () => {
           onEdit={handleEdit}
           onDelete={handleDelete}
           onSortChange={handleSortChange}
+          onOpen={handleOpen}
         />
       ) : (
         <ProductsGrid

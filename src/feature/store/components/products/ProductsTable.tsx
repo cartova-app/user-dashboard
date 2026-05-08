@@ -38,6 +38,7 @@ interface ProductsTableProps {
   pageSize: number;
   onEdit: (product: Product) => void;
   onDelete: (product: Product) => void;
+  onOpen: (productId: string) => void;
   onSortChange?: (sortBy: string | null, sort: 'asc' | 'desc' | null) => void;
 }
 
@@ -47,7 +48,7 @@ function mapProductToRow(product: Product): ProductRow {
     name: product.name,
     image: product.images?.[0]?.url ?? null,
     status: product.visible ? 'active' : 'inactive',
-    category: product.categories.map((category) => category.name).join(', '),
+    category: product.categories.map((c) => c.name).join(', '),
     quantity: product.quantity,
     price: product.price,
     visible: product.visible,
@@ -63,6 +64,7 @@ export default function ProductsTable({
   onEdit,
   onDelete,
   onSortChange,
+  onOpen,
 }: ProductsTableProps) {
   const rows = products.map(mapProductToRow);
 
@@ -79,7 +81,7 @@ export default function ProductsTable({
             {row.image ? (
               <img
                 src={row.image}
-                alt={row.name}
+                alt={row.name as string}
                 className="size-full object-cover"
               />
             ) : (
@@ -89,7 +91,7 @@ export default function ProductsTable({
             )}
           </div>
           <span className="text-sm font-medium text-foreground truncate">
-            {row.name}
+            {row.name as string}
           </span>
         </div>
       ),
@@ -135,26 +137,36 @@ export default function ProductsTable({
       renderCell: (row) => {
         const product = products.find((p) => p.id === row.id);
         if (!product) return null;
+
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
                 className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted"
+                onClick={(e) => e.stopPropagation()}
               >
                 <Ellipsis className="size-4" />
               </button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end">
               <DropdownMenuItem
-                onClick={() => onEdit(product)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(product);
+                }}
                 className="cursor-pointer"
               >
                 <Pencil className="size-4" />
                 Edit
               </DropdownMenuItem>
+
               <DropdownMenuItem
-                onClick={() => onDelete(product)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(product);
+                }}
                 className="cursor-pointer text-destructive focus:text-destructive"
               >
                 <Trash2 className="size-4" />
@@ -175,6 +187,7 @@ export default function ProductsTable({
       page={page}
       handlePageChange={onPageChange}
       pageSize={pageSize}
+      onRowClick={(row) => onOpen(row.id as string)}
       onSortChange={onSortChange}
     />
   );

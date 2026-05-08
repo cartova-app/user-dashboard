@@ -20,13 +20,24 @@ const invalidateProductAll = (queryClient: QueryClient, storeId: string) => () =
 export const productDefs = productDefinitions;
 
 export const productListQueryOptions = (
-  storeId: string | undefined,
+  storeId: string,
   params?: ProductsParams,
 ) =>
   queryOptions({
-    queryKey: productDefs.list.key(storeId ?? ""),
-    queryFn: () => get<ProductsResponse>(productDefs.list.url(storeId ?? ""), { params }),
-    enabled: !!storeId,
+    queryKey: productDefs.list.key(storeId, params),
+    queryFn: () =>
+      get<ProductsResponse>(productDefs.list.url(storeId), { params }),
+  });
+
+export const productDetailQueryOptions = (
+  storeId: string,
+  productId: string,
+  
+) =>
+  queryOptions({
+    queryKey: productDefs.detail.key(storeId, productId),
+    queryFn: () =>
+      get<Product>(productDefs.detail.url(storeId, productId)),
   });
 
 export const createProductMutationOptions = (
@@ -52,7 +63,8 @@ export const updateProductMutationOptions = (
     }: {
       productId: string;
       data: UpdateProductData;
-    }) => put<Product>(productDefs.update.url(storeId, productId), data),
+    }) =>
+      put<Product>(productDefs.update.url(storeId, productId), data),
     onSuccess: invalidateProductAll(queryClient, storeId),
   });
 
@@ -79,7 +91,12 @@ export const addProductImageMutationOptions = (
     }: {
       productId: string;
       file: File;
-    }) => sendForm<Product>("post", productDefs.addImage.url(storeId, productId), { file }),
+    }) =>
+      sendForm<Product>(
+        "post",
+        productDefs.addImage.url(storeId, productId),
+        { file },
+      ),
     onSuccess: invalidateProductAll(queryClient, storeId),
   });
 

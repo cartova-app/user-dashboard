@@ -75,6 +75,12 @@ export const productDefinitions = {
       [...productAllKey(storeId), "list", params] as const,
     url: (storeId: string) => `/api/dashboard/stores/${storeId}/products`,
   },
+  detail: {
+  key: (storeId: string, productId: string) =>
+    [...productAllKey(storeId), "detail", productId] as const,
+  url: (storeId: string, productId: string) =>
+    `/api/dashboard/stores/${storeId}/products/${productId}`,
+},
   create: {
     key: (storeId: string) =>
       [...productAllKey(storeId), "create"] as const,

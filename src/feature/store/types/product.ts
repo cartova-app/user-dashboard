@@ -13,6 +13,14 @@ export interface Product {
   storeId: string;
   creatorId: string;
   categories: Category[];
+  slug: string;
+  store: {
+    id: string;
+    name: string;
+    slug: string;
+  };
+
+  storeName: string;
 }
 
 export interface ProductsResponse {
