@@ -58,7 +58,7 @@ export default function StoreLayout() {
   return (
     <SidebarProvider>
       <AppSidebar items={items} />
-      <main className="flex-1 min-w-0">
+      <main className="flex-1 min-w-0 overflow-x-hidden">
         <TopNav />
         <Outlet />
       </main>
