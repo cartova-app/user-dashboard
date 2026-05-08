@@ -32,7 +32,10 @@ function AppSidebar({ items = [] }: AppSidebarProps) {
       <SidebarHeader className="p-4 group-data-[collapsible=icon]:p-2 items-center justify-between">
         <div className="flex items-center gap-2 w-full group-data-[collapsible=icon]:justify-center">
           <Logo className="h-8 w-auto group-data-[collapsible=icon]:hidden dark:brightness-0 dark:invert transition-all duration-300" />
-          <SidebarTrigger className="ml-auto group-data-[collapsible=icon]:ml-0 text-muted-foreground hover:text-foreground" />
+          <SidebarTrigger
+            aria-label="Close navigation"
+            className="ml-auto group-data-[collapsible=icon]:ml-0 text-muted-foreground hover:text-foreground"
+          />
         </div>
       </SidebarHeader>
 

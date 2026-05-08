@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/core/components/ui/dropdown-menu';
+import { SidebarTrigger } from '@/core/components/ui/sidebar';
 import authClient from '@/core/config/auth-client';
 import { storeListQueryOptions } from '@/feature/store/api/storeQueryDefinitions';
 import { ThemeToggle } from '../common/ThemeToggle';
@@ -53,16 +54,20 @@ export function TopNav() {
   };
 
   return (
-    <header className="sticky top-0 z-50 flex h-24 items-center justify-between border-b bg-background px-6">
+    <header className="sticky top-0 z-50 flex h-14 md:h-24 items-center justify-between border-b bg-background px-3 md:px-6">
       {/* Left Side: Organization Switcher */}
-      <div className="flex items-center gap-3">
-        <div className="flex size-9 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950/50">
+      <div className="flex min-w-0 flex-1 items-center gap-2 md:gap-3">
+        <SidebarTrigger aria-label="Open navigation" className="shrink-0 md:hidden" />
+        <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950/50">
           {/* Custom icon representing organization */}
           <UserCircle className="size-5 text-emerald-600 dark:text-emerald-400" />
         </div>
 
-        <div className="flex items-center gap-1">
-          <Link to="/stores" className="text-sm font-semibold text-foreground hover:text-primary transition-colors">
+        <div className="flex min-w-0 items-center gap-1">
+          <Link
+            to="/stores"
+            className="truncate text-sm font-semibold text-foreground transition-colors hover:text-primary"
+          >
             {activeOrganization?.name}
           </Link>
           <DropdownMenu>
@@ -114,7 +119,7 @@ export function TopNav() {
             <div className="flex items-center gap-1">
               <Link
                 to={`/stores/${storeId}/dashboard`}
-                className="max-w-48 truncate text-sm font-semibold text-foreground transition-colors hover:text-primary"
+                className="max-w-[8rem] truncate text-sm font-semibold text-foreground transition-colors hover:text-primary sm:max-w-48"
               >
                 {activeStore?.name ?? 'Store'}
               </Link>
@@ -162,12 +167,12 @@ export function TopNav() {
       </div>
 
       {/* Right Side: Utilities */}
-      <div className="flex items-center gap-6">
+      <div className="flex shrink-0 items-center gap-2 md:gap-6">
         {/* Search Bar */}
         {/* Theme Toggle */}
         <ThemeToggle />
         {/* Action Icons */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           {/* Notification with Badge */}
           <Button variant="ghost" size="icon" className="relative text-muted-foreground">
             <Bell className="size-5" />
@@ -178,7 +183,9 @@ export function TopNav() {
           </Button>
 
           {/* Language / Region */}
-          <span className="cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground">EN</span>
+          <span className="hidden cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground sm:inline">
+            EN
+          </span>
 
           {/* Profile */}
           <DropdownMenu>
