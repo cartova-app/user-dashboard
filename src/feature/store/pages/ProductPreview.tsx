@@ -132,6 +132,9 @@ const ProductPreview = () => {
   }>();
 
   const navigate = useNavigate();
+  const handleGoToProducts = () => {
+    navigate(`/stores/${storeId ?? ''}/products`);
+  };
 
   const query = useSuspenseQuery(
     productDetailQueryOptions(storeId ?? '', productId ?? '')
@@ -180,13 +183,24 @@ const ProductPreview = () => {
       <div className="flex items-center justify-between text-gray-900 dark:text-white">
         <div>
           <PageHeading heading="Product" />
-          <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-1">
-            <Box className="size-4" />
-            Product Overview
-            <span>›</span>
-            <Package className="size-4" />
-            Preview Product
-          </div>
+          <nav
+            aria-label="Breadcrumb"
+            className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-1"
+          >
+            <button
+              type="button"
+              onClick={handleGoToProducts}
+              className="flex items-center gap-1 hover:text-gray-900 dark:hover:text-white transition-colors"
+            >
+              <Box className="size-4" />
+              Products Overview
+            </button>
+            <span aria-hidden="true">›</span>
+            <span className="flex items-center gap-1 text-gray-700 dark:text-gray-200 font-medium" aria-current="page">
+              <Package className="size-4" />
+              Preview Product
+            </span>
+          </nav>
         </div>
 
         <div className="flex gap-2">

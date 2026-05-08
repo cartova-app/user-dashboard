@@ -90,18 +90,9 @@ export default function ProductsTable({
               </div>
             )}
           </div>
-          <button
-            type="button"
-            className="flex items-center gap-3 cursor-pointer bg-transparent p-0"
-            onClick={() => onOpen(row.id as string)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') onOpen(row.id as string);
-            }}
-          >
-            <span className="text-sm font-medium text-foreground truncate">
-              {row.name as string}
-            </span>
-          </button>
+          <span className="text-sm font-medium text-foreground truncate">
+            {row.name as string}
+          </span>
         </div>
       ),
     },
@@ -153,6 +144,7 @@ export default function ProductsTable({
               <button
                 type="button"
                 className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted"
+                onClick={(e) => e.stopPropagation()}
               >
                 <Ellipsis className="size-4" />
               </button>
@@ -160,7 +152,10 @@ export default function ProductsTable({
 
             <DropdownMenuContent align="end">
               <DropdownMenuItem
-                onClick={() => onEdit(product)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(product);
+                }}
                 className="cursor-pointer"
               >
                 <Pencil className="size-4" />
@@ -168,7 +163,10 @@ export default function ProductsTable({
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                onClick={() => onDelete(product)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(product);
+                }}
                 className="cursor-pointer text-destructive focus:text-destructive"
               >
                 <Trash2 className="size-4" />
@@ -189,6 +187,7 @@ export default function ProductsTable({
       page={page}
       handlePageChange={onPageChange}
       pageSize={pageSize}
+      onRowClick={(row) => onOpen(row.id as string)}
       onSortChange={onSortChange}
     />
   );
