@@ -1,6 +1,7 @@
 import { Building2, FileText, Store } from 'lucide-react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { InputWithIcon } from '@/core/components/common/InputWithIcon';
+import { SlugPreview } from '@/core/components/common/SlugPreview';
 import { useProfileStore } from '../store/profileStore';
 import { StepperButtons } from './StepperButtons';
 
@@ -14,9 +15,9 @@ export default function OrganizationForm() {
   const { formData, updateFormData, nextStep } = useProfileStore();
 
   const {
-    control,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm<OrganizationFormData>({
     defaultValues: {
       organizationName: formData.organizationName || '',
@@ -24,6 +25,7 @@ export default function OrganizationForm() {
       storeDescription: formData.storeDescription || '',
     },
   });
+  const organizationName = useWatch({ control, name: 'organizationName' });
 
   const onSubmit = (data: OrganizationFormData) => {
     updateFormData(data);
@@ -65,6 +67,7 @@ export default function OrganizationForm() {
             />
           )}
         />
+        <SlugPreview name={organizationName ?? ''} />
         <Controller
           name="storeName"
           control={control}
