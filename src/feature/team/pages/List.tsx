@@ -77,12 +77,15 @@ const buildMemberRow = (
     member: TeamMemberSource,
     sessionUserId: string | undefined,
     sessionEmail: string | undefined,
+    activeMemberId: string | undefined,
+    activeMemberUserId: string | undefined,
 ): TeamRowModel | null => {
     if (!isRecord(member)) return null;
 
     const user = isRecord(member.user) ? member.user : undefined;
     const id = readString(member, 'id');
     const userId = readString(member, 'userId');
+    const organizationId = readString(member, 'organizationId');
     const roleValue = readString(member, 'role');
     const email = (user ? readString(user, 'email') : undefined) ?? '';
     const name = (user ? readString(user, 'name') : undefined) ?? (email ? email.split('@')[0] : 'Member');
@@ -90,11 +93,14 @@ const buildMemberRow = (
     if (!id || !roleValue) return null;
 
     const isYou =
+        (activeMemberId !== undefined && id === activeMemberId) ||
+        (activeMemberUserId !== undefined && userId === activeMemberUserId) ||
         (sessionUserId !== undefined && userId === sessionUserId) ||
         (sessionEmail !== undefined && email.length > 0 && email.toLowerCase() === sessionEmail.toLowerCase());
 
     return {
         id,
+        organizationId,
         kind: 'member',
         name,
         email,
@@ -176,7 +182,11 @@ const List = () => {
         refetch: refetchInvitations,
     } = useQuery(teamInvitationsQueryOptions(filters, organizationId || ''));
 
-    const { error: activeMemberError, refetch: refetchActiveMember } = useQuery(teamActiveMemberQueryOptions());
+    const {
+        data: activeMemberData,
+        error: activeMemberError,
+        refetch: refetchActiveMember,
+    } = useQuery(teamActiveMemberQueryOptions());
 
     const {
         data: activeRoleData,
@@ -204,10 +214,13 @@ const List = () => {
 
     const sessionUserId = sessionData?.session?.userId;
     const sessionEmail = sessionData?.user?.email;
+    const activeMember = isRecord(activeMemberData?.data) ? activeMemberData.data : undefined;
+    const activeMemberId = activeMember ? readString(activeMember, 'id') : undefined;
+    const activeMemberUserId = activeMember ? readString(activeMember, 'userId') : undefined;
 
     const rowModels = useMemo(() => {
         const memberRows = members
-            .map((member) => buildMemberRow(member, sessionUserId, sessionEmail))
+            .map((member) => buildMemberRow(member, sessionUserId, sessionEmail, activeMemberId, activeMemberUserId))
             .filter((row): row is TeamRowModel => row !== null);
 
         const invitationRows = invitations
@@ -215,7 +228,7 @@ const List = () => {
             .filter((row): row is TeamRowModel => row !== null);
 
         return [...memberRows, ...invitationRows];
-    }, [members, invitations, sessionUserId, sessionEmail]);
+    }, [members, invitations, sessionUserId, sessionEmail, activeMemberId, activeMemberUserId]);
 
     const filteredRows = useMemo(() => filterRows(rowModels, filters), [rowModels, filters]);
 

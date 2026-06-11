@@ -151,8 +151,9 @@ export const removeMemberMutationOptions = (queryClient: QueryClient) =>
 export const leaveOrganizationMutationOptions = (queryClient: QueryClient) =>
     mutationOptions({
         mutationKey: teamDefinitions.leave.key(),
-        mutationFn: async (): Promise<TeamLeaveOrganizationResponse> => {
-            const response = await authClient.organization.leave(...([] as unknown as LeaveParams));
+        mutationFn: async (payload: { organizationId: string }): Promise<TeamLeaveOrganizationResponse> => {
+            const params = [{ organizationId: payload.organizationId }] as unknown as LeaveParams;
+            const response = await authClient.organization.leave(...params);
             if (response.error) throw new Error(getErrorMessage(response.error, 'Failed to leave organization'));
             return response;
         },

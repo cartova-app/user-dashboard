@@ -35,7 +35,9 @@ const getCanRemoveMember = (row: TeamRowModel, currentRole: string, canManageMem
 const getCanCancelInvite = (row: TeamRowModel, canManageMembers: boolean) =>
     row.kind === 'invitation' && canManageMembers;
 
-const getCanLeave = (row: TeamRowModel) => row.kind === 'member' && row.isYou;
+const hasOwnerRole = (role: string) => role.split(',').map((item) => item.trim()).includes('owner');
+
+const getCanLeave = (row: TeamRowModel) => row.kind === 'member' && row.isYou && !hasOwnerRole(row.role);
 
 export default function TeamRowActionsDropdown({
     row,

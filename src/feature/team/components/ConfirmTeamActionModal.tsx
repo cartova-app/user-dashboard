@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import Modal from '@/core/components/common/Modal';
 import { Button } from '@/core/components/ui/button';
+import authClient from '@/core/config/auth-client';
 import {
     cancelInvitationMutationOptions,
     leaveOrganizationMutationOptions,
@@ -21,6 +23,9 @@ interface ConfirmTeamActionModalProps {
 
 export default function ConfirmTeamActionModal({ action, onOpenChange }: ConfirmTeamActionModalProps) {
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
+    const { data: sessionData, refetch: refetchSession } = authClient.useSession();
+    const organizationId = sessionData?.session?.activeOrganizationId;
 
     const { mutateAsync: leaveOrganization, isPending: isLeavePending } = useMutation(
         leaveOrganizationMutationOptions(queryClient),
@@ -45,8 +50,16 @@ export default function ConfirmTeamActionModal({ action, onOpenChange }: Confirm
 
         try {
             if (action.type === 'leave') {
-                await leaveOrganization();
+                const leaveOrganizationId = action.row.organizationId ?? organizationId;
+
+                if (!leaveOrganizationId) {
+                    throw new Error('No active organization selected');
+                }
+
+                await leaveOrganization({ organizationId: leaveOrganizationId });
+                await refetchSession();
                 toast.success('You left the organization');
+                navigate('/organizations', { replace: true });
             }
 
             if (action.type === 'remove') {
