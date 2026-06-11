@@ -10,6 +10,7 @@ import ListTeams from '../team/pages/List';
 import OrganizationLayout from './layouts/OrganizationLayout';
 
 const OrganizationPage = lazy(() => import('./pages/List'));
+const OrganizationSettingsPage = lazy(() => import('./pages/Settings'));
 
 export const organizationRoutes = [
   {
@@ -69,7 +70,7 @@ export const organizationRoutes = [
         path: 'settings',
         element: (
           <SuspenseWrapper>
-            <h1>Settings</h1>
+            <OrganizationSettingsPage />
           </SuspenseWrapper>
         ),
       },

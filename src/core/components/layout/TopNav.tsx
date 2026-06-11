@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { Bell, ChevronDown, LogOut, Settings, Store, User, UserCircle } from 'lucide-react';
+import { useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import SearchInput from '@/core/components/common/SearchInput';
 import { Button } from '@/core/components/ui/button';
 import {
   DropdownMenu,
@@ -20,6 +22,7 @@ export function TopNav() {
   const { data: activeOrganization } = authClient.useActiveOrganization();
   const { data: organizations } = authClient.useListOrganizations();
   const { refetch: refetchSession } = authClient.useSession();
+  const [globalSearch, setGlobalSearch] = useState('');
   const { data: storesData } = useQuery({
     ...storeListQueryOptions(),
     enabled: Boolean(storeId),
@@ -164,6 +167,14 @@ export function TopNav() {
       {/* Right Side: Utilities */}
       <div className="flex items-center gap-6">
         {/* Search Bar */}
+        <SearchInput
+          value={globalSearch}
+          onChange={setGlobalSearch}
+          placeholder="Search...."
+          showClearButton={false}
+          containerClassName="hidden w-[390px] xl:block"
+          className="h-14 rounded-xl border-2 bg-background text-lg shadow-sm"
+        />
         {/* Theme Toggle */}
         <ThemeToggle />
         {/* Action Icons */}

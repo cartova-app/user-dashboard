@@ -23,6 +23,7 @@ interface SelectWithIconProps {
   placeholder?: string;
   icon?: ReactNode;
   className?: string;
+  triggerClassName?: string;
   required?: boolean;
   error?: string;
   options?: SelectOption[];
@@ -38,6 +39,7 @@ export const SelectWithIcon = forwardRef<HTMLButtonElement, SelectWithIconProps>
     placeholder = 'Select...',
     icon,
     className = '',
+    triggerClassName = '',
     required = false,
     error = '',
     options = [],
@@ -69,6 +71,7 @@ export const SelectWithIcon = forwardRef<HTMLButtonElement, SelectWithIconProps>
               'focus:ring-2 focus:ring-ring focus:border-ring',
               icon && 'pl-10',
               error && 'border-destructive focus:ring-destructive',
+              triggerClassName,
             )}
           >
             <SelectValue placeholder={placeholder} />

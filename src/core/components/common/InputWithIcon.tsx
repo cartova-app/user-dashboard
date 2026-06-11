@@ -12,6 +12,7 @@ export type InputWithIconProps = {
   placeholder?: string;
   icon?: React.ReactNode;
   className?: string;
+  inputClassName?: string;
   required?: boolean;
   error?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
@@ -24,6 +25,7 @@ export const InputWithIcon = forwardRef(function InputWithIcon(
     placeholder = '',
     icon,
     className = '',
+    inputClassName = '',
     required = false,
     error = '',
     ...props
@@ -46,9 +48,10 @@ export const InputWithIcon = forwardRef(function InputWithIcon(
           type={type}
           placeholder={placeholder}
           className={cn(
-            'w-full pl-10 pr-3 py-2 h-12  rounded-[12px] border-2 border-input focus:ring-2 focus:ring-ring focus:border-ring',
+            'w-full px-3 py-2 h-12 rounded-[12px] border-2 border-input focus:ring-2 focus:ring-ring focus:border-ring',
             icon && 'pl-10',
             error && 'border-destructive focus:ring-destructive',
+            inputClassName,
           )}
           required={required}
           {...props}
