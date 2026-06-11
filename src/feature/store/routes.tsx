@@ -9,6 +9,7 @@ const DashboardPage = lazy(() => import('./pages/Dashboard'));
 const ProductsPage = lazy(() => import('./pages/Products'));
 const CategoriesPage = lazy(() => import('./pages/Categories'));
 const OrdersPage = lazy(() => import('./pages/Orders'));
+const OrderDetailsPage = lazy(() => import('./pages/OrderDetails'));
 const CustomersPage = lazy(() => import('./pages/Customers'));
 const AnalyticsPage = lazy(() => import('./pages/Analytics'));
 const AppearancePage = lazy(() => import('./pages/Appearance'));
@@ -56,6 +57,14 @@ export const storeRoutes = [
         element: (
           <SuspenseWrapper>
             <OrdersPage />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: 'orders/:orderId',
+        element: (
+          <SuspenseWrapper>
+            <OrderDetailsPage />
           </SuspenseWrapper>
         ),
       },

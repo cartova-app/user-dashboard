@@ -1,6 +1,5 @@
 import type React from 'react';
 import { TabsList, TabsTrigger } from '@/core/components/ui/tabs';
-import { Separator } from '@radix-ui/react-separator';
 
 export type GlobalTabItem = {
   value: string;
