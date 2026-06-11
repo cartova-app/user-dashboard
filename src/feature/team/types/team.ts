@@ -62,6 +62,7 @@ export type TeamRowKind = 'member' | 'invitation';
 
 export interface TeamRowModel {
   id: string;
+  organizationId?: string;
   kind: TeamRowKind;
   name: string;
   email: string;
