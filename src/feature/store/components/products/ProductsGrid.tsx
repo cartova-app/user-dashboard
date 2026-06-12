@@ -10,7 +10,6 @@ import {
 } from '@/core/components/ui/dropdown-menu';
 import type { Product } from '../../types';
 
-
 interface ProductsGridProps {
   products: Product[];
   total: number;
@@ -55,11 +54,7 @@ function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
       {/* Image */}
       <div className="relative aspect-square bg-muted overflow-hidden">
         {product.images?.[0]?.url ? (
-          <img
-            src={product.images[0].url}
-            alt={product.name}
-            className="size-full object-cover"
-          />
+          <img src={product.images[0].url} alt={product.name} className="size-full object-cover" />
         ) : (
           <div className="size-full flex items-center justify-center">
             <Package className="size-12 text-muted-foreground/50" />
@@ -78,20 +73,14 @@ function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
 
       {/* Content */}
       <div className="p-4 flex flex-col gap-2 flex-1">
-        <h3 className="text-sm font-semibold text-foreground truncate">
-          {product.name}
-        </h3>
+        <h3 className="text-sm font-semibold text-foreground truncate">{product.name}</h3>
 
-        <p className="text-xs text-muted-foreground capitalize">
-          {product.description || '\u00A0'}
-        </p>
+        <p className="text-xs text-muted-foreground capitalize">{product.description || '\u00A0'}</p>
 
         {/* Price & Quantity */}
         <div className="flex items-center justify-between mt-1">
           <div className="flex items-baseline gap-1">
-            <span className="text-base font-bold text-foreground">
-              {product.price.toLocaleString()}
-            </span>
+            <span className="text-base font-bold text-foreground">{product.price.toLocaleString()}</span>
             <span className="text-xs text-muted-foreground">EG</span>
           </div>
 
@@ -161,23 +150,14 @@ export default function ProductsGrid({
       {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onEdit={onEdit}
-            onDelete={onDelete}
-          />
+          <ProductCard key={product.id} product={product} onEdit={onEdit} onDelete={onDelete} />
         ))}
       </div>
 
       {/* Pagination */}
       {total > pageSize && (
         <div className="flex justify-end">
-          <CustomPagination
-            page={page}
-            pageCount={pageCount}
-            setPage={onPageChange}
-          />
+          <CustomPagination page={page} pageCount={pageCount} setPage={onPageChange} />
         </div>
       )}
     </div>

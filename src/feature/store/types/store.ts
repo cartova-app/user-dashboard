@@ -28,7 +28,6 @@ export interface Store {
   orders?: number;
 }
 
-
 export interface StoreListResponse {
   items: Store[];
   meta: {

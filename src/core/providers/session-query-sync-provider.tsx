@@ -13,9 +13,7 @@ export default function SessionQuerySyncProvider() {
 
   useEffect(() => {
     const session = sessionData?.session;
-    const fingerprint = session
-      ? `${session.userId}:${session.activeOrganizationId ?? ''}`
-      : null;
+    const fingerprint = session ? `${session.userId}:${session.activeOrganizationId ?? ''}` : null;
 
     if (prevFingerprintRef.current === null) {
       prevFingerprintRef.current = fingerprint;

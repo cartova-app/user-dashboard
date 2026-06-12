@@ -63,9 +63,9 @@ export default function CategoryFormModal({ open, onOpenChange, category }: Cate
     try {
       if (isEditing) {
         await updateCategory({
-  categoryId: category.id,
-  data,
-});
+          categoryId: category.id,
+          data,
+        });
         toast.success('Category updated successfully');
       } else {
         await createCategory(data);
@@ -84,12 +84,7 @@ export default function CategoryFormModal({ open, onOpenChange, category }: Cate
   };
 
   return (
-    <Modal
-      open={open}
-      onOpenChange={handleClose}
-      title={isEditing ? 'Edit Category' : 'Create Category'}
-      width="500px"
-    >
+    <Modal open={open} onOpenChange={handleClose} title={isEditing ? 'Edit Category' : 'Create Category'} width="500px">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <Controller
           name="name"

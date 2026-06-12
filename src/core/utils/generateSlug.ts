@@ -1,15 +1,15 @@
-import { nanoid } from "nanoid";
-import authClient from "../config/auth-client";
+import { nanoid } from 'nanoid';
+import authClient from '../config/auth-client';
 
 function buildSlug(name: string): string {
   return name
     .toLowerCase()
     .trim()
-    .normalize("NFD")
-    .replace(/\p{M}/gu, "")
-    .replace(/[^\p{L}\p{N}\s-]/gu, "")
-    .replace(/[\s-]+/g, "-")
-    .replace(/^-|-$/g, "");
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .replace(/[\s-]+/g, '-')
+    .replace(/^-|-$/g, '');
 }
 
 async function slugExists(slug: string) {
@@ -21,7 +21,7 @@ async function slugExists(slug: string) {
 }
 
 export async function generateSlug(name: string) {
-  const baseSlug = buildSlug(name) || "org";
+  const baseSlug = buildSlug(name) || 'org';
 
   if (!(await slugExists(baseSlug))) {
     return {

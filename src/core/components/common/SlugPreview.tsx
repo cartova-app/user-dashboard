@@ -1,4 +1,4 @@
-import { generateSlug } from "@/core/utils/generateSlug";
+import { generateSlug } from '@/core/utils/generateSlug';
 
 export async function SlugPreview({ name }: { name: string }) {
   if (!name.trim()) {
