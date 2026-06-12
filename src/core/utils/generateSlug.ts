@@ -17,7 +17,7 @@ async function slugExists(slug: string) {
     slug,
   });
 
-  return data?.status === true;
+  return data?.status === false;
 }
 
 export async function generateSlug(name: string) {
