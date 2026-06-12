@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Plus, Settings } from 'lucide-react';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import EmptyState from '@/core/components/common/EmptyState';
 import PageHeading from '@/core/components/common/PageHeading';
 import type { ViewType } from '@/core/components/common/ViewToggle';
@@ -22,6 +22,7 @@ const PAGE_SIZE = 8;
 
 const Products = () => {
   const { storeId } = useParams<{ storeId: string }>();
+  const navigate = useNavigate();
 
   const [pageView, setPageView] = useState<PageView>('list');
   const [view, setView] = useState<ViewType>('list');
@@ -88,6 +89,10 @@ const Products = () => {
   const handleDelete = (product: Product) => {
     setDeleteProduct(product);
     setDeleteDialogOpen(true);
+  };
+
+  const handleOpen = (productId: string) => {
+    navigate(`/stores/${storeId}/products/${productId}`);
   };
 
   const handleAddSuccess = () => {
@@ -171,6 +176,7 @@ const Products = () => {
           pageSize={PAGE_SIZE}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onOpen={handleOpen}
           onSortChange={handleSortChange}
         />
       ) : (

@@ -89,14 +89,14 @@ export default function RecentOrdersTable({ ordersData }: RecentOrdersTableProps
       headerName: 'Id.no',
       flex: 1,
       headerIcon: <Hash className="size-4 text-muted-foreground" />,
-      renderCell: (row) => <span className="font-semibold text-foreground">#{row.id}</span>,
+      renderCell: ({ row }) => <span className="font-semibold text-foreground">#{row.id}</span>,
     },
     {
       field: 'productName',
       headerName: 'Product Name',
       flex: 2,
       headerIcon: <Package className="size-4 text-muted-foreground" />,
-      renderCell: (row) => (
+      renderCell: ({ row }) => (
         <div className="flex items-center gap-3">
           {/* Placeholder for Product Image */}
           <div className="size-8 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
@@ -111,21 +111,21 @@ export default function RecentOrdersTable({ ordersData }: RecentOrdersTableProps
       headerName: 'Date',
       flex: 1.5,
       headerIcon: <Calendar className="size-4 text-muted-foreground" />,
-      renderCell: (row) => <span className="text-muted-foreground font-medium">{String(row.date)}</span>,
+      renderCell: ({ row }) => <span className="text-muted-foreground font-medium">{String(row.date)}</span>,
     },
     {
       field: 'category',
       headerName: 'Category',
       flex: 1.5,
       headerIcon: <Folder className="size-4 text-muted-foreground" />,
-      renderCell: (row) => <span className="text-foreground font-semibold">{String(row.category)}</span>,
+      renderCell: ({ row }) => <span className="text-foreground font-semibold">{String(row.category)}</span>,
     },
     {
       field: 'status',
       headerName: 'Stock',
       flex: 1.2,
       headerIcon: <Package className="size-4 text-muted-foreground" />,
-      renderCell: (row) => (
+      renderCell: ({ row }) => (
         <StatusCell status={String(row.status)} /> // "In Stock" (green) or "Out of Stock" (red)
       ),
     },
@@ -134,7 +134,7 @@ export default function RecentOrdersTable({ ordersData }: RecentOrdersTableProps
       headerName: 'Total Sales',
       flex: 1,
       headerIcon: <BarChart3 className="size-4 text-muted-foreground" />,
-      renderCell: (row) => <span className="font-bold text-foreground">{String(row.totalSales)}</span>,
+      renderCell: ({ row }) => <span className="font-bold text-foreground">{String(row.totalSales)}</span>,
     },
     {
       field: 'actions',

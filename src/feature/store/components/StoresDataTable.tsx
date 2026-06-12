@@ -2,7 +2,9 @@ import { ChevronRight, Clock, Edit3, Home, Package, ShoppingBag } from 'lucide-r
 import { useState } from 'react';
 import DataTable, { type DataTableColumn } from '@/core/components/common/DataTable';
 import StatusCell from '@/core/components/common/StatusCell';
-import type { StoreListResponse, StoreListItem } from '../types';
+import type { StoreListResponse, Store } from '../types';
+
+type StoreRow = Store & Record<string, unknown>;
 
 interface StoresDataTableProps {
   data?: StoreListResponse;
@@ -10,7 +12,7 @@ interface StoresDataTableProps {
 
 export default function StoresDataTable({ data }: StoresDataTableProps) {
   const [page, setPage] = useState(1);
-  const columns: DataTableColumn<StoreListItem>[] = [
+  const columns: DataTableColumn<StoreRow>[] = [
     {
       field: 'name',
       headerName: 'Store Name',
@@ -76,13 +78,13 @@ export default function StoresDataTable({ data }: StoresDataTableProps) {
       </div>
 
       <DataTable
-        rows={data?.items || []}
+        rows={(data?.items as StoreRow[]) || []}
         columns={columns}
         total={data?.meta?.total || 0}
         page={page}
         handlePageChange={setPage}
         pageSize={10}
-        onRowClick={(row: StoreListItem) => console.log('Clicked row:', row)}
+        onRowClick={(row: StoreRow) => console.log('Clicked row:', row)}
       />
     </div>
   );
