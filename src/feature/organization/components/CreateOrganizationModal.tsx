@@ -1,9 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Building2 } from 'lucide-react';
 import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import { InputWithIcon } from '@/core/components/common/InputWithIcon';
+import { SlugPreview } from '@/core/components/common/SlugPreview';
 import Modal from '@/core/components/common/Modal';
 import { Button } from '@/core/components/ui/button';
 import { authClient } from '@/core/config/auth-client';
@@ -22,24 +23,25 @@ export default function CreateOrganizationModal({
   const [isLoading, setIsLoading] = useState(false);
   const { generateSlug } = useGenerateSlug();
   const {
-    control,
     handleSubmit,
     formState: { errors },
     reset,
+    control,
   } = useForm({
     resolver: zodResolver(createOrganizationSchema),
     defaultValues: {
       name: '',
     },
   });
+  const organizationName = useWatch({ control, name: 'name' });
 
   const onSubmit = async (data: { name: string }) => {
     setIsLoading(true);
     try {
-      const slug = generateSlug(data.name);
+      const slug = await generateSlug(data.name);
       const { error } = await authClient.organization.create({
         name: data.name,
-        slug,
+        slug: slug.slug,
       });
 
       if (error) {
@@ -91,6 +93,7 @@ export default function CreateOrganizationModal({
             />
           )}
         />
+        <SlugPreview name={organizationName ?? ''} />
 
         <div className="flex gap-3 justify-end">
           <Button type="button" variant="outline" onClick={() => handleClose(false)} disabled={isLoading}>

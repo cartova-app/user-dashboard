@@ -16,20 +16,20 @@ import {
   ShoppingBag,
   Trash2,
   User,
-} from "lucide-react";
+} from 'lucide-react';
 
-import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { Button } from "@/core/components/ui/button";
-import { Badge } from "@/core/components/ui/badge";
-import { Input } from "@/core/components/ui/input";
-import { Card } from "@/core/components/ui/card";
+import { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { Button } from '@/core/components/ui/button';
+import { Badge } from '@/core/components/ui/badge';
+import { Input } from '@/core/components/ui/input';
+import { Card } from '@/core/components/ui/card';
 
-import PageHeading from "@/core/components/common/PageHeading";
-import { productDetailQueryOptions } from "../api/storeQueryDefinitions";
-import EditProductModal from "@/feature/store/components/products/EditProductModal";
-import DeleteProductDialog from "@/feature/store/components/products/DeleteProductDialog";
+import PageHeading from '@/core/components/common/PageHeading';
+import { productDetailQueryOptions } from '../api/storeQueryDefinitions';
+import EditProductModal from '@/feature/store/components/products/EditProductModal';
+import DeleteProductDialog from '@/feature/store/components/products/DeleteProductDialog';
 
 // ─── Image Gallery Card ───────────────────────────────────────────────────────
 // Handles 1–4+ images dynamically:
@@ -91,34 +91,30 @@ const ImageGalleryCard = ({ images }: { images: ProductImage[] }) => {
       {/* THUMBNAILS COLUMN — only rendered when there are 2+ images */}
       {hasThumbnails && (
         <div className="flex flex-col gap-2">
-            {thumbnails.map(({ img, idx }) => {
-              return (
-                <div
-                  key={idx}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => setActiveIndex(idx)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      setActiveIndex(idx);
-                    }
-                  }}
-                  className={`relative w-14 h-14 rounded-lg border overflow-hidden cursor-pointer transition-all
+          {thumbnails.map(({ img, idx }) => {
+            return (
+              <div
+                key={idx}
+                role="button"
+                tabIndex={0}
+                onClick={() => setActiveIndex(idx)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveIndex(idx);
+                  }
+                }}
+                className={`relative w-14 h-14 rounded-lg border overflow-hidden cursor-pointer transition-all
                     ${
                       activeIndex === idx
-                        ? "border-purple-500 ring-2 ring-purple-400"
-                        : "border-gray-200 dark:border-white/10 hover:border-gray-400 dark:hover:border-white/30"
+                        ? 'border-purple-500 ring-2 ring-purple-400'
+                        : 'border-gray-200 dark:border-white/10 hover:border-gray-400 dark:hover:border-white/30'
                     }`}
-                >
-                <img
-                  src={img.url}
-                  alt={`Thumbnail ${idx + 1}`}
-                  className="w-full h-full object-cover"
-                />
-                </div>
-              );
-            })}
+              >
+                <img src={img.url} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+              </div>
+            );
+          })}
         </div>
       )}
     </Card>
@@ -141,17 +137,13 @@ const ProductPreview = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-  const query = useSuspenseQuery(
-    productDetailQueryOptions(storeId ?? '', productId ?? '')
-  );
+  const query = useSuspenseQuery(productDetailQueryOptions(storeId ?? '', productId ?? ''));
 
   if (!storeId || !productId) {
     return (
       <div className="p-8">
         <p>Invalid product</p>
-        <Button onClick={() => navigate(`/stores/${storeId ?? ''}/products`)}>
-          Back to products
-        </Button>
+        <Button onClick={() => navigate(`/stores/${storeId ?? ''}/products`)}>Back to products</Button>
       </div>
     );
   }
@@ -161,29 +153,28 @@ const ProductPreview = () => {
   const purchases = [
     {
       id: 1,
-      date: "12Aug2026,12:25PM",
-      order: "ORD-10428",
-      type: "Home Delivery",
-      customer: "Marcus Lee",
+      date: '12Aug2026,12:25PM',
+      order: 'ORD-10428',
+      type: 'Home Delivery',
+      customer: 'Marcus Lee',
       qty: 2,
-      total: "7,000$",
-      status: "Completed",
+      total: '7,000$',
+      status: 'Completed',
     },
     {
       id: 2,
-      date: "08Aug2026,09:14AM",
-      order: "ORD-10399",
-      type: "Pickup",
-      customer: "Sade Williams",
+      date: '08Aug2026,09:14AM',
+      order: 'ORD-10399',
+      type: 'Pickup',
+      customer: 'Sade Williams',
       qty: 1,
-      total: "4,550$",
-      status: "Pending",
+      total: '4,550$',
+      status: 'Pending',
     },
   ];
 
   return (
     <div className="p-8 space-y-6 bg-white dark:bg-[#0f0f0f] min-h-screen text-gray-900 dark:text-white">
-
       {/* HEADER */}
       <div className="flex items-center justify-between text-gray-900 dark:text-white">
         <div>
@@ -212,7 +203,11 @@ const ProductPreview = () => {
           <Button onClick={() => setIsEditOpen(true)} className="bg-[#ecff77] hover:bg-[#e4ff5f] text-black rounded-xl">
             Edit product <Pencil className="ml-2 size-4" />
           </Button>
-          <Button onClick={() => setIsDeleteOpen(true)} variant="destructive" className="rounded-xl bg-red-500 hover:bg-red-600">
+          <Button
+            onClick={() => setIsDeleteOpen(true)}
+            variant="destructive"
+            className="rounded-xl bg-red-500 hover:bg-red-600"
+          >
             Delete <Trash2 className="ml-2 size-4" />
           </Button>
         </div>
@@ -220,45 +215,34 @@ const ProductPreview = () => {
 
       {/* TOP SECTION */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
         {/* IMAGE CARD */}
         <ImageGalleryCard images={product.images ?? []} />
 
         {/* RIGHT COLUMN — product info strip + two cards stacked */}
         <div className="lg:col-span-2 flex flex-col gap-4">
-
           {/* PRODUCT NAME / DATE / URL STRIP */}
           <div className="flex items-center gap-3 flex-wrap px-1">
-            <span className="font-bold text-lg text-gray-900 dark:text-white">
-              {product.name ?? "Polo shirt"}
-            </span>
+            <span className="font-bold text-lg text-gray-900 dark:text-white">{product.name ?? 'Polo shirt'}</span>
             <span className="text-gray-300 dark:text-gray-600">|</span>
             <span className="text-sm text-gray-500 dark:text-gray-400">
               Date Added&nbsp;
-              <span className="text-gray-700 dark:text-gray-300 font-medium">
-                12 sept 2025 . 12:55 PM
-              </span>
+              <span className="text-gray-700 dark:text-gray-300 font-medium">12 sept 2025 . 12:55 PM</span>
             </span>
             <span className="ml-auto text-sm text-gray-400 dark:text-gray-500 flex items-center gap-1.5">
               <span className="text-gray-400 dark:text-gray-500">Product URL:</span>
-              <span className="text-gray-600 dark:text-gray-300">
-                shoes.com/floral-cup-1234
-              </span>
+              <span className="text-gray-600 dark:text-gray-300">shoes.com/floral-cup-1234</span>
               <Copy className="size-3.5 cursor-pointer text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors" />
             </span>
           </div>
 
           {/* DETAILS + ANALYTICS CARDS SIDE BY SIDE */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
-
             {/* DETAILS CARD */}
             <Card className="bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-2xl p-6 flex flex-col justify-between">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Last Order</p>
-                  <p className="text-sm font-medium text-gray-800 dark:text-white mt-0.5">
-                    12 sept 2022
-                  </p>
+                  <p className="text-sm font-medium text-gray-800 dark:text-white mt-0.5">12 sept 2022</p>
                 </div>
                 <Badge className="bg-green-100 text-green-700 dark:bg-emerald-500/15 dark:text-emerald-300 rounded-full h-8 px-3">
                   Active
@@ -268,15 +252,11 @@ const ProductPreview = () => {
               <div className="flex justify-between mt-6">
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Price</p>
-                  <p className="font-semibold text-gray-900 dark:text-white mt-0.5">
-                    ${product.price}
-                  </p>
+                  <p className="font-semibold text-gray-900 dark:text-white mt-0.5">${product.price}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Inventory</p>
-                  <p className="font-semibold text-gray-900 dark:text-white mt-0.5">
-                    {product.quantity}
-                  </p>
+                  <p className="font-semibold text-gray-900 dark:text-white mt-0.5">{product.quantity}</p>
                 </div>
               </div>
             </Card>
@@ -311,14 +291,12 @@ const ProductPreview = () => {
                 </div>
               </div>
             </Card>
-
           </div>
         </div>
       </div>
 
       {/* STATS */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
         {/* Orders card */}
         <Card className="bg-gray-50 dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-6">
@@ -327,8 +305,8 @@ const ProductPreview = () => {
             </div>
             <div className="bg-gray-100 dark:bg-[#111] text-gray-500 dark:text-gray-400 text-sm px-3 py-1 rounded-lg flex items-center gap-1 cursor-pointer">
               All-time
-                  <svg className="size-3" viewBox="0 0 20 20" fill="currentColor" role="img">
-                    <title>Toggle</title>
+              <svg className="size-3" viewBox="0 0 20 20" fill="currentColor" role="img">
+                <title>Toggle</title>
                 <path
                   fillRule="evenodd"
                   d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.937a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
@@ -506,9 +484,9 @@ const ProductPreview = () => {
               <div className="w-[140px]">
                 <span
                   className={`text-xs px-3 py-1 rounded-full ${
-                    item.status === "Completed"
-                      ? "bg-green-100 text-green-700 dark:bg-emerald-500/15 dark:text-emerald-300"
-                      : "bg-[#ecff77] text-yellow-900 dark:bg-yellow-500/20 dark:text-yellow-200"
+                    item.status === 'Completed'
+                      ? 'bg-green-100 text-green-700 dark:bg-emerald-500/15 dark:text-emerald-300'
+                      : 'bg-[#ecff77] text-yellow-900 dark:bg-yellow-500/20 dark:text-yellow-200'
                   }`}
                 >
                   {item.status}
@@ -532,15 +510,15 @@ const ProductPreview = () => {
           </Button>
 
           <div className="flex items-center gap-2">
-            {[1, 2, 3, 4, 5, "..."].map((n) => (
+            {[1, 2, 3, 4, 5, '...'].map((n) => (
               <Button
                 key={n}
                 size="sm"
-                variant={n === 1 ? "default" : "outline"}
+                variant={n === 1 ? 'default' : 'outline'}
                 className={
                   n === 1
-                    ? "bg-gray-900 dark:bg-white text-white dark:text-black"
-                    : "border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 bg-white dark:bg-transparent"
+                    ? 'bg-gray-900 dark:bg-white text-white dark:text-black'
+                    : 'border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 bg-white dark:bg-transparent'
                 }
               >
                 {n}
@@ -558,11 +536,7 @@ const ProductPreview = () => {
       </Card>
 
       {/* Modals */}
-      <EditProductModal
-        open={isEditOpen}
-        onOpenChange={setIsEditOpen}
-        product={product ?? null}
-      />
+      <EditProductModal open={isEditOpen} onOpenChange={setIsEditOpen} product={product ?? null} />
 
       <DeleteProductDialog
         open={isDeleteOpen}

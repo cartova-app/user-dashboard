@@ -1,25 +1,22 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ImagePlus, Package, Tag, Upload, X } from "lucide-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useRef, useState } from "react";
-import { Controller, useForm, type Resolver } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import { toast } from "sonner";
-import { InputWithIcon } from "@/core/components/common/InputWithIcon";
-import { MultiSelect } from "@/core/components/common/MultiSelect";
-import { SelectWithIcon } from "@/core/components/common/Select";
-import { Button } from "@/core/components/ui/button";
-import { InlineLoader } from "@/core/components/ui/LoadingFallback";
-import { Label } from "@/core/components/ui/label";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ImagePlus, Package, Tag, Upload, X } from 'lucide-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useRef, useState } from 'react';
+import { Controller, useForm, type Resolver } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import { toast } from 'sonner';
+import { InputWithIcon } from '@/core/components/common/InputWithIcon';
+import { MultiSelect } from '@/core/components/common/MultiSelect';
+import { SelectWithIcon } from '@/core/components/common/Select';
+import { Button } from '@/core/components/ui/button';
+import { InlineLoader } from '@/core/components/ui/LoadingFallback';
+import { Label } from '@/core/components/ui/label';
 import {
   addProductImageMutationOptions,
   categoryListQueryOptions,
   createProductMutationOptions,
-} from "@/feature/store/api/storeQueryDefinitions";
-import {
-  createProductSchema,
-  type CreateProductFormData,
-} from "../../schemas/productSchema";
+} from '@/feature/store/api/storeQueryDefinitions';
+import { createProductSchema, type CreateProductFormData } from '../../schemas/productSchema';
 
 interface AddProductFormProps {
   onSuccess: () => void;
@@ -31,10 +28,7 @@ interface FilePreview {
   preview: string;
 }
 
-export default function AddProductForm({
-  onSuccess,
-  onCancel,
-}: AddProductFormProps) {
+export default function AddProductForm({ onSuccess, onCancel }: AddProductFormProps) {
   const { storeId } = useParams<{ storeId: string }>();
   const queryClient = useQueryClient();
   const { data: categoriesData } = useQuery({
@@ -42,22 +36,18 @@ export default function AddProductForm({
     enabled: Boolean(storeId),
   });
   const { mutateAsync: createProduct, isPending: isCreating } = useMutation(
-    createProductMutationOptions(queryClient, storeId ?? ""),
+    createProductMutationOptions(queryClient, storeId ?? ''),
   );
-  const { mutateAsync: addImage } = useMutation(
-    addProductImageMutationOptions(queryClient, storeId ?? ""),
-  );
+  const { mutateAsync: addImage } = useMutation(addProductImageMutationOptions(queryClient, storeId ?? ''));
 
   const [imageFiles, setImageFiles] = useState<FilePreview[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { control, handleSubmit, reset } = useForm<CreateProductFormData>({
-    resolver: zodResolver(
-      createProductSchema,
-    ) as Resolver<CreateProductFormData>,
+    resolver: zodResolver(createProductSchema) as Resolver<CreateProductFormData>,
     defaultValues: {
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       price: 0,
       quantity: 0,
       categories: [],
@@ -110,13 +100,12 @@ export default function AddProductForm({
         }
       }
 
-      toast.success("Product created successfully");
+      toast.success('Product created successfully');
       reset();
       setImageFiles([]);
       onSuccess();
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Failed to create product";
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create product';
       toast.error(errorMessage);
     }
   };
@@ -124,7 +113,7 @@ export default function AddProductForm({
   const handleSaveAsDraft = async () => {
     const values = control._formValues as CreateProductFormData;
     if (!values.name) {
-      toast.error("Product name is required");
+      toast.error('Product name is required');
       return;
     }
     try {
@@ -144,13 +133,12 @@ export default function AddProductForm({
         }
       }
 
-      toast.success("Product saved as draft");
+      toast.success('Product saved as draft');
       reset();
       setImageFiles([]);
       onSuccess();
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Failed to save draft";
+      const errorMessage = error instanceof Error ? error.message : 'Failed to save draft';
       toast.error(errorMessage);
     }
   };
@@ -180,9 +168,7 @@ export default function AddProductForm({
               )}
             />
 
-            <p className="text-xs text-muted-foreground -mt-3">
-              20 character maximum
-            </p>
+            <p className="text-xs text-muted-foreground -mt-3">20 character maximum</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Controller
@@ -209,11 +195,11 @@ export default function AddProductForm({
                     label="Visibility"
                     placeholder="Select visibility"
                     options={[
-                      { value: "true", label: "Published" },
-                      { value: "false", label: "Hidden" },
+                      { value: 'true', label: 'Published' },
+                      { value: 'false', label: 'Hidden' },
                     ]}
                     value={String(field.value)}
-                    onValueChange={(val) => field.onChange(val === "true")}
+                    onValueChange={(val) => field.onChange(val === 'true')}
                   />
                 )}
               />
@@ -256,20 +242,15 @@ export default function AddProductForm({
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <div className="space-y-1">
-                  <Label className="text-sm font-medium text-foreground">
-                    Description
-                  </Label>
+                  <Label className="text-sm font-medium text-foreground">Description</Label>
                   <textarea
                     placeholder="Input"
                     className="w-full min-h-[100px] rounded-xl border-2 border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:border-ring outline-none resize-none"
                     {...field}
                   />
-                  {error?.message && (
-                    <p className="text-sm text-destructive">{error.message}</p>
-                  )}
+                  {error?.message && <p className="text-sm text-destructive">{error.message}</p>}
                   <p className="text-xs text-muted-foreground">
-                    Fill in a maximum of 100 character when entering a product
-                    name.
+                    Fill in a maximum of 100 character when entering a product name.
                   </p>
                 </div>
               )}
@@ -278,20 +259,14 @@ export default function AddProductForm({
 
           {/* Right Column - Image Upload */}
           <div className="space-y-3">
-            <Label className="text-sm font-medium text-foreground">
-              Product image
-            </Label>
+            <Label className="text-sm font-medium text-foreground">Product image</Label>
             <div className="grid grid-cols-3 gap-3">
               {imageFiles.map((img, index) => (
                 <div
                   key={img.preview}
                   className="relative aspect-square rounded-xl overflow-hidden border border-border group"
                 >
-                  <img
-                    src={img.preview}
-                    alt={`Product ${index + 1}`}
-                    className="size-full object-cover"
-                  />
+                  <img src={img.preview} alt={`Product ${index + 1}`} className="size-full object-cover" />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                     <button
                       type="button"
@@ -307,10 +282,8 @@ export default function AddProductForm({
               {imageFiles.length < 5 &&
                 Array.from({
                   length:
-                    Math.min(
-                      5 - imageFiles.length,
-                      3 - (imageFiles.length % 3 || 3),
-                    ) || (imageFiles.length === 0 ? 3 : 5 - imageFiles.length),
+                    Math.min(5 - imageFiles.length, 3 - (imageFiles.length % 3 || 3)) ||
+                    (imageFiles.length === 0 ? 3 : 5 - imageFiles.length),
                 }).map((_, i) => {
                   const slotId = `upload-slot-${imageFiles.length + i}`;
                   return (
@@ -322,10 +295,7 @@ export default function AddProductForm({
                     >
                       <Upload className="size-5 text-muted-foreground" />
                       <span className="text-xs text-muted-foreground text-center px-2">
-                        Drop your image here or{" "}
-                        <span className="text-primary font-medium">
-                          click to browse
-                        </span>
+                        Drop your image here or <span className="text-primary font-medium">click to browse</span>
                       </span>
                     </button>
                   );
@@ -341,38 +311,23 @@ export default function AddProductForm({
               onChange={(e) => handleImageSelect(e.target.files)}
             />
             <p className="text-xs text-muted-foreground">
-              You need to add at least 4 images with one video or none. Pay
-              attention with the quality of your pictures. Make sure your photo
-              has the best quality. Picture must be fit.
+              You need to add at least 4 images with one video or none. Pay attention with the quality of your pictures.
+              Make sure your photo has the best quality. Picture must be fit.
             </p>
           </div>
         </div>
 
         {/* Actions */}
         <div className="flex justify-end gap-3 pt-4 border-t border-border">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onCancel}
-            disabled={isCreating}
-          >
+          <Button type="button" variant="outline" onClick={onCancel} disabled={isCreating}>
             Cancel
           </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleSaveAsDraft}
-            disabled={isCreating}
-          >
+          <Button type="button" variant="outline" onClick={handleSaveAsDraft} disabled={isCreating}>
             {isCreating ? <InlineLoader className="size-4" /> : null}
             Save as draft
           </Button>
           <Button type="submit" variant="primary" disabled={isCreating}>
-            {isCreating ? (
-              <InlineLoader className="size-4" />
-            ) : (
-              <ImagePlus className="size-4" />
-            )}
+            {isCreating ? <InlineLoader className="size-4" /> : <ImagePlus className="size-4" />}
             Add product
           </Button>
         </div>

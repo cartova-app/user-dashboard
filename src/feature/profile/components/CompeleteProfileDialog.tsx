@@ -22,18 +22,16 @@ function CompeleteProfileDialog({ isOpen, setIsOpen }: CompeleteProfileDialogPro
   const queryClient = useQueryClient();
   const { currentStep, resetForm } = useProfileStore();
   const { generateSlug } = useGenerateSlug();
-  const { mutateAsync: createStore } = useMutation(
-    createStoreMutationOptions(queryClient),
-  );
+  const { mutateAsync: createStore } = useMutation(createStoreMutationOptions(queryClient));
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleComplete = async (formData: ProfileFormData) => {
     setIsSubmitting(true);
     try {
-      const orgSlug = generateSlug(formData.organizationName);
+      const orgSlug = await generateSlug(formData.organizationName);
       const { data: orgData, error: orgError } = await authClient.organization.create({
         name: formData.organizationName,
-        slug: orgSlug,
+        slug: orgSlug.slug,
       });
 
       if (orgError) {

@@ -20,7 +20,6 @@ export interface CategoriesResponse {
     page: number;
     limit: number;
     totalPages: number;
-
   };
 }
 

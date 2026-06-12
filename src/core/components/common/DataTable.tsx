@@ -194,7 +194,7 @@ export default function DataTable<R>({
               ) : (
                 rows.map((row, rowIndex) => (
                   <tr
-                    key={((row as { id?: string | number }).id) || rowIndex}
+                    key={(row as { id?: string | number }).id || rowIndex}
                     onClick={() => onRowClick?.(row)}
                     className="bg-card hover:bg-muted/50 transition-all cursor-pointer group shadow-sm first:rounded-t-xl last:rounded-b-xl"
                   >
@@ -207,11 +207,11 @@ export default function DataTable<R>({
                           key={column.field}
                           className={`px-6 py-4 text-sm first:rounded-l-2xl last:rounded-r-2xl border-none ${textAlign}`}
                         >
-                          {column.renderCell ? (
-                            column.renderCell(row)
-                          ) : column.field && (
-                            <DefaultCell value={row[column.field] as string | number | null | undefined} />
-                          )}
+                          {column.renderCell
+                            ? column.renderCell(row)
+                            : column.field && (
+                                <DefaultCell value={row[column.field] as string | number | null | undefined} />
+                              )}
                         </td>
                       );
                     })}
