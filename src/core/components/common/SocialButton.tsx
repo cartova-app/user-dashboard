@@ -4,13 +4,13 @@ import type { ReactNode } from 'react';
 import { Button } from '@/core/components/ui/button';
 import { cn } from '@/core/lib/utils';
 
-interface SocialButtonProps {
+interface SocialButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   icon: ReactNode;
   className?: string;
-}
+};
 
-export function SocialButton({ children, icon, className = '' }: SocialButtonProps) {
+export function SocialButton({ children, icon, className = '', ...rest }: SocialButtonProps) {
   return (
     <Button
       variant="outline"
@@ -22,6 +22,7 @@ export function SocialButton({ children, icon, className = '' }: SocialButtonPro
         'hover:shadow-md hover:scale-[1.01] active:scale-[0.99]',
         className,
       )}
+      {...rest}
     >
       {icon}
       {children}

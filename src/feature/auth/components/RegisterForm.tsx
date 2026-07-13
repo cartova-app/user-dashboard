@@ -1,13 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Facebook, MailIcon, UserCog } from 'lucide-react';
+import { MailIcon, UserCog } from 'lucide-react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import GoogleIcon from '@/assets/icons/Google.svg?react';
 import { InputWithIcon } from '@/core/components/common/InputWithIcon';
 import { PasswordInputWithIcon } from '@/core/components/common/PasswordInputWithIcon';
-import { SocialButton } from '@/core/components/common/SocialButton';
 import { Button } from '@/core/components/ui/button';
 import authClient from '@/core/config/auth-client';
 import CompeleteProfileDialog from '@/feature/profile/components/CompeleteProfileDialog';
@@ -107,16 +105,7 @@ export default function SignUpForm() {
             <PasswordInputWithIcon id="password" placeholder="Password" error={errors.password?.message} {...field} />
           )}
         />
-        <div className="flex items-center my-6">
-          <div className="grow border-t border-border"></div>
-          <span className="mx-4 text-sm text-muted-foreground">or</span>
-          <div className="grow border-t border-border"></div>
-        </div>
-
-        <SocialButton icon={<GoogleIcon />}>Continue with Google</SocialButton>
-
-        <SocialButton icon={<Facebook />}>Continue with Facebook</SocialButton>
-
+        
         <Button variant="primary" className="w-full" type="submit" disabled={loading}>
           {loading ? 'Creating Account...' : 'Create Account'}
         </Button>
