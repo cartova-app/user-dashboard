@@ -102,11 +102,6 @@ export default function LoginForm() {
             />
           )}
         />
-        <div className="flex items-center my-6">
-          <div className="grow border-t border-border"></div>
-          <span className="mx-4 text-sm text-muted-foreground">or</span>
-          <div className="grow border-t border-border"></div>
-        </div>
 
         <Button type="submit" disabled={isLoading} variant="primary" className="w-full mt-6">
           {isLoading ? 'Signing in...' : 'Sign In'}
