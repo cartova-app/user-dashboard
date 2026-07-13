@@ -1,15 +1,13 @@
 // components/LoginForm.js
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Facebook, MailIcon } from 'lucide-react';
+import { MailIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import GoogleIcon from '@/assets/icons/Google.svg?react';
 import { InputWithIcon } from '@/core/components/common/InputWithIcon';
 import { PasswordInputWithIcon } from '@/core/components/common/PasswordInputWithIcon';
-import { SocialButton } from '@/core/components/common/SocialButton';
 import { Button } from '@/core/components/ui/button';
 import authClient from '@/core/config/auth-client';
 import { loginScehma } from '../schemas/loginScehma';
@@ -18,6 +16,8 @@ interface LoginFormData {
   email: string;
   password: string;
 }
+
+// TODO: implement social login
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -64,6 +64,7 @@ export default function LoginForm() {
     setIsLoading(false);
   };
 
+
   return (
     <div className="bg-card p-8 rounded-xl shadow-lg max-w-md w-full">
       <h1 className="text-2xl font-bold text-center mb-2">Login</h1>
@@ -106,10 +107,6 @@ export default function LoginForm() {
           <span className="mx-4 text-sm text-muted-foreground">or</span>
           <div className="grow border-t border-border"></div>
         </div>
-
-        <SocialButton icon={<GoogleIcon />}>Continue with Google</SocialButton>
-
-        <SocialButton icon={<Facebook />}>Continue with Facebook</SocialButton>
 
         <Button type="submit" disabled={isLoading} variant="primary" className="w-full mt-6">
           {isLoading ? 'Signing in...' : 'Sign In'}
