@@ -60,7 +60,7 @@ function AppSidebar({ items = [] }: AppSidebarProps) {
                         transition-all duration-200 ease-in-out
                         hover:bg-sidebar-accent hover:text-sidebar-accent-foreground
                         data-[active=true]:bg-sidebar-accent 
-                        data-[active=true]:text-[#5a6e00] dark:data-[active=true]:text-[#ecff77] 
+                        data-[active=true]:text-black dark:data-[active=true]:text-[#ecff77] 
                         data-[active=true]:font-bold
                         rounded-md
                         group/menu-button
@@ -69,12 +69,12 @@ function AppSidebar({ items = [] }: AppSidebarProps) {
                       <Link to={item.url} className="flex items-center gap-3 w-full">
                         {/* Active indicator */}
                         {isActive && (
-                          <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 rounded-r-full bg-[#5a6e00] dark:bg-[#ecff77] group-data-[collapsible=icon]:hidden" />
+                          <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 rounded-r-full bg-primary dark:bg-[#ecff77] group-data-[collapsible=icon]:hidden" />
                         )}
 
                         {/* Icon */}
                         <item.icon
-                          className={`size-5 shrink-0 transition-colors duration-200 ${isActive ? 'text-[#5a6e00] dark:text-[#ecff77]' : 'text-muted-foreground/80 group-hover:text-sidebar-accent-foreground'}`}
+                          className={`size-5 shrink-0 transition-colors duration-200 ${isActive ? "text-black dark:text-[#ecff77]" : "text-muted-foreground/80 group-hover:text-sidebar-accent-foreground"}`}
                         />
 
                         {/* Title */}

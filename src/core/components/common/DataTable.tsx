@@ -1,55 +1,21 @@
-import type React from 'react';
-import { type ReactNode, useState } from 'react';
+import {
+  type ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  type PaginationState,
+  type SortingState,
+  useReactTable,
+} from '@tanstack/react-table';
+import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
+import { type ReactNode, useMemo, useState } from 'react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/core/components/ui/table';
+import { cn } from '@/core/lib/utils';
 import CustomPagination from './CustomPagination';
 
-interface EmptyStateProps {
-  title?: string;
-  description?: string;
-}
-
-const EmptyState: React.FC<EmptyStateProps> = ({ title, description }) => (
-  <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
-    <div className="mb-6 p-6 bg-muted rounded-full">
-      <svg
-        className="w-16 h-16 text-muted-foreground/50"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-        />
-      </svg>
-    </div>
-    <h3 className="text-lg font-semibold text-foreground mb-2">{title || 'No results found'}</h3>
-    <p className="text-sm text-muted-foreground">{description || 'Try adjusting your filters or search criteria'}</p>
-  </div>
-);
-
-interface DefaultCellProps {
-  value: string | number | null | undefined;
-  icon?: ReactNode;
-  maxWidth?: string;
-}
-
-export const DefaultCell: React.FC<DefaultCellProps> = ({ value, icon = null, maxWidth = 'none' }) => (
-  <div className="flex items-center h-full gap-2 group">
-    <div
-      className={`flex items-center gap-2 ${maxWidth !== 'none' ? '' : 'max-w-full'}`}
-      style={maxWidth !== 'none' ? { maxWidth } : undefined}
-      title={String(value || '')}
-    >
-      <span className="text-sm font-medium text-foreground wrap-break-word">{value}</span>
-      {icon}
-    </div>
-  </div>
-);
-
-type BaseDataTableColumn = {
+export interface DataTableColumn<R = Record<string, unknown>> {
+  field: keyof R & string;
   headerName: string;
   headerIcon?: ReactNode;
   width?: string;
@@ -58,177 +24,195 @@ type BaseDataTableColumn = {
   align?: 'left' | 'center' | 'right';
   headerAlign?: 'left' | 'center' | 'right';
   sortable?: boolean;
-};
+  renderCell?: (params: { row: R; value: R[keyof R] }) => ReactNode;
+}
 
-type FieldBasedColumn<R> = BaseDataTableColumn & {
-  field: keyof R & string;
-  renderCell?: (row: R) => ReactNode;
-};
+interface DataTableMeta {
+  align?: 'left' | 'center' | 'right';
+  headerAlign?: 'left' | 'center' | 'right';
+  width?: string;
+}
 
-type RenderCellBasedColumn<R> = BaseDataTableColumn & {
-  renderCell: (row: R) => ReactNode;
-  field?: keyof R & string;
-};
-
-export type DataTableColumn<R> = FieldBasedColumn<R> | RenderCellBasedColumn<R>;
-
-// Reuse your existing calculateColumnWidths function
-const calculateColumnWidths = (
-  columns: Pick<BaseDataTableColumn, 'width' | 'flex' | 'minWidth'>[],
-  containerWidth: number,
-): string[] => {
-  const totalFlex = columns.reduce((sum, col) => sum + (col.flex || 0), 0);
-  const fixedWidth = columns.reduce((sum, col) => {
-    if (col.width) return sum + parseFloat(col.width);
-    if (!col.flex) return sum + (col.minWidth || 150);
-    return sum;
-  }, 0);
-  const availableWidth = containerWidth - fixedWidth;
-  return columns.map((col) => {
-    if (col.width) return col.width;
-    if (col.flex && totalFlex > 0) {
-      const flexWidth = (availableWidth * col.flex) / totalFlex;
-      return `${Math.max(flexWidth, col.minWidth || 150)}px`;
-    }
-    return `${col.minWidth || 150}px`;
-  });
-};
-
-interface DataTableProps<R> {
+interface DataTableProps<R extends Record<string, unknown>> {
   columns: DataTableColumn<R>[];
   rows: R[];
+  pageSize?: number;
+  onRowClick?: (row: R) => void;
+  // Server-side pagination — when provided, DataTable renders rows as-is
   total?: number;
   page?: number;
   handlePageChange?: (page: number) => void;
-  containerWidth?: number;
-  onRowClick?: (row: R) => void;
-  pageSize?: number;
-  onPageSizeChange?: (pageSize: number) => void;
+  // Server-side sort — when provided, DataTable calls this instead of sorting internally
   onSortChange?: (field: string | null, direction: 'asc' | 'desc' | null) => void;
 }
-export default function DataTable<R>({
+
+export default function DataTable<R extends Record<string, unknown>>({
   columns,
   rows,
-  total = 0,
-  page = 1,
-  handlePageChange,
-  containerWidth = 1200,
-  onRowClick,
   pageSize = 10,
+  onRowClick,
+  total,
+  page: externalPage,
+  handlePageChange,
   onSortChange,
 }: DataTableProps<R>) {
-  const [sortConfig, setSortConfig] = useState<{
-    field: string | null;
-    direction: 'asc' | 'desc' | null;
-  }>({ field: null, direction: null });
-  const [_selectedRows, _setSelectedRows] = useState(new Set<string | number>());
+  const isServerPagination = handlePageChange !== undefined;
+  const isServerSort = onSortChange !== undefined;
 
-  const pageCount = Math.ceil(total / pageSize);
-  const shouldPaginate = total > 5;
-  const columnWidths = calculateColumnWidths(columns, containerWidth);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize });
 
-  const handleSort = (field: string) => {
-    setSortConfig((prev) => {
-      let next: { field: string | null; direction: 'asc' | 'desc' | null };
-      if (prev.field === field) {
-        if (prev.direction === 'asc') next = { field, direction: 'desc' };
-        else if (prev.direction === 'desc') next = { field: null, direction: null };
-        else next = { field, direction: 'asc' };
-      } else {
-        next = { field, direction: 'asc' };
+  const columnDefs = useMemo<ColumnDef<R>[]>(
+    () =>
+      columns.map((col) => ({
+        id: col.field,
+        accessorKey: col.field,
+        enableSorting: col.sortable ?? false,
+        meta: {
+          align: col.align,
+          headerAlign: col.headerAlign,
+          width: col.width,
+        } satisfies DataTableMeta,
+        header: () => (
+          <div
+            className={cn(
+              'flex items-center gap-2',
+              col.headerAlign === 'right' && 'justify-end',
+              col.headerAlign === 'center' && 'justify-center',
+            )}
+          >
+            {col.headerIcon}
+            {col.headerName}
+          </div>
+        ),
+        cell: ({ row }) =>
+          col.renderCell ? (
+            col.renderCell({ row: row.original, value: row.original[col.field] })
+          ) : (
+            <span className="font-medium text-foreground">{String(row.original[col.field] ?? '')}</span>
+          ),
+      })),
+    [columns],
+  );
+
+  const table = useReactTable({
+    data: rows,
+    columns: columnDefs,
+    state: {
+      sorting,
+      pagination: isServerPagination ? { pageIndex: (externalPage ?? 1) - 1, pageSize } : pagination,
+    },
+    manualSorting: isServerSort,
+    manualPagination: isServerPagination,
+    pageCount: isServerPagination ? Math.ceil((total ?? 0) / pageSize) : undefined,
+    onSortingChange: (updater) => {
+      const next = typeof updater === 'function' ? updater(sorting) : updater;
+      setSorting(next);
+      if (isServerSort) {
+        const first = next[0];
+        onSortChange(first?.id ?? null, first ? (first.desc ? 'desc' : 'asc') : null);
       }
-      onSortChange?.(next.field, next.direction);
-      return next;
-    });
-  };
+    },
+    onPaginationChange: (updater) => {
+      if (!isServerPagination) {
+        setPagination((prev) => (typeof updater === 'function' ? updater(prev) : updater));
+      }
+    },
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
+
+  const pageCount = isServerPagination ? Math.ceil((total ?? 0) / pageSize) : table.getPageCount();
+
+  const currentPage = isServerPagination ? (externalPage ?? 1) : pagination.pageIndex + 1;
+
+  const setPage = isServerPagination ? handlePageChange : (p: number) => table.setPageIndex(p - 1);
 
   return (
-    <div className="w-full">
-      {/* Container matches the light gray rounded box in your screenshots */}
-      <div className="rounded-3xl bg-card p-4 border border-border">
-        <div className="overflow-x-auto">
-          <table className="w-full border-separate border-spacing-y-2">
-            <thead>
-              <tr>
-                {columns.map((column, index) => {
-                  const headerAlign = column.headerAlign || column.align || 'left';
-                  const textAlign =
-                    headerAlign === 'right' ? 'text-right' : headerAlign === 'center' ? 'text-center' : 'text-left';
+    <div className="space-y-4">
+      <div className="rounded-2xl border bg-card">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="hover:bg-transparent">
+                {headerGroup.headers.map((header) => {
+                  const meta = header.column.columnDef.meta as DataTableMeta | undefined;
+                  const canSort = header.column.getCanSort();
                   return (
-                    <th
-                      key={column.field}
-                      className={`px-6 py-4 ${textAlign} border-none`}
-                      style={{ width: columnWidths[index] }}
+                    <TableHead
+                      key={header.id}
+                      style={{ width: meta?.width }}
+                      className={cn(
+                        meta?.headerAlign === 'right' && 'text-right',
+                        meta?.headerAlign === 'center' && 'text-center',
+                      )}
                     >
-                      <div
-                        className={`flex items-center gap-2 group ${headerAlign === 'right' ? 'justify-end' : headerAlign === 'center' ? 'justify-center' : ''}`}
-                      >
-                        {/* Icons match the ones in your design (Home icon for Store Name, etc) */}
-                        {column.headerIcon}
-                        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                          {column.headerName}
-                        </span>
-                        {column.sortable && column.field && (
-                          <button
-                            type="button"
-                            onClick={() => column.field && handleSort(column.field)}
-                            className="text-muted-foreground/50 hover:text-foreground"
-                          >
-                            {sortConfig.field === column.field ? (sortConfig.direction === 'asc' ? '↑' : '↓') : '⇅'}
-                          </button>
-                        )}
-                      </div>
-                    </th>
+                      {header.isPlaceholder ? null : canSort ? (
+                        <button
+                          type="button"
+                          onClick={header.column.getToggleSortingHandler()}
+                          className="flex items-center gap-2 transition-colors hover:text-foreground"
+                        >
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+                          {header.column.getIsSorted() === 'asc' ? (
+                            <ArrowUp className="size-3.5 text-foreground" />
+                          ) : header.column.getIsSorted() === 'desc' ? (
+                            <ArrowDown className="size-3.5 text-foreground" />
+                          ) : (
+                            <ArrowUpDown className="size-3.5 opacity-40" />
+                          )}
+                        </button>
+                      ) : (
+                        flexRender(header.column.columnDef.header, header.getContext())
+                      )}
+                    </TableHead>
                   );
                 })}
-              </tr>
-            </thead>
+              </TableRow>
+            ))}
+          </TableHeader>
 
-            <tbody>
-              {rows.length === 0 ? (
-                <tr>
-                  <td colSpan={columns.length}>
-                    <EmptyState title="No results found" description="Try adjusting your filters or search criteria" />
-                  </td>
-                </tr>
-              ) : (
-                rows.map((row, rowIndex) => (
-                  <tr
-                    key={(row as { id?: string | number }).id || rowIndex}
-                    onClick={() => onRowClick?.(row)}
-                    className="bg-card hover:bg-muted/50 transition-all cursor-pointer group shadow-sm first:rounded-t-xl last:rounded-b-xl"
-                  >
-                    {columns.map((column) => {
-                      const align = column.align || 'left';
-                      const textAlign =
-                        align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left';
-                      return (
-                        <td
-                          key={column.field}
-                          className={`px-6 py-4 text-sm first:rounded-l-2xl last:rounded-r-2xl border-none ${textAlign}`}
-                        >
-                          {column.renderCell
-                            ? column.renderCell(row)
-                            : column.field && (
-                                <DefaultCell value={row[column.field] as string | number | null | undefined} />
-                              )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Pagination Section */}
-        {shouldPaginate && (
-          <div className="mt-4 flex items-center justify-between px-2">
-            <CustomPagination page={page} pageCount={pageCount} setPage={handlePageChange} />
-          </div>
-        )}
+          <TableBody>
+            {table.getRowModel().rows.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  onClick={() => onRowClick?.(row.original)}
+                  className={onRowClick ? 'cursor-pointer' : ''}
+                >
+                  {row.getVisibleCells().map((cell) => {
+                    const meta = cell.column.columnDef.meta as DataTableMeta | undefined;
+                    return (
+                      <TableCell
+                        key={cell.id}
+                        className={cn(
+                          meta?.align === 'right' && 'text-right',
+                          meta?.align === 'center' && 'text-center',
+                        )}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={columns.length} className="h-24 text-center text-muted-foreground">
+                  No results found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
+
+      {pageCount > 1 && (
+        <div className="flex justify-end px-2">
+          <CustomPagination page={currentPage} pageCount={pageCount} setPage={setPage} />
+        </div>
+      )}
     </div>
   );
 }

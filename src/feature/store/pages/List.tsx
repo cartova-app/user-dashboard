@@ -13,7 +13,6 @@ const List = () => {
   const [view, setView] = useState<ViewType>('grid');
   const [addOpenModel, setAddOpenModel] = useState(false);
   const { data } = useSuspenseQuery(storeListQueryOptions());
-  console.log(data);
 
   return (
     <div className="space-y-10 text-start p-8 w-full">

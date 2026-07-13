@@ -1,19 +1,19 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Plus, Settings } from 'lucide-react';
 import { useState } from 'react';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import EmptyState from '@/core/components/common/EmptyState';
 import PageHeading from '@/core/components/common/PageHeading';
 import type { ViewType } from '@/core/components/common/ViewToggle';
 import { Button } from '@/core/components/ui/button';
 import { productListQueryOptions } from '../api/storeQueryDefinitions';
-import type { Product } from '../types';
 import AddProductForm from '../components/products/AddProductForm';
 import DeleteProductDialog from '../components/products/DeleteProductDialog';
 import EditProductModal from '../components/products/EditProductModal';
 import ProductsGrid from '../components/products/ProductsGrid';
 import ProductsTable from '../components/products/ProductsTable';
 import ProductsToolbar from '../components/products/ProductsToolbar';
+import type { Product } from '../types';
 
 type PageView = 'list' | 'add';
 type FilterTab = 'all' | 'status' | 'inventory' | 'price';
@@ -39,7 +39,7 @@ const Products = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const { data } = useSuspenseQuery({
-    ...productListQueryOptions(storeId!, {
+    ...productListQueryOptions(storeId || '', {
       page,
       limit: PAGE_SIZE,
       q: search || undefined,
@@ -47,6 +47,10 @@ const Products = () => {
       sort,
     }),
   });
+
+  if (!storeId) {
+    return null;
+  }
 
   const handleSearchChange = (value: string) => {
     setSearch(value);
@@ -172,8 +176,8 @@ const Products = () => {
           pageSize={PAGE_SIZE}
           onEdit={handleEdit}
           onDelete={handleDelete}
-          onSortChange={handleSortChange}
           onOpen={handleOpen}
+          onSortChange={handleSortChange}
         />
       ) : (
         <ProductsGrid

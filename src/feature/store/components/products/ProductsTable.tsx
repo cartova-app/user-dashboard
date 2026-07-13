@@ -65,7 +65,7 @@ export default function ProductsTable({
       flex: 2,
       sortable: true,
       headerIcon: <ShoppingBag className="size-4 text-muted-foreground" />,
-      renderCell: (row) => (
+      renderCell: ({ row }) => (
         <div className="flex items-center gap-3">
           <div className="size-10 rounded-lg bg-muted overflow-hidden flex-shrink-0">
             {row.image ? (
@@ -85,7 +85,7 @@ export default function ProductsTable({
       headerName: 'Status',
       flex: 1,
       headerIcon: <Tag className="size-4 text-muted-foreground" />,
-      renderCell: (row) => <StatusCell status={row.status} />,
+      renderCell: ({ row }) => <StatusCell status={row.status} />,
     },
     {
       field: 'category',
@@ -105,7 +105,7 @@ export default function ProductsTable({
       flex: 1,
       sortable: true,
       headerIcon: <Tag className="size-4 text-muted-foreground" />,
-      renderCell: (row) => <span className="text-sm font-medium">{Number(row.price).toLocaleString()}</span>,
+      renderCell: ({ row }) => <span className="text-sm font-medium">{Number(row.price).toLocaleString()}</span>,
     },
     {
       field: 'id',
@@ -114,7 +114,7 @@ export default function ProductsTable({
       headerIcon: <Edit3 className="size-4 text-muted-foreground" />,
       align: 'right',
       sortable: false,
-      renderCell: (row) => {
+      renderCell: ({ row }) => {
         const product = products.find((p) => p.id === row.id);
         if (!product) return null;
 

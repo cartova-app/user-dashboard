@@ -29,7 +29,7 @@ const Categories = () => {
   const [deleteOpen, setDeleteOpen] = useState(false);
 
   const { data } = useSuspenseQuery({
-    ...categoryListQueryOptions(storeId, {
+    ...categoryListQueryOptions(storeId || "", {
       page,
       limit: PAGE_SIZE,
       q: search || undefined,
@@ -37,6 +37,10 @@ const Categories = () => {
       sort,
     }),
   });
+
+  if (!storeId) {
+    return null;
+  }
 
   const handleSearchChange = (value: string) => {
     setSearch(value);
