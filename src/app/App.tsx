@@ -6,6 +6,7 @@ import { ErrorBoundary } from '@/core/components/common/ErrorBoundary';
 import { Toaster } from '@/core/components/ui/sonner';
 import i18n from '@/core/config/localization';
 import SessionQuerySyncProvider from '@/core/providers/session-query-sync-provider';
+import { AssistantProvider } from '@/core/providers/assistant-provider';
 import { ThemeProvider } from '@/core/providers/theme-provider';
 import { queryClient } from './query-client';
 import router from './router';
@@ -17,9 +18,11 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <SessionQuerySyncProvider />
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          <ErrorBoundary>
-            <RouterProvider router={router} />
-          </ErrorBoundary>
+          <AssistantProvider>
+            <ErrorBoundary>
+              <RouterProvider router={router} />
+            </ErrorBoundary>
+          </AssistantProvider>
         </ThemeProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

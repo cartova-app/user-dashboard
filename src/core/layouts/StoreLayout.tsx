@@ -14,6 +14,8 @@ import AppSidebar from '@/core/components/layout/AppSideBar';
 import { TopNav } from '@/core/components/layout/TopNav';
 import { SidebarProvider } from '@/core/components/ui/sidebar';
 
+import { CartovaAssistantSidebar } from '@/feature/assistant/components/CartovaAssistantSidebar';
+
 export default function StoreLayout() {
   const { storeId } = useParams();
 
@@ -68,10 +70,13 @@ export default function StoreLayout() {
   return (
     <SidebarProvider>
       <AppSidebar items={items} />
-      <main className="flex-1 min-w-0 overflow-x-hidden">
-        <TopNav />
-        <Outlet />
-      </main>
+      <div className="flex flex-1 min-w-0">
+        <main className="flex-1 min-w-0 overflow-x-hidden">
+          <TopNav />
+          <Outlet />
+        </main>
+        <CartovaAssistantSidebar />
+      </div>
     </SidebarProvider>
   );
 }

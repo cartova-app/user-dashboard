@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Bell, ChevronDown, LogOut, Settings, Store, User, UserCircle } from 'lucide-react';
+import { Bell, ChevronDown, LogOut, Settings, Store, User, UserCircle, Sparkles } from 'lucide-react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/core/components/ui/button';
 import {
@@ -14,6 +14,7 @@ import authClient from '@/core/config/auth-client';
 import { storeListQueryOptions } from '@/feature/store/api/storeQueryDefinitions';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { Badge } from '../ui/badge';
+import { useAssistant } from '@/core/providers/assistant-provider';
 
 export function TopNav() {
   const { storeId } = useParams<{ storeId?: string }>();
@@ -26,6 +27,7 @@ export function TopNav() {
     enabled: Boolean(storeId),
   });
   const navigate = useNavigate();
+  const { toggleAssistant } = useAssistant();
 
   const stores = storesData?.items ?? [];
   const activeStore = stores.find((store) => store.id === storeId);
@@ -173,6 +175,9 @@ export function TopNav() {
         <ThemeToggle />
         {/* Action Icons */}
         <div className="flex items-center gap-2 md:gap-4">
+          <Button variant="ghost" size="icon" className="text-[#a1b02b] hover:text-[#b4c534] dark:text-[#ecff77] dark:hover:text-[#dcee66]" onClick={toggleAssistant}>
+            <Sparkles className="size-5" />
+          </Button>
           {/* Notification with Badge */}
           <Button variant="ghost" size="icon" className="relative text-muted-foreground">
             <Bell className="size-5" />
