@@ -26,23 +26,47 @@
 > 🚧 **Work in Progress:** Cartova is currently under heavy development. The APIs, architecture, and features are subject to change. It is **NOT** ready for production use yet. Please stay tuned for our first stable release!
 
 ## About
+This repository houses the main management dashboard for Cartova merchants, providing them with all the necessary tools to monitor and configure their e-commerce storefronts.
 
-This is a React + Vite project that provides the main management dashboard for Cartova merchants.
+## Software Architecture
+
+### Core Technologies
+- **React & Vite:** Fast frontend rendering and lightning-fast Hot Module Replacement (HMR).
+- **TypeScript:** Strict type-safety across all domains and payload interactions.
+
+### Directory Structure (Feature-Sliced Design)
+The dashboard strictly adheres to a Domain-Driven / Feature-Sliced architectural pattern to prevent tight coupling as the application scales.
+- `src/app/`: Application core. Handles global initialization, routing providers, and global styles.
+- `src/core/`: Domain-agnostic modules. Contains generic UI `components`, shared `hooks`, structural `layouts`, and utility functions (`utils`).
+- `src/feature/`: The heart of the business logic. It is divided into bounded contexts:
+  - `assistant`: AI chat interface components.
+  - `auth`: Authentication flows and user sessions.
+  - `organization` & `team`: Multi-tenant management and RBAC.
+  - `profile`: User specific settings.
+  - `store`: E-commerce store management layers.
+- `src/types/`: Global TypeScript definitions and API payload interfaces.
+
+### Data Flow
+Features encapsulate their own state. Global state is provided via React Context in `src/core/providers/`, ensuring that feature modules remain decoupled and independently testable.
 
 ## Getting Started
 
-Currently, two official Vite plugins are available:
+### Prerequisites
+- Node.js
+- `pnpm`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Installation & Execution
+```bash
+# 1. Clone the repository
+git clone https://github.com/cartova-app/user-dashboard.git
+cd user-dashboard
 
-### React Compiler
+# 2. Install dependencies
+pnpm install
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information. Note: This will impact Vite dev & build performances.
-
-### Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# 3. Start the development server
+pnpm dev
+```
 
 ## License
 
